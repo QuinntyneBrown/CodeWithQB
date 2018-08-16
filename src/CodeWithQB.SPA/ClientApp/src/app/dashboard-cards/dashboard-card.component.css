@@ -1,0 +1,25 @@
+:host {
+  background-color: #fff;
+  box-shadow: 5px 3px 11px rgba(0,0,0,0.2);
+  cursor: pointer;
+  grid-column: var(--grid-column-start,0) / var(--grid-column-stop,0);
+  grid-row: var(--grid-row-start,0) / var(--grid-row-stop,0);
+  overflow: hidden;
+}
+
+section {
+  display: flex;
+}
+
+button {
+  margin: 0 0 0 auto;
+}
+
+section {
+  padding: 0px 10px;
+}
+
+  section:first-of-type {
+    margin: 0;
+    padding: 0;
+  }

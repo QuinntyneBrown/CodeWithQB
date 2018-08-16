@@ -1,0 +1,47 @@
+<section class="grid-container">
+  <section class="dashboard-card-container">
+    <template #dashboardCardTarget>
+    </template>
+  </section>
+</section>
+
+<section class="configuration-container">
+  <mat-toolbar class="mat-elevation-z6" color="primary">
+    <mat-toolbar-row>
+      <span>Configuration</span>
+
+      <button mat-icon-button (click)="handleCancelClick()">
+        <mat-icon>
+          close
+        </mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+
+  <section>
+    <form novalidate [formGroup]="form" autocomplete="off" spellcheck="false">
+      <mat-form-field>
+        <input matInput type="text" placeholder="Top" formControlName="top" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput type="text" placeholder="Left" formControlName="left" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput type="text" placeholder="Width" formControlName="width" />
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput type="text" placeholder="Height" formControlName="height" />
+      </mat-form-field>
+
+      <section>
+        <button mat-button (click)="handleCancelClick()">Cancel</button>
+
+        <button mat-raised-button color="primary" (click)="handleSaveClick()">Save</button>
+      </section>
+    </form>
+
+  </section>
+</section>

@@ -1,0 +1,48 @@
+:host {
+  display: grid;
+  width: 100vw;
+  height: 100vh;
+  grid-template-columns: 1fr 400px;
+}
+
+.grid-container {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-card-container {
+  display: grid;
+  grid-gap: 20px;
+  grid-template-columns: repeat(var(--grid-template-columns,1),240px);
+  grid-template-rows: repeat(var(--grid-template-rows,1),360px);
+}
+
+
+.configuration-container {
+  height: 100vh;
+  background-color: #fff;
+}
+
+  .configuration-container p {
+    margin: 0;
+  }
+
+  .configuration-container mat-toolbar-row {
+    display: grid;
+    grid-template-columns: 1fr min-content;
+  }
+
+  .configuration-container section {
+    padding: 20px;
+  }
+
+  .configuration-container form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .configuration-container mat-form-field, mat-slider {
+    width: 100%;
+  }

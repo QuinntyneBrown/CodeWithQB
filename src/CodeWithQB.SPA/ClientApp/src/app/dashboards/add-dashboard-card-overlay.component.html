@@ -1,0 +1,17 @@
+<section class="mat-typography">
+  <h1>Cards</h1>
+</section>
+
+<a>Select a card to your dashboard</a>
+<section class="card-container">
+  <mat-card *ngFor="let card of (cards$ | async)"
+            (click)="handleCardClick(card)"
+            [ngClass]="{'selected' : cardIsSelected(card) }">
+    {{ card.name }}
+  </mat-card>
+</section>
+
+<section class="actions">
+  <button class="add" mat-raised-button color="primary" (click)="tryToAddDashboardCards()">Add</button>
+  <button class="cancel" mat-button (click)="handleCancelClick()">Cancel</button>
+</section>
