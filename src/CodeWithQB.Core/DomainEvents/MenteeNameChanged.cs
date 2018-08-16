@@ -4,11 +4,11 @@ namespace CodeWithQB.Core.DomainEvents
 {
     public class MenteeNameChanged: DomainEvent
     {
-        public MenteeNameChanged(string name)
+        public MenteeNameChanged(string firstName)
         {
-             Name = name;
+             FirstName = firstName;
         }
 
-        public string Name { get; set; }
+        public string FirstName { get; set; }
     }
 }

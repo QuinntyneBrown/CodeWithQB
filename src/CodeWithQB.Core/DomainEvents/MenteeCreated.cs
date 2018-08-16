@@ -7,10 +7,10 @@ namespace CodeWithQB.Core.DomainEvents
         public MenteeCreated(string name, Guid menteeId)
         {
             MenteeId = menteeId;
-            Name = name;
+            FirstName = name;
         }
 
-        public string Name { get; set; }
+        public string FirstName { get; set; }
         public Guid MenteeId { get; set; }
     }
 }

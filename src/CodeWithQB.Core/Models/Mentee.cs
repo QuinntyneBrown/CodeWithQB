@@ -10,8 +10,10 @@ namespace CodeWithQB.Core.Models
             => Apply(new MenteeCreated(name,MenteeId));
 
         public Guid MenteeId { get; set; } = Guid.NewGuid();          
-		public string Name { get; set; }        
-		public bool IsDeleted { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string EmailAddress { get; set; }
+        public bool IsDeleted { get; set; }
 
         protected override void EnsureValidState()
         {
@@ -23,12 +25,12 @@ namespace CodeWithQB.Core.Models
             switch (@event)
             {
                 case MenteeCreated menteeCreated:
-                    Name = menteeCreated.Name;
+                    FirstName = menteeCreated.FirstName;
 					MenteeId = menteeCreated.MenteeId;
                     break;
 
                 case MenteeNameChanged menteeNameChanged:
-                    Name = menteeNameChanged.Name;
+                    FirstName = menteeNameChanged.FirstName;
                     break;
 
                 case MenteeRemoved menteeRemoved:
