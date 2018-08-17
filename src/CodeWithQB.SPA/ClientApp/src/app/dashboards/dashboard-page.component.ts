@@ -5,7 +5,6 @@ import { DashboardService } from "./dashboard.service";
 import { takeUntil, map, tap, switchMap, filter } from "rxjs/operators";
 import { DashboardCard } from "../dashboard-cards/dashboard-card.model";
 import { DashboardCardComponent } from "../dashboard-cards/dashboard-card.component";
-import { Overlay } from "@angular/cdk/overlay";
 import { OverlayRefWrapper } from "../core/overlay-ref-wrapper";
 import { PortalInjector, ComponentPortal } from "@angular/cdk/portal";
 import { AddDashboardCardOverlayComponent } from "./add-dashboard-card-overlay.component";
@@ -13,8 +12,6 @@ import { DashboardCardConfigurationOverlay } from "../dashboard-cards/dashboard-
 import { DashboardCardService } from "../dashboard-cards/dashboard-card.service";
 import { deepCopy } from "../core/deep-copy";
 import { AddDashboardCardOverlay } from "./add-dashboard-card-overlay";
-
-
 
 @Component({
   templateUrl: "./dashboard-page.component.html",
@@ -28,8 +25,7 @@ export class DashboardPageComponent {
     private _dashboardCardConfigurationOverlay: DashboardCardConfigurationOverlay,
     private _dashboardCardService: DashboardCardService,
     private _dashboardService: DashboardService,
-    private _injector: Injector,
-    private _overlay: Overlay
+    private _injector: Injector
   ) { }
 
   @ViewChild("target", { read: ViewContainerRef })

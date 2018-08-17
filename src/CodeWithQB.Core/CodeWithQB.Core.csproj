@@ -13,12 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common\" />
     <Folder Include="DomainEvents\" />
     <Folder Include="Exceptions\" />
     <Folder Include="Extensions\" />
     <Folder Include="Identity\" />
-    <Folder Include="Interfaces\" />
     <Folder Include="Models\" />
   </ItemGroup>
 

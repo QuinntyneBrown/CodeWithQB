@@ -1,14 +1,11 @@
 import { Component } from "@angular/core";
-import { Subject, Observable, observable, combineLatest } from "rxjs";
-import { CardService } from "../cards/card.service";
+import { Observable, Subject } from "rxjs";
+import { map, switchMap } from "rxjs/operators";
 import { Card } from "../cards/card.model";
+import { CardService } from "../cards/card.service";
 import { OverlayRefWrapper } from "../core/overlay-ref-wrapper";
-import { Dashboard } from "../dashboards/dashboard.model";
-
-import { takeUntil, switchMap, map } from "rxjs/operators";
-import { DashboardCardService } from "../dashboard-cards/dashboard-card.service";
 import { DashboardCard } from "../dashboard-cards/dashboard-card.model";
-
+import { DashboardCardService } from "../dashboard-cards/dashboard-card.service";
 
 @Component({
   templateUrl: "./add-dashboard-card-overlay.component.html",
@@ -17,21 +14,19 @@ import { DashboardCard } from "../dashboard-cards/dashboard-card.model";
 })
 export class AddDashboardCardOverlayComponent {
   constructor(
-    private _overlay: OverlayRefWrapper,
-    private _cardService: CardService,
-    private _dashboardCardService: DashboardCardService
-  ) { }
-
-  public dashboardId: string;
-
-  private cards$: Observable<Card[]>;
-
-  public selectedCards: Array<Card> = [];
-
-  ngOnInit() {
+    private readonly _overlay: OverlayRefWrapper,
+    private readonly _cardService: CardService,
+    private readonly _dashboardCardService: DashboardCardService
+  ) {
     this.cards$ = this._cardService.get();
   }
 
+  public dashboardId: string;
+
+  private readonly cards$: Observable<Card[]>;
+
+  public selectedCards: Array<Card> = [];
+  
   public handleCardClick(card: Card) {
     this.cardIsSelected(card)
       ? this.selectedCards.splice(this.selectedCards.indexOf(card), 1)

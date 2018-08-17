@@ -1,0 +1,53 @@
+:host {
+  height: 100%;
+  position: relative;
+}
+
+mat-icon,
+h1 {
+  cursor: pointer;
+}
+
+mat-toolbar {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  z-index: 2;
+  position: relative;
+}
+
+h1 {
+  margin: 0 20px;
+}
+
+.app-content-container {
+  width: 100%;
+  height: 100%;
+  max-height: calc(100% - 64px);
+}
+
+.sidenav {
+  width: 250px;
+}
+
+.router-outlet-container {
+  padding:20px;
+  height: calc(100vh - 134px);
+  overflow-y:auto;
+}
+
+:host(.error-console-is-opened) .router-outlet-container  {
+  height: calc(100vh - 404px);
+}
+
+.mat-expansion-panel-spacing {
+  margin: 0;
+}
+
+button[mat-button] {
+  width: 100%;
+  text-align: left;
+}
+
+mat-drawer {
+  padding: 20px 0px 0px;
+}

@@ -1,0 +1,18 @@
+<igx-grid #grid
+          [data]="data"
+          [autoGenerate]="false"
+          height="100%"
+          width="100%">
+  <igx-column *ngFor="let column of columns"
+              [field]="column.field"
+              [header]="column.header"
+              width="90%"></igx-column>
+  <igx-column width="40px">
+    <ng-template igxCell let-cell="cell">
+      <button mat-icon-button (click)="tryToDelete(cell.cellID.rowID)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </ng-template>
+  </igx-column>
+</igx-grid>
+

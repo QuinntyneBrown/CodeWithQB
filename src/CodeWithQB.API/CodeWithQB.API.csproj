@@ -2,9 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <UserSecretsId>b53104a9-b8e5-4305-888d-b4bf504971ae</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Mentees\" />
+    <Folder Include="Features\Products\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 

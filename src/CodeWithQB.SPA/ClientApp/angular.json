@@ -23,9 +23,19 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              {
+                "input": "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+              },
+              {
+                "input": "./node_modules/igniteui-angular/styles/igniteui-angular.css"
+              },
+              "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              {
+                "input": "./node_modules/hammerjs/hammer.min.js"
+              }
+            ]
           },
           "configurations": {
             "production": {
