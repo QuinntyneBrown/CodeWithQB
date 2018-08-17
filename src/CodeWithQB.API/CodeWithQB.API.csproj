@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <Folder Include="Features\Mentees\" />
+    <Folder Include="Features\Roles\" />
     <Folder Include="Features\Products\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>

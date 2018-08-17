@@ -9,8 +9,8 @@ import { LoginRedirectService } from './redirect.service';
 @Injectable()
 export class UnauthorizedResponseInterceptor implements HttpInterceptor {
   constructor(
-    private _localStorageService: LocalStorageService,
-    private _loginRedirectService: LoginRedirectService
+    private readonly _localStorageService: LocalStorageService,
+    private readonly _loginRedirectService: LoginRedirectService
   ) {}
   intercept(httpRequest: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     return next.handle(httpRequest).pipe(

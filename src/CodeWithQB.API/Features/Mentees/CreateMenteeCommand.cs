@@ -34,7 +34,7 @@ namespace CodeWithQB.API.Features.Mentees
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var mentee = new Mentee(request.Mentee.FirstName);
+                var mentee = new Mentee(request.Mentee.FirstName, request.Mentee.LastName,request.Mentee.EmailAddress);
 
                 _eventStore.Save(mentee);
                 

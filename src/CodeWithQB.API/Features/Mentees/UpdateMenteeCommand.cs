@@ -36,7 +36,7 @@ namespace CodeWithQB.API.Features.Mentees
             {
                 var mentee = _eventStore.Query<Mentee>(request.Mentee.MenteeId);
 
-                mentee.ChangeName(request.Mentee.FirstName);
+                mentee.ChangeName(request.Mentee.FirstName, request.Mentee.LastName);
 
                 _eventStore.Save(mentee);
 

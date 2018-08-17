@@ -6,15 +6,15 @@ namespace CodeWithQB.Core.Models
 {
     public class Mentee: AggregateRoot
     {
-        public Mentee(string name)
-            => Apply(new MenteeCreated(name,MenteeId));
+        public Mentee(string firstName, string lastName, string emailAddress)
+            => Apply(new MenteeCreated(MenteeId, firstName,lastName,emailAddress));
 
         public Guid MenteeId { get; set; } = Guid.NewGuid();          
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string EmailAddress { get; set; }
         public bool IsDeleted { get; set; }
-
+        public MenteeStatus Status { get; set; }
         protected override void EnsureValidState()
         {
             
@@ -39,10 +39,14 @@ namespace CodeWithQB.Core.Models
             }
         }
 
-        public void ChangeName(string name)
-            => Apply(new MenteeNameChanged(name));
+        public void ChangeName(string firstName, string lastName)
+            => Apply(new MenteeNameChanged(firstName,lastName));
 
         public void Remove()
             => Apply(new MenteeRemoved());
+    }
+
+    public enum MenteeStatus {
+
     }
 }

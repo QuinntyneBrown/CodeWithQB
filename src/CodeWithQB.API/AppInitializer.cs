@@ -1,12 +1,8 @@
-using CodeWithQB.Core.Identity;
-using CodeWithQB.Core.Models;
 using CodeWithQB.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Reflection;
-using System.Security.Cryptography;
 
 namespace CodeWithQB.API
 {

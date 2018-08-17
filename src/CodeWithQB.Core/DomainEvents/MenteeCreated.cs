@@ -4,13 +4,18 @@ namespace CodeWithQB.Core.DomainEvents
 {
     public class MenteeCreated: DomainEvent
     {
-        public MenteeCreated(string name, Guid menteeId)
+        public MenteeCreated(Guid menteeId, string firstName, string lastName, string emailAddress)
         {
             MenteeId = menteeId;
-            FirstName = name;
+            FirstName = firstName;
+            LastName = lastName;
+            EmailAddress = emailAddress;
         }
 
-        public string FirstName { get; set; }
         public Guid MenteeId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string EmailAddress { get; set; }
+
     }
 }
