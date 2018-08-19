@@ -1,8 +1,13 @@
+using CodeWithQB.Core.Identity;
+using CodeWithQB.Core.Interfaces;
+using CodeWithQB.Core.Models;
 using CodeWithQB.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Reflection;
+using System.Security.Cryptography;
 
 namespace CodeWithQB.API
 {
@@ -10,6 +15,11 @@ namespace CodeWithQB.API
     {
         public static void Seed(AppDbContext context)
         {
+            var eventStore = new EventStore(context);
+
+            RoleConfiguration.Seed(eventStore);
+            UserConfiguration.Seed(eventStore);
+
             context.SaveChanges();
         }
 
@@ -24,5 +34,42 @@ namespace CodeWithQB.API
                 .Options);
         }
     }
-    
+
+
+    internal class UserConfiguration
+    {
+        public static void Seed(IEventStore eventStore)
+        {
+            if (eventStore.Query<User>("Username", "quinntynebrown@gmail.com") == null)
+            {
+                var salt = new byte[128 / 8];
+                using (var rng = RandomNumberGenerator.Create())
+                {
+                    rng.GetBytes(salt);
+                }
+
+                var hashedPassword = new PasswordHasher().HashPassword(salt, "P@ssw0rd");
+
+                var user = new User("quinntynebrown@gmail.com", salt, hashedPassword);
+
+                var adminRole = new Role("Admin");
+
+                user.AddRole(adminRole.RoleId);
+
+                eventStore.Save(user);
+            }
+        }
+    }
+
+    internal class RoleConfiguration
+    {
+        public static void Seed(IEventStore eventStore)
+        {
+            if (eventStore.Query<Role>("Name", "Admin") == null)
+                eventStore.Save(new Role("Admin"));
+
+            if (eventStore.Query<Role>("Name", "Mentee") == null)
+                eventStore.Save(new Role("Mentee"));
+        }
+    }
 }

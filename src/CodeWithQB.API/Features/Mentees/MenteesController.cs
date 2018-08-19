@@ -1,3 +1,4 @@
+using CodeWithQB.Core.DomainEvents;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,5 +34,9 @@ namespace CodeWithQB.API.Features.Mentees
         [HttpGet]
         public async Task<ActionResult<GetMenteesQuery.Response>> Get()
             => await _mediator.Send(new GetMenteesQuery.Request());
+
+        [HttpPost("register")]
+        public async Task Register(MenteeRegistrationRequested @event)
+            => await _mediator.Publish(@event);
     }
 }

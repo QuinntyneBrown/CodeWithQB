@@ -14,12 +14,7 @@ using static CodeWithQB.Infrastructure.Data.DeserializedEventStore;
 using static Newtonsoft.Json.JsonConvert;
 
 namespace CodeWithQB.Infrastructure.Data
-{
-    public static class DeserializedEventStore
-    {
-        public static ConcurrentDictionary<Guid, DeserializedStoredEvent> Events { get; set; }
-    }
-
+{    
     public class DeserializedStoredEvent
     {
         public DeserializedStoredEvent(StoredEvent @event)
@@ -160,16 +155,24 @@ namespace CodeWithQB.Infrastructure.Data
         }
 
         public void Persist(StoredEvent @event)
-            => _queue.QueueBackgroundWorkItem(async token =>
+        {
+            try
             {
-                using (var scope = _serviceScopeFactory.CreateScope())
-                using (var context = scope.ServiceProvider.GetRequiredService<AppDbContext>())
+                _queue.QueueBackgroundWorkItem(async token =>
                 {
-                    context.StoredEvents.Add(@event);
-                    context.SaveChanges();
-                }
+                    using (var scope = _serviceScopeFactory.CreateScope())
+                    using (var context = scope.ServiceProvider.GetRequiredService<AppDbContext>())
+                    {
+                        context.StoredEvents.Add(@event);
+                        context.SaveChanges();
+                    }
 
-                await Task.CompletedTask;
-            });
+                    await Task.CompletedTask;
+                });
+            }catch(Exception e)
+            {
+                throw e;
+            }
+        }
     }
 }
