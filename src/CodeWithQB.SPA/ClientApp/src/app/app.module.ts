@@ -14,6 +14,7 @@ import { baseUrl } from './core/constants';
 import { CardsModule } from './cards/cards.module';
 import { DashboardCardsModule } from './dashboard-cards/dashboard-cards.module';
 import { DashboardsModule } from './dashboards/dashboards.module';
+import { EventsModule } from './events/events.module';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { DashboardsModule } from './dashboards/dashboards.module';
     CoreModule,
     DashboardCardsModule,
     DashboardsModule,
+    EventsModule,
     SharedModule,
     UsersModule
   ],

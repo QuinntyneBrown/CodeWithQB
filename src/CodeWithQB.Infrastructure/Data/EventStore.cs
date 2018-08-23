@@ -15,29 +15,6 @@ using static Newtonsoft.Json.JsonConvert;
 
 namespace CodeWithQB.Infrastructure.Data
 {    
-    public class DeserializedStoredEvent
-    {
-        public DeserializedStoredEvent(StoredEvent @event)
-        {
-            StoredEventId = @event.StoredEventId;
-            StreamId = @event.StreamId;
-            Type = @event.Type;
-            Aggregate = @event.Aggregate;
-            Data = DeserializeObject(@event.Data, System.Type.GetType(@event.DotNetType));
-            DotNetType = @event.DotNetType;
-            CreatedOn = @event.CreatedOn;
-            Version = @event.Version;
-        }
-
-        public Guid StoredEventId { get; set; }
-        public Guid StreamId { get; set; }
-        public string Type { get; set; }
-        public string Aggregate { get; set; }
-        public object Data { get; set; }
-        public string DotNetType { get; set; }
-        public DateTime CreatedOn { get; set; }
-        public int Version { get; set; }
-    }
 
     public class EventStore : IEventStore
     {
@@ -156,23 +133,20 @@ namespace CodeWithQB.Infrastructure.Data
 
         public void Persist(StoredEvent @event)
         {
-            try
-            {
-                _queue.QueueBackgroundWorkItem(async token =>
-                {
-                    using (var scope = _serviceScopeFactory.CreateScope())
-                    using (var context = scope.ServiceProvider.GetRequiredService<AppDbContext>())
-                    {
-                        context.StoredEvents.Add(@event);
-                        context.SaveChanges();
-                    }
+            if(_queue == null) _context.StoredEvents.Add(@event);
 
-                    await Task.CompletedTask;
-                });
-            }catch(Exception e)
+            _queue?.QueueBackgroundWorkItem(async token =>
             {
-                throw e;
-            }
+                using (var scope = _serviceScopeFactory.CreateScope())
+                using (var context = scope.ServiceProvider.GetRequiredService<AppDbContext>())
+                {
+                    context.StoredEvents.Add(@event);
+                    context.SaveChanges();
+                }
+
+                await Task.CompletedTask;
+            });
+
         }
     }
 }

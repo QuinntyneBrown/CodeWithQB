@@ -43,7 +43,7 @@ namespace CodeWithQB.API
                 if (args.Contains("seeddb"))
                 {
                     context.Database.EnsureCreated();
-                    AppInitializer.Seed(context);            
+                    AppInitializer.Seed(context,services);            
                 }
                 
                 if (args.Contains("stop"))

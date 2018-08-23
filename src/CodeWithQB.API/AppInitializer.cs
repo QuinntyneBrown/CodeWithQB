@@ -5,7 +5,7 @@ using CodeWithQB.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System;
+using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using System.Security.Cryptography;
 
@@ -13,13 +13,13 @@ namespace CodeWithQB.API
 {
     public class AppInitializer: IDesignTimeDbContextFactory<AppDbContext>
     {
-        public static void Seed(AppDbContext context)
-        {
-            var eventStore = new EventStore(context);
+        public static void Seed(AppDbContext context, IServiceScopeFactory services)
+        {            
+            var eventStore = new EventStore(context,null, null, null);
 
             RoleConfiguration.Seed(eventStore);
             UserConfiguration.Seed(eventStore);
-
+            
             context.SaveChanges();
         }
 
@@ -70,6 +70,31 @@ namespace CodeWithQB.API
 
             if (eventStore.Query<Role>("Name", "Mentee") == null)
                 eventStore.Save(new Role("Mentee"));
+        }
+    }
+
+    internal class CardConfiguration
+    {
+        public static void Seed(IEventStore eventStore)
+        {
+            if (eventStore.Query<Card>("Name", "Events") == null)
+                eventStore.Save(new Card("Events"));
+
+            if (eventStore.Query<Card>("Name", "Mentees") == null)
+                eventStore.Save(new Card("Mentees"));
+        }
+    }
+
+    internal class DashboardConfiguration
+    {
+        public static void Seed(IEventStore eventStore)
+        {
+        }
+    }
+
+    internal class DashboardTileConfiguration {
+        public static void Seed(IEventStore eventStore)
+        {
         }
     }
 }

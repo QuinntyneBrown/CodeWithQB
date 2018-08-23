@@ -39,7 +39,7 @@ namespace IntegrationTests
             {
                 var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-                AppInitializer.Seed(context);
+                AppInitializer.Seed(context,services);
             }
 
             return testServer;
