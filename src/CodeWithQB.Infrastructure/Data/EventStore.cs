@@ -14,17 +14,19 @@ using static CodeWithQB.Infrastructure.Data.DeserializedEventStore;
 using static Newtonsoft.Json.JsonConvert;
 
 namespace CodeWithQB.Infrastructure.Data
-{    
+{
 
     public class EventStore : IEventStore
     {
         private readonly IAppDbContext _context;
+        private readonly IDateTime _dateTime;
         private readonly IMediator _mediator;
         private readonly IBackgroundTaskQueue _queue;
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
         public EventStore(
             IAppDbContext context,
+            IDateTime dateTime = default(IDateTime),
             IMediator mediator = default(IMediator),
             IBackgroundTaskQueue queue = default(IBackgroundTaskQueue),
             IServiceScopeFactory serviceScopeFactory = default(IServiceScopeFactory)
@@ -133,7 +135,7 @@ namespace CodeWithQB.Infrastructure.Data
 
         public void Persist(StoredEvent @event)
         {
-            if(_queue == null) _context.StoredEvents.Add(@event);
+            if (_queue == null) _context.StoredEvents.Add(@event);
 
             _queue?.QueueBackgroundWorkItem(async token =>
             {

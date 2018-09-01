@@ -5,6 +5,7 @@ import { AuthGuard } from './core/auth.guard';
 import { MasterPageComponent } from './master-page.component';
 import { LoginComponent } from './users/login.component';
 import { DashboardPageComponent } from './dashboards/dashboard-page.component';
+import { HomePageComponent } from './home/home-page.component';
 
 export const routes: Routes = [
   {
@@ -18,13 +19,24 @@ export const routes: Routes = [
     ]
   },
   {
-    path: '',
+    path: 'dashboard',
     component: MasterPageComponent,
     canActivate: [AuthGuard],
     children: [
       {
         path: '',
-        component: DashboardPageComponent,
+        component: DashboardPageComponent
+      }
+    ]
+  },
+  {
+    path: '',
+    component: AnonymousMasterPageComponent,
+
+    children: [
+      {
+        path: '',
+        component: HomePageComponent,
       }
     ]
   }

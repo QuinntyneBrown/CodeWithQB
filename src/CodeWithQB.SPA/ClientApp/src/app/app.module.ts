@@ -15,6 +15,7 @@ import { CardsModule } from './cards/cards.module';
 import { DashboardCardsModule } from './dashboard-cards/dashboard-cards.module';
 import { DashboardsModule } from './dashboards/dashboards.module';
 import { EventsModule } from './events/events.module';
+import { HomeModule } from './home/home.module';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import { EventsModule } from './events/events.module';
     DashboardCardsModule,
     DashboardsModule,
     EventsModule,
+    HomeModule,
     SharedModule,
     UsersModule
   ],

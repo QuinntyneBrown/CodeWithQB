@@ -17,6 +17,7 @@ namespace CodeWithQB.API
         {            
             var eventStore = new EventStore(context,null, null, null);
 
+            CardConfiguration.Seed(eventStore);
             RoleConfiguration.Seed(eventStore);
             UserConfiguration.Seed(eventStore);
             
@@ -95,6 +96,17 @@ namespace CodeWithQB.API
     internal class DashboardTileConfiguration {
         public static void Seed(IEventStore eventStore)
         {
+        }
+    }
+
+    internal class ProductConfiguration
+    {
+        public static void Seed(IEventStore eventStore)
+        {
+            if (eventStore.Query<Product>("Name", "Mentoring") == null)
+            {
+                eventStore.Save(new Product("Mentoring"));
+            }
         }
     }
 }
