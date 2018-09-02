@@ -10,8 +10,8 @@ namespace CodeWithQB.Core.Models
             => Apply(new CardCreated(name,CardId));
 
         public Guid CardId { get; set; } = Guid.NewGuid();          
-		public string Name { get; set; }        
-		public bool IsDeleted { get; set; }
+        public string Name { get; set; }        
+        public bool IsDeleted { get; set; }
 
         protected override void EnsureValidState()
         {

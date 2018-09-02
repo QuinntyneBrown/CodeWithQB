@@ -27,7 +27,7 @@ const providers = [
     RouterModule,
 
     CoreModule,
-    SharedModule	
+    SharedModule    
   ],
   providers,
 })

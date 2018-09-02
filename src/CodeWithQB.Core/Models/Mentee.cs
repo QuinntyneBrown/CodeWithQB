@@ -26,7 +26,7 @@ namespace CodeWithQB.Core.Models
             {
                 case MenteeCreated menteeCreated:
                     FirstName = menteeCreated.FirstName;
-					MenteeId = menteeCreated.MenteeId;
+                    MenteeId = menteeCreated.MenteeId;
                     break;
 
                 case MenteeNameChanged menteeNameChanged:

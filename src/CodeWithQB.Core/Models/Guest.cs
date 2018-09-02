@@ -10,8 +10,8 @@ namespace CodeWithQB.Core.Models
             => Apply(new GuestCreated(GuestId,name));
 
         public Guid GuestId { get; set; } = Guid.NewGuid();          
-		public string Name { get; set; }        
-		public bool IsDeleted { get; set; }
+        public string Name { get; set; }        
+        public bool IsDeleted { get; set; }
 
         protected override void EnsureValidState()
         {
@@ -24,7 +24,7 @@ namespace CodeWithQB.Core.Models
             {
                 case GuestCreated guestCreated:
                     Name = guestCreated.Name;
-					GuestId = guestCreated.GuestId;
+                    GuestId = guestCreated.GuestId;
                     break;
 
                 case GuestNameChanged guestNameChanged:

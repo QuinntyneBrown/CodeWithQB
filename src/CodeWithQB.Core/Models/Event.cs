@@ -10,7 +10,7 @@ namespace CodeWithQB.Core.Models
             => Apply(new EventCreated(EventId,name));
 
         public Guid EventId { get; set; } = Guid.NewGuid();          
-		public string Name { get; set; }
+        public string Name { get; set; }
         public Guid AddressId { get; set; }
         public bool IsDeleted { get; set; }
 
@@ -25,7 +25,7 @@ namespace CodeWithQB.Core.Models
             {
                 case EventCreated eventCreated:
                     Name = eventCreated.Name;
-					EventId = eventCreated.EventId;
+                    EventId = eventCreated.EventId;
                     break;
 
                 case EventNameChanged eventNameChanged:

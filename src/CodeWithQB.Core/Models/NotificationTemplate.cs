@@ -10,8 +10,8 @@ namespace CodeWithQB.Core.Models
             => Apply(new NotificationTemplateCreated(NotificationTemplateId,name));
 
         public Guid NotificationTemplateId { get; set; } = Guid.NewGuid();          
-		public string Name { get; set; }        
-		public bool IsDeleted { get; set; }
+        public string Name { get; set; }        
+        public bool IsDeleted { get; set; }
 
         protected override void EnsureValidState()
         {
@@ -24,7 +24,7 @@ namespace CodeWithQB.Core.Models
             {
                 case NotificationTemplateCreated notificationTemplateCreated:
                     Name = notificationTemplateCreated.Name;
-					NotificationTemplateId = notificationTemplateCreated.NotificationTemplateId;
+                    NotificationTemplateId = notificationTemplateCreated.NotificationTemplateId;
                     break;
 
                 case NotificationTemplateNameChanged notificationTemplateNameChanged:

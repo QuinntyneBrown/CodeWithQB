@@ -10,7 +10,7 @@ namespace CodeWithQB.Core.DomainEvents
             Name = name;
         }
 
-		public Guid NotificationTemplateId { get; set; }
+        public Guid NotificationTemplateId { get; set; }
         public string Name { get; set; }
     }
 }

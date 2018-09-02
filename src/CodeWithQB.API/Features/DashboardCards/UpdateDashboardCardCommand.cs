@@ -23,7 +23,7 @@ namespace CodeWithQB.API.Features.DashboardCards
         }
 
         public class Response
-        {			
+        {            
             public Guid DashboardCardId { get; set; }
         }
 
@@ -31,7 +31,7 @@ namespace CodeWithQB.API.Features.DashboardCards
         {
             private readonly IEventStore _eventStore;
             
-			public Handler(IEventStore eventStore) => _eventStore = eventStore;
+            public Handler(IEventStore eventStore) => _eventStore = eventStore;
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {

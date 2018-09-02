@@ -10,7 +10,7 @@ namespace CodeWithQB.Core.Models
             => Apply(new ProductCreated(ProductId,name, price, description));
 
         public Guid ProductId { get; set; } = Guid.NewGuid();          
-		public string Name { get; set; }
+        public string Name { get; set; }
         public string Description { get; set; }
         public float Price { get; set; }
         public bool IsDeleted { get; set; }
@@ -28,7 +28,7 @@ namespace CodeWithQB.Core.Models
                     Name = productCreated.Name;
                     Price = productCreated.Price;
                     Description = productCreated.Description;
-					ProductId = productCreated.ProductId;
+                    ProductId = productCreated.ProductId;
                     break;
 
                 case ProductNameChanged productNameChanged:

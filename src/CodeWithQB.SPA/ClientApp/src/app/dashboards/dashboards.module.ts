@@ -37,7 +37,7 @@ const providers = [
     CardsModule,
     CoreModule,
     DashboardCardsModule,
-    SharedModule	
+    SharedModule    
   ],
   providers,
 })

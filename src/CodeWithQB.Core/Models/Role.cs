@@ -10,8 +10,8 @@ namespace CodeWithQB.Core.Models
             => Apply(new RoleCreated(RoleId,name));
 
         public Guid RoleId { get; set; } = Guid.NewGuid();          
-		public string Name { get; set; }        
-		public bool IsDeleted { get; set; }
+        public string Name { get; set; }        
+        public bool IsDeleted { get; set; }
 
         protected override void EnsureValidState()
         {
@@ -24,7 +24,7 @@ namespace CodeWithQB.Core.Models
             {
                 case RoleCreated roleCreated:
                     Name = roleCreated.Name;
-					RoleId = roleCreated.RoleId;
+                    RoleId = roleCreated.RoleId;
                     break;
 
                 case RoleNameChanged roleNameChanged:

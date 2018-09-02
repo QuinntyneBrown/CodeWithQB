@@ -32,10 +32,10 @@ namespace CodeWithQB.API.Features.Products
         {
             private readonly IEventStore _eventStore;
             
-			public Handler(IEventStore eventStore) => _eventStore = eventStore;
+            public Handler(IEventStore eventStore) => _eventStore = eventStore;
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
-			     => Task.FromResult(new Response()
+                 => Task.FromResult(new Response()
                 {
                     Product = ProductDto.FromProduct(_eventStore.Query<Product>().Single(x => x.ProductId == request.ProductId))
                 });

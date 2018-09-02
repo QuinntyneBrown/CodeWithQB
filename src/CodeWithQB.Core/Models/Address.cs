@@ -10,8 +10,8 @@ namespace CodeWithQB.Core.Models
             => Apply(new AddressCreated(AddressId,name));
 
         public Guid AddressId { get; set; } = Guid.NewGuid();          
-		public string Name { get; set; }        
-		public bool IsDeleted { get; set; }
+        public string Name { get; set; }        
+        public bool IsDeleted { get; set; }
 
         protected override void EnsureValidState()
         {
@@ -24,7 +24,7 @@ namespace CodeWithQB.Core.Models
             {
                 case AddressCreated addressCreated:
                     Name = addressCreated.Name;
-					AddressId = addressCreated.AddressId;
+                    AddressId = addressCreated.AddressId;
                     break;
 
                 case AddressNameChanged addressNameChanged:

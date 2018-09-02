@@ -33,7 +33,7 @@ const entryComponents = [
     RouterModule,
 
     CoreModule,
-    SharedModule	
+    SharedModule    
   ],
   providers,
   entryComponents

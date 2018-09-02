@@ -10,7 +10,7 @@ namespace CodeWithQB.Core.DomainEvents
             Name = name;
         }
 
-		public Guid GuestId { get; set; }
+        public Guid GuestId { get; set; }
         public string Name { get; set; }
     }
 }

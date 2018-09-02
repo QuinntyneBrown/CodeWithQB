@@ -13,8 +13,8 @@ namespace CodeWithQB.Core.Models
         public Guid DashboardId { get; set; } = Guid.NewGuid();
         public Guid UserId { get; set; }
         public ICollection<Guid> DashboardCardIds { get; set; }
-		public string Name { get; set; }        
-		public bool IsDeleted { get; set; }
+        public string Name { get; set; }        
+        public bool IsDeleted { get; set; }
 
         protected override void EnsureValidState()
         {

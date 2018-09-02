@@ -27,7 +27,7 @@ namespace IntegrationTests.Features
                         }
                     });
      
-	            //var entity = context.Events.First();
+                //var entity = context.Events.First();
 
                 //Assert.Equal("Name", entity.Name);
             }

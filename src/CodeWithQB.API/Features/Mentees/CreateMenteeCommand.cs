@@ -22,7 +22,7 @@ namespace CodeWithQB.API.Features.Mentees
         }
 
         public class Response
-        {			
+        {            
             public Guid MenteeId { get; set; }
         }
 
@@ -30,7 +30,7 @@ namespace CodeWithQB.API.Features.Mentees
         {
             private readonly IEventStore _eventStore;
             
-			public Handler(IEventStore eventStore) => _eventStore = eventStore;
+            public Handler(IEventStore eventStore) => _eventStore = eventStore;
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
