@@ -16,7 +16,7 @@ namespace CodeWithQB.API
     {
         public static void Seed(AppDbContext context, IServiceScopeFactory services)
         {            
-            var eventStore = new EventStore(new MachineDateTime(), null, services);
+            var eventStore = new EventStore(null, new MachineDateTime(), null, services);
 
             CardConfiguration.Seed(eventStore);
             RoleConfiguration.Seed(eventStore);

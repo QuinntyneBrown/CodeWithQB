@@ -2,6 +2,7 @@ using CodeWithQB.Core.Common;
 using CodeWithQB.Core.DomainEvents;
 using CodeWithQB.Core.Interfaces;
 using CodeWithQB.Core.Models;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
 using System;
@@ -19,16 +20,19 @@ namespace CodeWithQB.Infrastructure.Data
 
     public class EventStore : IEventStore
     {
+        private readonly IConfiguration _configuration;
         private readonly IDateTime _dateTime;
         private readonly IBackgroundTaskQueue _queue;
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
         public EventStore(
+            IConfiguration configuration,
             IDateTime dateTime = default(IDateTime),
             IBackgroundTaskQueue queue = default(IBackgroundTaskQueue),
             IServiceScopeFactory serviceScopeFactory = default(IServiceScopeFactory)
             )
         {
+            _configuration = configuration;
             _queue = queue;
             _serviceScopeFactory = serviceScopeFactory;
             _dateTime = dateTime;
@@ -75,10 +79,18 @@ namespace CodeWithQB.Infrastructure.Data
         }
 
         public async Task<Dictionary<string, IEnumerable<object>>> LoadStateAsync() {
+
+            var dateTime = _configuration?.GetValue<DateTime>("ViewAt");
+
+            if (dateTime == default(DateTime) || dateTime == null)
+                dateTime = _dateTime.UtcNow;
+
             using (var scope = _serviceScopeFactory.CreateScope())
             using (var context = scope.ServiceProvider.GetRequiredService<AppDbContext>())
             {
-                var snapshot = context.Snapshots.OrderByDescending(x => x.AsOfDateTime).FirstOrDefault();
+                var snapshot = context.Snapshots.OrderByDescending(x => x.AsOfDateTime)
+                    .Where(x => x.AsOfDateTime < dateTime)
+                    .FirstOrDefault();
 
                 if (snapshot == null) return null;
 
@@ -150,16 +162,28 @@ namespace CodeWithQB.Infrastructure.Data
                 });
             }
 
+
             aggregateRoot.ClearEvents();
 
-            Aggregates.TryGetValue(type.AssemblyQualifiedName, out ConcurrentBag<AggregateRoot> concurrentBag);
+            Aggregates.TryGetValue(type.AssemblyQualifiedName, out ConcurrentBag<AggregateRoot> orginalAggregates);
 
-            if (concurrentBag == null)
-                concurrentBag = new ConcurrentBag<AggregateRoot>();
+            var newAggregates = new ConcurrentBag<AggregateRoot>() { aggregateRoot };
 
-            concurrentBag.Add(aggregateRoot);
-           
-            Aggregates.AddOrUpdate(type.AssemblyQualifiedName, concurrentBag, (key, oldValue) => concurrentBag);
+            if (orginalAggregates == null)
+                Aggregates.TryAdd(type.AssemblyQualifiedName, newAggregates);
+            else
+            {
+                foreach(var originalAggregate in orginalAggregates)
+                {
+                    var originalId = (Guid)type.GetProperty($"{type.Name}Id").GetValue(originalAggregate, null);
+                    
+                    if(aggregateId != originalId)
+                        newAggregates.Add(originalAggregate);
+                }
+
+                Aggregates.TryUpdate(type.AssemblyQualifiedName, newAggregates, orginalAggregates);
+            }
+            
         }
 
         public T Query<T>(Guid id)
@@ -215,17 +239,15 @@ namespace CodeWithQB.Infrastructure.Data
         public TAggregateRoot[] Query<TAggregateRoot>()
             where TAggregateRoot : AggregateRoot
         {
-            var aggregates = new List<TAggregateRoot>();
+            var result = new List<TAggregateRoot>();
+            var assemblyQualifiedName = typeof(TAggregateRoot).AssemblyQualifiedName;
 
-            foreach (var grouping in Get()
-                .Where(x => x.Aggregate == typeof(TAggregateRoot).Name).GroupBy(x => x.StreamId))
-            {
-                var events = grouping.Select(x => x.Data as DomainEvent).ToArray();
+            Aggregates.TryGetValue(assemblyQualifiedName, out ConcurrentBag<AggregateRoot> aggregates);
 
-                aggregates.Add(Load<TAggregateRoot>(events.ToArray()));
-            }
+            foreach(var a in aggregates)
+                result.Add(a as TAggregateRoot);
 
-            return aggregates.ToArray();
+            return result.ToArray();
         }
 
         public AggregateRoot[] Query(string dotNetType)

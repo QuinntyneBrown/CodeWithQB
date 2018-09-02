@@ -29,7 +29,8 @@ namespace CodeWithQB.API.Features.Dashboards
             }
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var dashboard = _eventStore.Query<Dashboard>("Name", "Default");
+                var dashboard = _eventStore.Query<Dashboard>()
+                    .Single(x => x.Name == "Default");
 
                 var dashboardDto = DashboardDto.FromDashboard(dashboard);
 
@@ -37,8 +38,8 @@ namespace CodeWithQB.API.Features.Dashboards
 
                 foreach(var dashboardCardId in dashboard.DashboardCardIds)
                 {
-                    var dashboardCardDto = DashboardCardDto.FromDashboardCard(_eventStore.Query<DashboardCard>(dashboardCardId));
-                    dashboardCardDto.Card = CardDto.FromCard(_eventStore.Query<Card>(dashboardCardDto.CardId));                    
+                    var dashboardCardDto = DashboardCardDto.FromDashboardCard(_eventStore.Query<DashboardCard>().Single(x => x.DashboardCardId == dashboardCardId));
+                    dashboardCardDto.Card = CardDto.FromCard(_eventStore.Query<Card>().Single(x => x.CardId == dashboardCardDto.CardId));                    
                     dashboardCardDtos.Add(dashboardCardDto);
                 }
                        

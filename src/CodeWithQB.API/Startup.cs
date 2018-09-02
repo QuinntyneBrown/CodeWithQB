@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CodeWithQB.Core.Common;
+using System;
 
 namespace CodeWithQB.API
 {
@@ -23,9 +24,10 @@ namespace CodeWithQB.API
         public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
-        {
-            services.AddSingleton<IEventStore, EventStore>();
+        {                        
             services.AddSingleton<IDateTime, MachineDateTime>();
+            services.AddSingleton<IEventStore, EventStore>();
+            
             services.AddHttpContextAccessor();
             services.AddHostedService<QueuedHostedService>();
             services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
