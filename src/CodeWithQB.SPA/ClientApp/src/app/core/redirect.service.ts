@@ -9,7 +9,7 @@ export class LoginRedirectService {
 
   lastPath: string;
 
-  defaultPath: string = '/';
+  defaultPath: string = '/dashboard';
 
   setLoginUrl(value) {
     this.loginUrl = value;

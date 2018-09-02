@@ -66,9 +66,7 @@ namespace CodeWithQB.Infrastructure.Data
             else
             {
                 foreach (var item in state)
-                {
-                    Aggregates.TryAdd(item.Key, new ConcurrentBag<AggregateRoot>(item.Value.Select(x => (AggregateRoot)x).ToList()));
-                }             
+                    Aggregates.TryAdd(item.Key, new ConcurrentBag<AggregateRoot>(item.Value.Select(x => (AggregateRoot)x).ToList()));                             
             }
 
             await Task.CompletedTask;
