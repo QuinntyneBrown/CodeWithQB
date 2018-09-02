@@ -10,16 +10,30 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodeWithQB.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20180816115915_Initial")]
-    partial class Initial
+    [Migration("20180902075521_Snapshots")]
+    partial class Snapshots
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.1-rtm-30846")
+                .HasAnnotation("ProductVersion", "2.1.2-rtm-30932")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("CodeWithQB.Core.Models.Snapshot", b =>
+                {
+                    b.Property<Guid>("SnapshotId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("AsOfDateTime");
+
+                    b.Property<string>("Data");
+
+                    b.HasKey("SnapshotId");
+
+                    b.ToTable("Snapshots");
+                });
 
             modelBuilder.Entity("CodeWithQB.Core.Models.StoredEvent", b =>
                 {
@@ -33,6 +47,8 @@ namespace CodeWithQB.Infrastructure.Migrations
                     b.Property<string>("Data");
 
                     b.Property<string>("DotNetType");
+
+                    b.Property<int>("Sequence");
 
                     b.Property<Guid>("StreamId");
 

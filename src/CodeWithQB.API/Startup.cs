@@ -11,6 +11,7 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using CodeWithQB.Core.Common;
 
 namespace CodeWithQB.API
 {
@@ -23,7 +24,8 @@ namespace CodeWithQB.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IEventStore, EventStore>();
+            services.AddSingleton<IEventStore, EventStore>();
+            services.AddSingleton<IDateTime, MachineDateTime>();
             services.AddHttpContextAccessor();
             services.AddHostedService<QueuedHostedService>();
             services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();

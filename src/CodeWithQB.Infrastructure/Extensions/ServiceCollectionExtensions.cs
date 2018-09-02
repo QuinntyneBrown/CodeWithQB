@@ -10,7 +10,7 @@ namespace CodeWithQB.Infrastructure.Extensions
         public static IServiceCollection AddDataStore(this IServiceCollection services,
                                                string connectionString, bool useInMemoryDatabase = false)
         {
-            services.AddScoped<IAppDbContext, AppDbContext>();
+            services.AddSingleton<IAppDbContext, AppDbContext>();
 
             return services.AddDbContext<AppDbContext>(options =>
             {

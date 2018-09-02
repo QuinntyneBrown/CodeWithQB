@@ -34,7 +34,7 @@ namespace CodeWithQB.API.Features.Products
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var product = new Product(request.Product.Name);
+                var product = new Product(request.Product.Name,300,"");
 
                 _eventStore.Save(product);
                 

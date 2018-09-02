@@ -1,3 +1,4 @@
+using CodeWithQB.Core.Common;
 using CodeWithQB.Core.Identity;
 using CodeWithQB.Core.Interfaces;
 using CodeWithQB.Core.Models;
@@ -15,7 +16,7 @@ namespace CodeWithQB.API
     {
         public static void Seed(AppDbContext context, IServiceScopeFactory services)
         {            
-            var eventStore = new EventStore(context,null, null, null);
+            var eventStore = new EventStore(new MachineDateTime(), null, services);
 
             CardConfiguration.Seed(eventStore);
             RoleConfiguration.Seed(eventStore);
@@ -57,7 +58,10 @@ namespace CodeWithQB.API
 
                 user.AddRole(adminRole.RoleId);
 
+                var dashboard = new Dashboard("Default", user.UserId);
+
                 eventStore.Save(user);
+                eventStore.Save(dashboard);
             }
         }
     }
@@ -105,7 +109,7 @@ namespace CodeWithQB.API
         {
             if (eventStore.Query<Product>("Name", "Mentoring") == null)
             {
-                eventStore.Save(new Product("Mentoring"));
+                eventStore.Save(new Product("Mentoring",300,""));
             }
         }
     }

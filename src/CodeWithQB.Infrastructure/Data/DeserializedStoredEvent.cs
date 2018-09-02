@@ -1,7 +1,5 @@
 ﻿using CodeWithQB.Core.Models;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using static Newtonsoft.Json.JsonConvert;
 
 namespace CodeWithQB.Infrastructure.Data
@@ -18,8 +16,9 @@ namespace CodeWithQB.Infrastructure.Data
             DotNetType = @event.DotNetType;
             CreatedOn = @event.CreatedOn;
             Version = @event.Version;
+            Sequence = @event.Sequence;
         }
-
+        public int Sequence { get; set; }
         public Guid StoredEventId { get; set; }
         public Guid StreamId { get; set; }
         public string Type { get; set; }

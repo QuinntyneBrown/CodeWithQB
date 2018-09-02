@@ -13,7 +13,7 @@ namespace CodeWithQB.API.Features.Products
             {
                 ProductId = product.ProductId,
                 Name = product.Name,
-                Description = product.Decription
+                Description = product.Description
             };
     }
 }

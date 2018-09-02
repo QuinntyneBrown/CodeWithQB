@@ -15,7 +15,7 @@ namespace CodeWithQB.API.Features.Users
 
         public UsersController(IMediator mediator)
             => _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
-        
+
         [AllowAnonymous]
         [HttpPost("token")]
         public async Task<ActionResult<AuthenticateCommand.Response>> SignIn(AuthenticateCommand.Request request)

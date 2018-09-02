@@ -16,7 +16,6 @@
     <Folder Include="Exceptions\" />
     <Folder Include="Extensions\" />
     <Folder Include="Identity\" />
-    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

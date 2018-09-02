@@ -4,34 +4,22 @@ using CodeWithQB.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CodeWithQB.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180901173212_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.2-rtm-30932")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("CodeWithQB.Core.Models.Snapshot", b =>
-                {
-                    b.Property<Guid>("SnapshotId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTime>("AsOfDateTime");
-
-                    b.Property<string>("Data");
-
-                    b.HasKey("SnapshotId");
-
-                    b.ToTable("Snapshots");
-                });
 
             modelBuilder.Entity("CodeWithQB.Core.Models.StoredEvent", b =>
                 {

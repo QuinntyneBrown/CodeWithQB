@@ -15,6 +15,7 @@ namespace CodeWithQB.Infrastructure.Migrations
                     StreamId = table.Column<Guid>(nullable: false),
                     Type = table.Column<string>(nullable: true),
                     Aggregate = table.Column<string>(nullable: true),
+                    Sequence = table.Column<int>(nullable: false),
                     Data = table.Column<string>(nullable: true),
                     DotNetType = table.Column<string>(nullable: true),
                     CreatedOn = table.Column<DateTime>(nullable: false),
