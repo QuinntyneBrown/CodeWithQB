@@ -5,6 +5,7 @@ using MediatR;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using System.Linq;
 
 namespace CodeWithQB.API.Features.Products
 {
@@ -34,7 +35,7 @@ namespace CodeWithQB.API.Features.Products
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var product = _eventStore.Query<Product>(request.Product.ProductId);
+                var product = _eventStore.Query<Product>().Single(x => x.ProductId == request.Product.ProductId);
 
                 product.ChangeName(request.Product.Name);
 

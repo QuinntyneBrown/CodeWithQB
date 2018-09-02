@@ -1,13 +1,12 @@
-using MediatR;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Collections.Generic;
-using CodeWithQB.Core.Interfaces;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using CodeWithQB.Core.Models;
-using System;
 using CodeWithQB.API.Features.Cards;
+using CodeWithQB.Core.Interfaces;
+using CodeWithQB.Core.Models;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CodeWithQB.API.Features.DashboardCards
 {
@@ -34,8 +33,8 @@ namespace CodeWithQB.API.Features.DashboardCards
 
                 foreach(var id in request.DashboardCardIds)
                 {
-                    var dashboardCard = DashboardCardDto.FromDashboardCard(_eventStore.Query<DashboardCard>(id));
-                    dashboardCard.Card = CardDto.FromCard(_eventStore.Query<Card>(dashboardCard.CardId));
+                    var dashboardCard = DashboardCardDto.FromDashboardCard(_eventStore.Query<DashboardCard>().Single(x => x.DashboardCardId == id));
+                    dashboardCard.Card = CardDto.FromCard(_eventStore.Query<Card>().Single(x => x.CardId == dashboardCard.CardId));
                     dashboardCards.Add(dashboardCard);
                 }
 

@@ -5,6 +5,7 @@ using MediatR;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using System.Linq;
 
 namespace CodeWithQB.API.Features.Addresses
 {
@@ -34,7 +35,7 @@ namespace CodeWithQB.API.Features.Addresses
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var address = _eventStore.Query<Address>(request.Address.AddressId);
+                var address = _eventStore.Query<Address>().Single(x => x.AddressId == request.Address.AddressId);
 
                 address.ChangeName(request.Address.Name);
 

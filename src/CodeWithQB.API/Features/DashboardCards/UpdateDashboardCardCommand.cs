@@ -5,6 +5,7 @@ using MediatR;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using System.Linq;
 
 namespace CodeWithQB.API.Features.DashboardCards
 {
@@ -34,7 +35,8 @@ namespace CodeWithQB.API.Features.DashboardCards
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var dashboardCard = _eventStore.Query<DashboardCard>(request.DashboardCard.DashboardCardId);
+                var dashboardCard = _eventStore.Query<DashboardCard>()
+                    .Single(x => x.DashboardCardId == request.DashboardCard.DashboardCardId);
 
                 dashboardCard.UpdateOptions(
                     request.DashboardCard.Options.Top,

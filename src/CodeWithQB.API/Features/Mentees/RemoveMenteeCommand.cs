@@ -5,6 +5,7 @@ using MediatR;
 using System;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Linq;
 
 namespace CodeWithQB.API.Features.Mentees
 {
@@ -31,7 +32,7 @@ namespace CodeWithQB.API.Features.Mentees
 
             public Task Handle(Request request, CancellationToken cancellationToken)
             {
-                var mentee = _eventStore.Query<Mentee>(request.MenteeId);
+                var mentee = _eventStore.Query<Mentee>().Single(x => x.MenteeId == request.MenteeId);
 
                 mentee.Remove();
                 

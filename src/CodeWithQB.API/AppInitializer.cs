@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 
@@ -42,7 +43,7 @@ namespace CodeWithQB.API
     {
         public static void Seed(IEventStore eventStore)
         {
-            if (eventStore.Query<User>("Username", "quinntynebrown@gmail.com") == null)
+            if (eventStore.Query<User>().SingleOrDefault(x => x.Username == "quinntynebrown@gmail.com") == null)
             {
                 var salt = new byte[128 / 8];
                 using (var rng = RandomNumberGenerator.Create())
@@ -70,10 +71,10 @@ namespace CodeWithQB.API
     {
         public static void Seed(IEventStore eventStore)
         {
-            if (eventStore.Query<Role>("Name", "Admin") == null)
+            if (eventStore.Query<Role>().SingleOrDefault(x => x.Name == "Admin") == null)
                 eventStore.Save(new Role("Admin"));
 
-            if (eventStore.Query<Role>("Name", "Mentee") == null)
+            if (eventStore.Query<Role>().SingleOrDefault(x => x.Name == "Mentee") == null)
                 eventStore.Save(new Role("Mentee"));
         }
     }
@@ -82,10 +83,10 @@ namespace CodeWithQB.API
     {
         public static void Seed(IEventStore eventStore)
         {
-            if (eventStore.Query<Card>("Name", "Events") == null)
+            if (eventStore.Query<Card>().SingleOrDefault(x => x.Name == "Events") == null)
                 eventStore.Save(new Card("Events"));
 
-            if (eventStore.Query<Card>("Name", "Mentees") == null)
+            if (eventStore.Query<Card>().SingleOrDefault(x => x.Name == "Mentees") == null)
                 eventStore.Save(new Card("Mentees"));
         }
     }
@@ -107,7 +108,7 @@ namespace CodeWithQB.API
     {
         public static void Seed(IEventStore eventStore)
         {
-            if (eventStore.Query<Product>("Name", "Mentoring") == null)
+            if (eventStore.Query<Product>().SingleOrDefault(x => x.Name == "Mentoring") == null)
             {
                 eventStore.Save(new Product("Mentoring",300,""));
             }

@@ -3,6 +3,7 @@ using CodeWithQB.Core.Models;
 using FluentValidation;
 using MediatR;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,7 +37,7 @@ namespace CodeWithQB.API.Features.Cards
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
 			     => Task.FromResult(new Response()
                 {
-                    Card = CardDto.FromCard(_eventStore.Query<Card>(request.CardId))
+                    Card = CardDto.FromCard(_eventStore.Query<Card>().Single(x=>x.CardId == request.CardId))
                 });
         }
     }

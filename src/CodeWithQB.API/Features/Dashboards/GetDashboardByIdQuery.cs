@@ -5,6 +5,7 @@ using FluentValidation;
 using MediatR;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -37,12 +38,12 @@ namespace CodeWithQB.API.Features.Dashboards
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var dashboard = _eventStore.Query<Dashboard>(request.DashboardId);
+                var dashboard = _eventStore.Query<Dashboard>().Single(x => x.DashboardId == request.DashboardId);
                 var dashboardCards = new List<DashboardCardDto>();
 
                 foreach (var dashboardCardId in dashboard.DashboardCardIds)
                 {
-                    dashboardCards.Add(DashboardCardDto.FromDashboardCard(_eventStore.Query<DashboardCard>(dashboardCardId)));
+                    dashboardCards.Add(DashboardCardDto.FromDashboardCard(_eventStore.Query<DashboardCard>().Single(x => x.DashboardId == dashboardCardId)));
                 }
 
                 return Task.FromResult(new Response()

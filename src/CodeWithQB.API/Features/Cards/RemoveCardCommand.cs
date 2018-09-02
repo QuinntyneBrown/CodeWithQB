@@ -5,6 +5,7 @@ using MediatR;
 using System;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Linq;
 
 namespace CodeWithQB.API.Features.Cards
 {
@@ -31,7 +32,7 @@ namespace CodeWithQB.API.Features.Cards
 
             public Task Handle(Request request, CancellationToken cancellationToken)
             {
-                var card = _eventStore.Query<Card>(request.CardId);
+                var card = _eventStore.Query<Card>().Single(x => x.CardId == request.CardId);
 
                 card.Remove();
                 

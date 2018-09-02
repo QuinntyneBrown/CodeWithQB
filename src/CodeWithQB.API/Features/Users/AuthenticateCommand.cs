@@ -55,7 +55,7 @@ namespace CodeWithQB.API.Features.Users
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {                                
-                var user = _eventStore.Query<User>("Username",request.Username);
+                var user = _eventStore.Query<User>().Single(x => x.Username == request.Username);
                 
                 if (user.Password != _passwordHasher.HashPassword(user.Salt, request.Password))
                     throw new System.Exception();

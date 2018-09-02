@@ -5,6 +5,7 @@ using MediatR;
 using System;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Linq;
 
 namespace CodeWithQB.API.Features.Events
 {
@@ -31,7 +32,7 @@ namespace CodeWithQB.API.Features.Events
 
             public Task Handle(Request request, CancellationToken cancellationToken)
             {
-                var @event = _eventStore.Query<Event>(request.EventId);
+                var @event = _eventStore.Query<Event>().Single(x => x.EventId == request.EventId);
 
                 @event.Remove();
                 

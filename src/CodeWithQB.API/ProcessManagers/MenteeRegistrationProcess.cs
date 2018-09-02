@@ -3,6 +3,7 @@ using CodeWithQB.Core.Identity;
 using CodeWithQB.Core.Interfaces;
 using CodeWithQB.Core.Models;
 using MediatR;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,7 +25,7 @@ namespace CodeWithQB.API.ProcessManagers
 
         public async Task Handle(MenteeRegistrationRequested notification, CancellationToken cancellationToken)
         {
-            var user = _eventStore.Query<User>("Username", notification.EmailAddress);
+            var user = _eventStore.Query<User>().Single(x => x.Username == notification.EmailAddress);
 
             var salt = new byte[128 / 8];
 
@@ -36,7 +37,7 @@ namespace CodeWithQB.API.ProcessManagers
             if (user == null)
                 user = new User(notification.EmailAddress,salt,_passwordHasher.HashPassword(salt,notification.Password));
 
-            var role = _eventStore.Query<Role>("Name", "Mentee");
+            var role = _eventStore.Query<Role>().Single(x => x.Name == "Mentee");
 
             user.AddRole(role.RoleId);
 

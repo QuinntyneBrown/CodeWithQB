@@ -5,6 +5,7 @@ using MediatR;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using System.Linq;
 
 namespace CodeWithQB.API.Features.DashboardCards
 {
@@ -38,7 +39,7 @@ namespace CodeWithQB.API.Features.DashboardCards
 
                 _eventStore.Save(dashboardCard);
 
-                var dashboard = _eventStore.Query<Dashboard>(request.DashboardCard.DashboardId);
+                var dashboard = _eventStore.Query<Dashboard>().Single(x => x.DashboardId == request.DashboardCard.DashboardId);
 
                 dashboard.AddDashboardCard(dashboardCard.DashboardCardId);
 

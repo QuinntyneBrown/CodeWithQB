@@ -3,6 +3,7 @@ using CodeWithQB.Core.Models;
 using FluentValidation;
 using MediatR;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,7 +37,7 @@ namespace CodeWithQB.API.Features.Events
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
 			     => Task.FromResult(new Response()
                 {
-                    Event = EventDto.FromEvent(_eventStore.Query<Event>(request.EventId))
+                    Event = EventDto.FromEvent(_eventStore.Query<Event>().Single(x => x.EventId == request.EventId))
                 });
         }
     }

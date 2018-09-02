@@ -5,6 +5,7 @@ using MediatR;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using System.Linq;
 
 namespace CodeWithQB.API.Features.Dashboards
 {
@@ -34,7 +35,7 @@ namespace CodeWithQB.API.Features.Dashboards
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var dashboard = _eventStore.Query<Dashboard>(request.Dashboard.DashboardId);
+                var dashboard = _eventStore.Query<Dashboard>().Single(x => x.DashboardId == request.Dashboard.DashboardId);
 
                 dashboard.ChangeName(request.Dashboard.Name);
 

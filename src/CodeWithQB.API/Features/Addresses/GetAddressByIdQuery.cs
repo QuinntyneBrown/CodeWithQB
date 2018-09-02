@@ -3,6 +3,7 @@ using CodeWithQB.Core.Models;
 using FluentValidation;
 using MediatR;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,7 +37,7 @@ namespace CodeWithQB.API.Features.Addresses
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
 			     => Task.FromResult(new Response()
                 {
-                    Address = AddressDto.FromAddress(_eventStore.Query<Address>(request.AddressId))
+                    Address = AddressDto.FromAddress(_eventStore.Query<Address>().Single(x => x.AddressId ==request.AddressId))
                 });
         }
     }
