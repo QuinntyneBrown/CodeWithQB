@@ -52,7 +52,7 @@ namespace IntegrationTests
 
                 var eventStore = scope.ServiceProvider.GetRequiredService<IEventStore>();
 
-                AppInitializer.Seed(context, dateTime, eventStore,services);
+                AppInitializer.Seed(context, dateTime, eventStore, services);
             }
 
             return testServer;

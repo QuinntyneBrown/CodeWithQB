@@ -1,0 +1,25 @@
+{
+  "name": "lightweightperformancetestss",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.ts",
+  "scripts": {
+    "watch": "webpack --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@aspnet/signalr": "^1.0.2",
+    "@types/node": "^10.7.1",
+    "awesome-typescript-loader": "3.2.3",
+    "html-loader": "0.5.1",
+    "injection-js": "^2.2.1",
+    "lit-html": "0.10.2",
+    "live-server": "^1.2.0",
+    "raw-loader": "0.5.1",
+    "rxjs": "6.2.2",
+    "typescript": "3.0.1",
+    "uuid": "^3.3.2",
+    "webpack": "3.6.0"
+  }
+}
