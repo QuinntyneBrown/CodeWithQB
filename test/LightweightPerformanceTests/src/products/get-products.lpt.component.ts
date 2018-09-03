@@ -3,11 +3,11 @@
 export class GetProductsComponent extends BaseLightweightPerformanceTestComponent {
 
     async getProducts() {
-        await fetch("http://localhost:51578/api/products");
+        await fetch(`${this._baseUrl}api/products`);
     }
 
     async execute() {
-        await super._execute(() => this.getProducts(),true);
+        await super._execute(() => this.getProducts(), true);
     }
     
 }

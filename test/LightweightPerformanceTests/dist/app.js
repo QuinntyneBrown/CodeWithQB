@@ -1095,7 +1095,7 @@ const base_lpt_component_1 = __webpack_require__(2);
 class GetProductsComponent extends base_lpt_component_1.BaseLightweightPerformanceTestComponent {
     getProducts() {
         return __awaiter(this, void 0, void 0, function* () {
-            yield fetch("http://localhost:51578/api/products");
+            yield fetch(`${this._baseUrl}api/products`);
         });
     }
     execute() {
