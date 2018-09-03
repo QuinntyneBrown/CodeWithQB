@@ -9,6 +9,7 @@
     <Folder Include="Features\Mentees\" />
     <Folder Include="Features\Addresses\" />
     <Folder Include="Features\Events\" />
+    <Folder Include="Features\ShoppingCarts\" />
     <Folder Include="Features\Products\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>

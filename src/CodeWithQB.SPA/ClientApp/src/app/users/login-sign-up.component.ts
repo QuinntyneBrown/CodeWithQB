@@ -13,7 +13,7 @@ export class LoginSignUpComponent {
 
   }
 
-  public onDestroy: Subject<void> = new Subject<void>();
+  private readonly onDestroy: Subject<void> = new Subject<void>();
 
   ngOnDestroy() {
     this.onDestroy.next();	
