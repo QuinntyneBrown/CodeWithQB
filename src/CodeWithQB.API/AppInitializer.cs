@@ -22,7 +22,8 @@ namespace CodeWithQB.API
         {
             CardConfiguration.Seed(context, dateTime, eventStore);
             RoleConfiguration.Seed(context, dateTime, eventStore);
-            UserConfiguration.Seed(context, dateTime, eventStore);            
+            UserConfiguration.Seed(context, dateTime, eventStore);
+            ProductConfiguration.Seed(context, dateTime, eventStore);
         }
 
         public AppDbContext CreateDbContext(string[] args)
@@ -147,7 +148,7 @@ namespace CodeWithQB.API
 
     internal class ProductConfiguration
     {
-        public static void Seed(AppDbContext context, IDateTime dateTime, EventStore eventStore)
+        public static void Seed(AppDbContext context, IDateTime dateTime, IEventStore eventStore)
         {
             if (eventStore.Query<Product>().SingleOrDefault(x => x.Name == "Mentoring") == null)
             {

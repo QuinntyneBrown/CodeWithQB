@@ -1,5 +1,5 @@
 import { TemplateResult } from "lit-html";
-export declare abstract class BaseWebScenarioComponent extends HTMLElement {
+export declare abstract class BaseLightweightPerformanceTestComponent extends HTMLElement {
     constructor();
     protected _baseUrl: string;
     protected _accessToken: string;

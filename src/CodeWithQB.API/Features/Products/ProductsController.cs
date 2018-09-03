@@ -30,6 +30,7 @@ namespace CodeWithQB.API.Features.Products
         public async Task<ActionResult<GetProductByIdQuery.Response>> GetById([FromRoute]GetProductByIdQuery.Request request)
             => await _mediator.Send(request);
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult<GetProductsQuery.Response>> Get()
             => await _mediator.Send(new GetProductsQuery.Request());

@@ -71,6 +71,7 @@
 
 Object.defineProperty(exports, "__esModule", { value: true });
 __webpack_require__(2);
+__webpack_require__(5);
 
 
 /***/ }),
@@ -783,7 +784,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const lit_extended_1 = __webpack_require__(3);
 const unsafe_html_1 = __webpack_require__(4);
-class BaseWebScenarioComponent extends HTMLElement {
+class BaseLightweightPerformanceTestComponent extends HTMLElement {
     constructor() {
         super();
         this._autoRun = true;
@@ -835,7 +836,9 @@ class BaseWebScenarioComponent extends HTMLElement {
     _execute(func, annonymous = false) {
         return __awaiter(this, void 0, void 0, function* () {
             if (annonymous) {
+                const start = Date.now();
                 yield func();
+                this._executionTime = Date.now() - start;
                 this.connectedCallback();
             }
             else {
@@ -867,7 +870,7 @@ class BaseWebScenarioComponent extends HTMLElement {
         }
     }
 }
-exports.BaseWebScenarioComponent = BaseWebScenarioComponent;
+exports.BaseLightweightPerformanceTestComponent = BaseLightweightPerformanceTestComponent;
 
 
 /***/ }),
@@ -1072,6 +1075,39 @@ const unsafeHTML = (value) => Object(__WEBPACK_IMPORTED_MODULE_0__lit_html_js__[
 /* harmony export (immutable) */ __webpack_exports__["unsafeHTML"] = unsafeHTML;
 
 //# sourceMappingURL=unsafe-html.js.map
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const base_lpt_component_1 = __webpack_require__(2);
+class GetProductsComponent extends base_lpt_component_1.BaseLightweightPerformanceTestComponent {
+    getProducts() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield fetch("http://localhost:51578/api/products");
+        });
+    }
+    execute() {
+        const _super = name => super[name];
+        return __awaiter(this, void 0, void 0, function* () {
+            yield _super("_execute").call(this, () => this.getProducts(), true);
+        });
+    }
+}
+exports.GetProductsComponent = GetProductsComponent;
+customElements.define(`lpt-get-products`, GetProductsComponent);
+
 
 /***/ })
 /******/ ]);

@@ -2,7 +2,7 @@ import { TemplateResult } from "lit-html";
 import { html, render } from "lit-html/lib/lit-extended";
 import { unsafeHTML } from "lit-html/lib/unsafe-html";
 
-export abstract class BaseWebScenarioComponent extends HTMLElement {
+export abstract class BaseLightweightPerformanceTestComponent extends HTMLElement {
     constructor() {
         super();
         this.execute = this.execute.bind(this);
@@ -72,7 +72,9 @@ export abstract class BaseWebScenarioComponent extends HTMLElement {
     protected async _execute(func: { (): Promise<any> }, annonymous: boolean = false) {
 
         if (annonymous) {
+            const start = Date.now();
             await func();
+            this._executionTime = Date.now() - start;
             this.connectedCallback();
         } else {
             await this.tryToLogin(this._loginOptions);
