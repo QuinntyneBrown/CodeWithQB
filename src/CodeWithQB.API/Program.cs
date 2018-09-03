@@ -1,3 +1,4 @@
+using CodeWithQB.Core.Interfaces;
 using CodeWithQB.Infrastructure.Data;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -30,6 +31,8 @@ namespace CodeWithQB.API
             using (var scope = services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                var dateTime = scope.ServiceProvider.GetRequiredService<IDateTime>();
+
 
                 if (args.Contains("ci"))
                     args = new string[4] { "dropdb", "migratedb", "seeddb", "stop" };
@@ -43,7 +46,8 @@ namespace CodeWithQB.API
                 if (args.Contains("seeddb"))
                 {
                     context.Database.EnsureCreated();
-                    AppInitializer.Seed(context,services);            
+                    var eventStore = scope.ServiceProvider.GetRequiredService<IEventStore>();
+                    AppInitializer.Seed(context, dateTime, eventStore,services);            
                 }
                 
                 if (args.Contains("stop"))

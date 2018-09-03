@@ -1,9 +1,11 @@
 using CodeWithQB.API;
+using CodeWithQB.Core.Interfaces;
 using CodeWithQB.Infrastructure.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -38,8 +40,19 @@ namespace IntegrationTests
             using (var scope = services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                var dateTime = scope.ServiceProvider.GetRequiredService<IDateTime>();
+                
+                try
+                {
+                    context.Database.EnsureDeleted();
+                    context.Database.Migrate();
+                    context.Database.EnsureCreated();
+                }
+                catch { }
 
-                AppInitializer.Seed(context,services);
+                var eventStore = scope.ServiceProvider.GetRequiredService<IEventStore>();
+
+                AppInitializer.Seed(context, dateTime, eventStore,services);
             }
 
             return testServer;

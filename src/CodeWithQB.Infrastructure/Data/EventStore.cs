@@ -1,4 +1,5 @@
 using CodeWithQB.Core.Common;
+using CodeWithQB.Core.DomainEvents;
 using CodeWithQB.Core.Interfaces;
 using CodeWithQB.Core.Models;
 using Microsoft.Extensions.Configuration;
@@ -8,6 +9,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using static CodeWithQB.Infrastructure.Data.DeserializedEventStore;
@@ -126,12 +128,7 @@ namespace CodeWithQB.Infrastructure.Data
         }
 
         public void Dispose() {
-            using (var scope = _serviceScopeFactory.CreateScope())
-            using (var context = scope.ServiceProvider.GetRequiredService<AppDbContext>())
-            {
-                PersistStateAsync().GetAwaiter().GetResult();
-                context.Dispose();
-            }
+
         }
 
         public void Save(AggregateRoot aggregateRoot)
@@ -174,6 +171,26 @@ namespace CodeWithQB.Infrastructure.Data
 
         }
 
+        public ConcurrentDictionary<string, ConcurrentBag<AggregateRoot>> UpdateState<TAggregateRoot>(Type type, TAggregateRoot aggregateRoot,Guid aggregateId)
+            where TAggregateRoot: AggregateRoot
+        {
+            Aggregates.TryGetValue(type.AssemblyQualifiedName, out ConcurrentBag<AggregateRoot> orginalAggregates);
+
+            var newAggregates = new ConcurrentBag<AggregateRoot>() { aggregateRoot };
+
+            foreach (var originalAggregate in orginalAggregates)
+            {
+                var originalId = (Guid)type.GetProperty($"{type.Name}Id").GetValue(originalAggregate, null);
+
+                if (aggregateId != originalId)
+                    newAggregates.Add(originalAggregate);
+            }
+
+            Aggregates.TryUpdate(type.AssemblyQualifiedName, newAggregates, orginalAggregates);
+
+            return Aggregates;
+        }
+
         public TAggregateRoot[] Query<TAggregateRoot>()
             where TAggregateRoot : AggregateRoot
         {
@@ -192,15 +209,29 @@ namespace CodeWithQB.Infrastructure.Data
             where TAggregateRoot : AggregateRoot
         {
             var result = new List<TAggregateRoot>();
-            
-            Aggregates.TryGetValue(assemblyQualifiedName, out ConcurrentBag<AggregateRoot> aggregates);
 
-            foreach (var a in aggregates)
-                result.Add(a as TAggregateRoot);
+            foreach (var grouping in Get()
+                .Where(x => x.DotNetType == assemblyQualifiedName).GroupBy(x => x.StreamId))
+            {
+                var events = grouping.Select(x => x.Data as DomainEvent).ToArray();
+
+                result.Add(Load<TAggregateRoot>(events.ToArray()));
+            }
 
             return result.ToArray();
         }
 
+        private T Load<T>(DomainEvent[] events)
+            where T : AggregateRoot
+        {
+            var aggregate = (T)FormatterServices.GetUninitializedObject(typeof(T));
+
+            foreach (var @event in events) aggregate.Apply(@event);
+
+            aggregate.ClearEvents();
+
+            return aggregate;
+        }
         protected List<DeserializedStoredEvent> Get()
         {
             using (var scope = _serviceScopeFactory.CreateScope())
