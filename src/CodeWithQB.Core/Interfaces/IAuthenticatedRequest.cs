@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 
 namespace CodeWithQB.Core.Interfaces
 {

@@ -5,7 +5,10 @@ import { AuthGuard } from './core/auth.guard';
 import { MasterPageComponent } from './master-page.component';
 import { LoginComponent } from './users/login.component';
 import { DashboardPageComponent } from './dashboards/dashboard-page.component';
-import { HomePageComponent } from './home/home-page.component';
+import { HomePageComponent } from './public/home-page.component';
+import { PublicMasterPageComponent } from './public-master-page.component';
+import { ProductsPageComponent } from './products/products-page.component';
+import { ProductPageComponent } from './products/product-page.component';
 
 export const routes: Routes = [
   {
@@ -19,23 +22,35 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'dashboard',
+    path: 'admin',
     component: MasterPageComponent,
     canActivate: [AuthGuard],
     children: [
       {
-        path: '',
+        path: 'dashboard',
         component: DashboardPageComponent
+      },
+      {
+        path: 'products',
+        component: ProductsPageComponent
+      },
+      {
+        path: 'products/edit/:id',
+        component: ProductPageComponent
       }
     ]
   },
   {
     path: '',
-    component: AnonymousMasterPageComponent,
+    component: PublicMasterPageComponent,
 
     children: [
       {
         path: '',
+        component: HomePageComponent,
+      },
+      {
+        path: 'signup',
         component: HomePageComponent,
       }
     ]

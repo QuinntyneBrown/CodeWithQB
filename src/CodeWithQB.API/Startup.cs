@@ -41,6 +41,7 @@ namespace CodeWithQB.API
                 .AddCustomSwagger()
                 .AddDataStore(Configuration["Data:DefaultConnection:ConnectionString"],Configuration.GetValue<bool>("isTest"))
                 .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>))
+                .AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthenticatedRequestBehavior<,>))
                 .AddMediatR(typeof(Startup).Assembly);
         }
 

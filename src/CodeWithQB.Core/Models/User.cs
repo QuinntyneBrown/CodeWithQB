@@ -20,7 +20,11 @@ namespace CodeWithQB.Core.Models
                     Username = data.Username;
                     Salt = data.Salt;
                     Password = data.Password;
-                    //RoleIds = new HashSet<Guid>();
+                    RoleIds = new HashSet<Guid>();
+                    break;
+
+                case UserRoleAdded userRoleAdded:
+                    RoleIds = RoleIds.Concat(new Guid[] { userRoleAdded.RoleId }).ToList();
                     break;
             }            
         }
@@ -31,15 +35,13 @@ namespace CodeWithQB.Core.Models
         }
 
         public void AddRole(Guid roleId)
-        {
-            //RoleIds.Concat(new Guid[] { roleId });
-        }
+            => Apply(new UserRoleAdded(roleId));
 
         public Guid UserId { get; set; } = Guid.NewGuid();
         public string Username { get; set; }
         public string Password { get; set; }
         public byte[] Salt { get; private set; }
-        //public IEnumerable<Guid> RoleIds { get; private set; }
+        public ICollection<Guid> RoleIds { get; private set; }
         public UserStatus Status { get; private set; }
     }
 

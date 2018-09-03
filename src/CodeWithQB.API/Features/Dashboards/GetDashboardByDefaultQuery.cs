@@ -1,19 +1,19 @@
-using MediatR;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Collections.Generic;
-using CodeWithQB.Core.Interfaces;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using CodeWithQB.Core.Models;
-using CodeWithQB.API.Features.DashboardCards;
 using CodeWithQB.API.Features.Cards;
+using CodeWithQB.API.Features.DashboardCards;
+using CodeWithQB.Core.Common;
+using CodeWithQB.Core.Interfaces;
+using CodeWithQB.Core.Models;
+using MediatR;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CodeWithQB.API.Features.Dashboards
 {
     public class GetDashboardByDefaultQuery
     {
-        public class Request : IRequest<Response> { }
+        public class Request : AuthenticatedRequest<Response>, IRequest<Response> { }
 
         public class Response
         {
@@ -23,14 +23,14 @@ namespace CodeWithQB.API.Features.Dashboards
         public class Handler : IRequestHandler<Request, Response>
         {
             private readonly IEventStore _eventStore;
-            public Handler(IEventStore eventStore)
-            {
-                _eventStore = eventStore;
-            }
+            public Handler(IEventStore eventStore) => _eventStore = eventStore;
+
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
+                var dashboards = _eventStore.Query<Dashboard>().ToList();
+
                 var dashboard = _eventStore.Query<Dashboard>()
-                    .Single(x => x.Name == "Default");
+                    .Single(x => x.Name == "Default" && x.UserId == request.CurrentUserId);
 
                 var dashboardDto = DashboardDto.FromDashboard(dashboard);
 

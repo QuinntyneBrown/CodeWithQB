@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using System;
 using System.Threading.Tasks;
 
 namespace CodeWithQB.Core.Identity
@@ -15,7 +16,7 @@ namespace CodeWithQB.Core.Identity
 
         public async Task Invoke(HttpContext httpContext)
         {
-            var token = _securityTokenFactory.Create("quinntynebrown@gmail.com");
+            var token = _securityTokenFactory.Create(Guid.NewGuid(), "quinntynebrown@gmail.com");
             httpContext.Request.Headers.Add("Authorization", $"Bearer {token}");
             await _next.Invoke(httpContext);            
         }

@@ -14,7 +14,7 @@ namespace CodeWithQB.Core.Identity
         public SecurityTokenFactory(IConfiguration configuration)
             => _configuration = configuration;
         
-        public string Create(string uniqueName)
+        public string Create(Guid userId, string uniqueName, IEnumerable<string> roles = null)
         {
             var now = DateTime.UtcNow;
             var nowDateTimeOffset = new DateTimeOffset(now);
@@ -25,7 +25,12 @@ namespace CodeWithQB.Core.Identity
                     new Claim(JwtRegisteredClaimNames.Sub, uniqueName),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.Iat, nowDateTimeOffset.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64),
+                    new Claim("UserId",$"{userId}")
                 };
+
+            if (roles != null)
+                foreach (var role in roles)
+                    claims.Add(new Claim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role", role));
 
             var jwt = new JwtSecurityToken(
                 issuer: _configuration["Authentication:JwtIssuer"],

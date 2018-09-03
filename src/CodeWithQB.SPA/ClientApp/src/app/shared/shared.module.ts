@@ -39,10 +39,12 @@ import { IgxGridModule, IgxIconModule } from "igniteui-angular";
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { GridComponent } from './grid.component';
+import { HeaderComponent } from './header.component';
 
 @NgModule({
   declarations: [
-    GridComponent
+    GridComponent,
+    HeaderComponent
   ],
   imports: [
     IgxGridModule,
@@ -88,6 +90,8 @@ import { GridComponent } from './grid.component';
   exports: [
     IgxGridModule,
     IgxIconModule,
+
+    HeaderComponent,
 
     GridComponent,
     MatAutocompleteModule,

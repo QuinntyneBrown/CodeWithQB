@@ -5,9 +5,12 @@ import { RouterModule } from '@angular/router';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { HomePageComponent } from './home-page.component';
+import { ProductsModule } from '../products/products.module';
+import { SignUpPageComponent } from './sign-up-page.component';
 
 const declarations = [
-  HomePageComponent
+  HomePageComponent,
+  SignUpPageComponent
 ];
 
 const entryComponents = [
@@ -28,8 +31,9 @@ const providers = [
     RouterModule,
 
     CoreModule,
+    ProductsModule,
     SharedModule    
   ],
   providers,
 })
-export class HomeModule { }
+export class PublicModule { }

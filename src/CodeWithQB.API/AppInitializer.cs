@@ -55,7 +55,7 @@ namespace CodeWithQB.API
 
                 var user = new User("quinntynebrown@gmail.com", salt, hashedPassword);
 
-                var adminRole = new Role("Admin");
+                var adminRole = eventStore.Query<Role>().Where(x => x.Name == "Admin").Single();
 
                 user.AddRole(adminRole.RoleId);
 
@@ -63,7 +63,28 @@ namespace CodeWithQB.API
 
                 AggregateHelper.Save(user, dateTime, context, eventStore);
                 AggregateHelper.Save(dashboard, dateTime, context, eventStore);
+            }
 
+            if (eventStore.Query<User>().SingleOrDefault(x => x.Username == "ericevans@domainlanguage.com") == null)
+            {
+                var salt = new byte[128 / 8];
+                using (var rng = RandomNumberGenerator.Create())
+                {
+                    rng.GetBytes(salt);
+                }
+
+                var hashedPassword = new PasswordHasher().HashPassword(salt, "P@ssw0rd");
+
+                var user = new User("ericevans@domainlanguage.com", salt, hashedPassword);
+
+                var adminRole = eventStore.Query<Role>().Where(x => x.Name == "Mentee").Single(); 
+
+                user.AddRole(adminRole.RoleId);
+
+                var dashboard = new Dashboard("Default", user.UserId);
+
+                AggregateHelper.Save(user, dateTime, context, eventStore);
+                AggregateHelper.Save(dashboard, dateTime, context, eventStore);
             }
         }
     }
@@ -151,9 +172,14 @@ namespace CodeWithQB.API
         public static void Seed(AppDbContext context, IDateTime dateTime, IEventStore eventStore)
         {
             if (eventStore.Query<Product>().SingleOrDefault(x => x.Name == "Mentoring") == null)
-            {
-                AggregateHelper.Save(new Product("Mentoring",300,""), dateTime, context, eventStore);
-            }
+                AggregateHelper.Save(new Product("Mentoring", 300, ""), dateTime, context, eventStore);
+
+            if (eventStore.Query<Product>().SingleOrDefault(x => x.Name == "Training") == null)
+                AggregateHelper.Save(new Product("Training", 300, ""), dateTime, context, eventStore);
+
+            if (eventStore.Query<Product>().SingleOrDefault(x => x.Name == "Assessments") == null)
+                AggregateHelper.Save(new Product("Assessments", 300, ""), dateTime, context, eventStore);
+
         }
     }
 }

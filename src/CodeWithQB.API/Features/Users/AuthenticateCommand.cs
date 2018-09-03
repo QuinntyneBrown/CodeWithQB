@@ -35,6 +35,8 @@ namespace CodeWithQB.API.Features.Users
         {
             public string AccessToken { get; set; }
             public Guid UserId { get; set; }
+            public IEnumerable<string> Roles { get; set; }
+            public string Username { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -56,14 +58,20 @@ namespace CodeWithQB.API.Features.Users
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {                                
                 var user = _eventStore.Query<User>().Single(x => x.Username == request.Username);
-                
+                var roles = new List<string>();
+
                 if (user.Password != _passwordHasher.HashPassword(user.Salt, request.Password))
                     throw new System.Exception();
 
+                foreach (var roleId in user.RoleIds)
+                    roles.Add(_eventStore.Query<Role>().Single(x => x.RoleId == roleId).Name);
+
                 return Task.FromResult(new Response()
                 {
-                    AccessToken = _securityTokenFactory.Create(request.Username),
-                    UserId = user.UserId
+                    AccessToken = _securityTokenFactory.Create(user.UserId, request.Username, roles),
+                    UserId = user.UserId,
+                    Roles = roles,
+                    Username = request.Username
                 });
             }            
         }

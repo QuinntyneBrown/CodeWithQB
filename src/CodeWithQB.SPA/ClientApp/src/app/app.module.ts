@@ -15,13 +15,16 @@ import { CardsModule } from './cards/cards.module';
 import { DashboardCardsModule } from './dashboard-cards/dashboard-cards.module';
 import { DashboardsModule } from './dashboards/dashboards.module';
 import { EventsModule } from './events/events.module';
-import { HomeModule } from './home/home.module';
+import { PublicModule } from './public/public.module';
+import { PublicMasterPageComponent } from './public-master-page.component';
+import { ProductsModule } from './products/products.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     AnonymousMasterPageComponent,
+    PublicMasterPageComponent,
     MasterPageComponent
   ],
   imports: [
@@ -35,7 +38,8 @@ import { HomeModule } from './home/home.module';
     DashboardCardsModule,
     DashboardsModule,
     EventsModule,
-    HomeModule,
+    ProductsModule,
+    PublicModule,
     SharedModule,
     UsersModule
   ],

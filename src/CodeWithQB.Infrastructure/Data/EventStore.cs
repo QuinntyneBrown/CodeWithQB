@@ -59,6 +59,8 @@ namespace CodeWithQB.Infrastructure.Data
                     typeof(NotificationTemplate),
                     typeof(Product),
                     typeof(Role),
+                    typeof(ShoppingCart),
+                    typeof(ShoppingCartItem),
                     typeof(User)
                 };
 

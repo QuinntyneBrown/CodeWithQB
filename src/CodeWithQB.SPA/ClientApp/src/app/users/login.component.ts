@@ -7,6 +7,9 @@ import { AuthService } from '../core/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { LoginRedirectService } from '../core/redirect.service';
 import { ErrorService } from '../core/error.service';
+import { LocalStorageService } from '../core/local-storage.service';
+import { rolesKey } from '../core/constants';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -19,8 +22,10 @@ export class LoginComponent {
     private _authService: AuthService,
     private _elementRef: ElementRef,
     private _errorService: ErrorService,
+    private _localStorageService: LocalStorageService,
     private _loginRedirectService: LoginRedirectService,
-    private _renderer: Renderer
+    private _renderer: Renderer,
+    private _router: Router
   ) {}
 
   ngOnInit() {
@@ -61,7 +66,14 @@ export class LoginComponent {
       })
       .pipe(takeUntil(this.onDestroy))
       .subscribe(
-        () => this._loginRedirectService.redirectPreLogin(),
+      () => {
+        
+        if (this._localStorageService.get({ name: rolesKey }).indexOf("Mentee") > -1) {
+          this._router.navigateByUrl("/");
+        } else {
+          this._loginRedirectService.redirectPreLogin();
+        }        
+      },
         errorResponse => this.handleErrorResponse(errorResponse)
       );
   }

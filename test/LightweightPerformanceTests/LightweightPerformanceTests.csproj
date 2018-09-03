@@ -6,11 +6,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="src\mentees\mentee.builder.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="src\mentees\mentee.builder.ts" />
   </ItemGroup>
 
 </Project>

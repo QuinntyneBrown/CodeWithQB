@@ -26,6 +26,7 @@
   <ItemGroup>
     <Folder Include="ClientApp\src\app\mentees\" />
     <Folder Include="ClientApp\src\app\events\" />
+    <Folder Include="ClientApp\src\app\products\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
