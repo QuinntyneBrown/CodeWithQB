@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { Subject } from "rxjs";
+import { AuthService } from "./core/auth.service";
 
 @Component({
   templateUrl: "./public-master-page.component.html",
@@ -7,10 +8,16 @@ import { Subject } from "rxjs";
   selector: "app-public-master-page"
 })
 export class PublicMasterPageComponent { 
+  constructor(private _authService: AuthService) {
 
+  }
   public onDestroy: Subject<void> = new Subject<void>();
 
   ngOnDestroy() {
     this.onDestroy.next();	
+  }
+
+  public tryToLogout() {
+    this._authService.logout();
   }
 }

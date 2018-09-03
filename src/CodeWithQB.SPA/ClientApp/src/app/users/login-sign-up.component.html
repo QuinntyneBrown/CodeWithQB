@@ -1,0 +1,7 @@
+<section *ngIf="!accessToken">
+  <a [routerLink]="['/login']">Login</a> | <a>Sign up</a>
+</section>
+
+<section *ngIf="accessToken">
+  <a>{{ username }}</a> | <a>Shopping Cart</a> | <a (click)="logout.emit()">Logout</a>
+</section>
