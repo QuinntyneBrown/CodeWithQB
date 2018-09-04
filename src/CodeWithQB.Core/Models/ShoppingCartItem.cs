@@ -6,12 +6,14 @@ namespace CodeWithQB.Core.Models
 {
     public class ShoppingCartItem: AggregateRoot
     {
-        public ShoppingCartItem(string name)
-            => Apply(new ShoppingCartItemCreated(ShoppingCartItemId, name));
+        public ShoppingCartItem()
+            => Apply(new ShoppingCartItemCreated(ShoppingCartItemId));
 
-        public Guid ShoppingCartItemId { get; set; } = Guid.NewGuid();          
-		public string Name { get; set; }        
-		public bool IsDeleted { get; set; }
+        public Guid ShoppingCartItemId { get; set; } = Guid.NewGuid();
+        public Guid ShoppingCardId { get; set; }
+        public Guid ProductId { get; set; }
+        public int Quantity { get; set; }
+        public bool IsDeleted { get; set; }
 
         protected override void EnsureValidState()
         {
@@ -22,24 +24,16 @@ namespace CodeWithQB.Core.Models
         {
             switch (@event)
             {
-                case ShoppingCartItemCreated shoppingCartItemCreated:
-                    Name = shoppingCartItemCreated.Name;
+                case ShoppingCartItemCreated shoppingCartItemCreated:                    
 					ShoppingCartItemId = shoppingCartItemCreated.ShoppingCartItemId;
                     break;
-
-                case ShoppingCartItemNameChanged shoppingCartItemNameChanged:
-                    Name = shoppingCartItemNameChanged.Name;
-                    break;
-
+                    
                 case ShoppingCartItemRemoved shoppingCartItemRemoved:
                     IsDeleted = true;
                     break;
             }
         }
-
-        public void ChangeName(string name)
-            => Apply(new ShoppingCartItemNameChanged(name));
-
+        
         public void Remove()
             => Apply(new ShoppingCartItemRemoved());
     }

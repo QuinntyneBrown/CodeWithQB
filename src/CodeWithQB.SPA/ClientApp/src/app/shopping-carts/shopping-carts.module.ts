@@ -4,16 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
-import { ProductService } from './product.service';
-import { HttpClientModule } from '@angular/common/http';
-import { ProductsPageComponent } from './products-page.component';
-import { ProductPageComponent } from './product-page.component';
-import { ProductCardComponent } from './product-card.component';
+import { ShoppingCartService } from './shopping-cart.service';
 
 const declarations = [
-  ProductCardComponent,
-  ProductsPageComponent,
-  ProductPageComponent
+
 ];
 
 const entryComponents = [
@@ -21,7 +15,7 @@ const entryComponents = [
 ];
 
 const providers = [
-  ProductService
+  ShoppingCartService
 ];
 
 @NgModule({
@@ -32,11 +26,10 @@ const providers = [
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    HttpClientModule,
+
     CoreModule,
     SharedModule	
   ],
   providers,
-  exports: declarations
 })
-export class ProductsModule { }
+export class ShoppingCartsModule { }

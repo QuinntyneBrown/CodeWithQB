@@ -1,4 +1,6 @@
-
 <div *ngFor="let product of (products$ | async)">
-  <h2>{{ product.name }}</h2>
+  <app-product-card [product]="product"
+                    (buy)="handleBuy($event)"
+                    [isAuthenticated]="accessToken != undefined">
+  </app-product-card>
 </div>

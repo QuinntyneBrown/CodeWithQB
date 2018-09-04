@@ -7,6 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { HomePageComponent } from './home-page.component';
 import { ProductsModule } from '../products/products.module';
 import { SignUpPageComponent } from './sign-up-page.component';
+import { ShoppingCartsModule } from '../shopping-carts/shopping-carts.module';
 
 const declarations = [
   HomePageComponent,
@@ -29,10 +30,11 @@ const providers = [
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-
+    ShoppingCartsModule,
     CoreModule,
     ProductsModule,
-    SharedModule    
+    SharedModule,
+    ShoppingCartsModule
   ],
   providers,
 })

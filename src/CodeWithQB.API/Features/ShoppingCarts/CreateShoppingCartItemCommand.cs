@@ -5,26 +5,25 @@ using MediatR;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
-using CodeWithQB.Core.Common;
 
 namespace CodeWithQB.API.Features.ShoppingCarts
 {
-    public class CreateShoppingCartCommand
+    public class CreateShoppingCartItemCommand
     {
         public class Validator: AbstractValidator<Request> {
             public Validator()
             {
-                RuleFor(request => request.ShoppingCart.ShoppingCartId).NotNull();
+                RuleFor(request => request.ShoppingCartItem.ShoppingCartItemId).NotNull();
             }
         }
 
-        public class Request : AuthenticatedRequest<Response> {
-            public ShoppingCartDto ShoppingCart { get; set; }
+        public class Request : IRequest<Response> {
+            public ShoppingCartItemDto ShoppingCartItem { get; set; }
         }
 
         public class Response
         {			
-            public Guid ShoppingCartId { get; set; }
+            public Guid ShoppingCartItemId { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -35,11 +34,11 @@ namespace CodeWithQB.API.Features.ShoppingCarts
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var shoppingCart = new ShoppingCart(request.CurrentUserId);
+                var shoppingCartItem = new ShoppingCartItem();
 
-                _eventStore.Save(shoppingCart);
+                _eventStore.Save(shoppingCartItem);
                 
-                return Task.FromResult(new Response() { ShoppingCartId = shoppingCart.ShoppingCartId });
+                return Task.FromResult(new Response() { ShoppingCartItemId = shoppingCartItem.ShoppingCartItemId });
             }
         }
     }

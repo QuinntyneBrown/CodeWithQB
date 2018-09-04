@@ -36,9 +36,7 @@ namespace CodeWithQB.API.Features.ShoppingCarts
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                 var shoppingCart = _eventStore.Query<ShoppingCart>().Single(x => x.ShoppingCartId == request.ShoppingCart.ShoppingCartId);
-
-                shoppingCart.ChangeName(request.ShoppingCart.Name);
-
+                
                 _eventStore.Save(shoppingCart);
 
                 return Task.FromResult(new Response() { ShoppingCartId = request.ShoppingCart.ShoppingCartId }); 

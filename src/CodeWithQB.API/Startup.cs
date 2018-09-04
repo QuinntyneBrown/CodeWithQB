@@ -48,7 +48,7 @@ namespace CodeWithQB.API
         public void Configure(IApplicationBuilder app)
         {
             if(Configuration.GetValue<bool>("isTest"))
-                app.UseMiddleware<AutoAuthenticationMiddleware>();
+                app.UseMiddleware<ByPassAuthMiddleware>();
                     
             app.UseAuthentication()            
                 .UseCors(CorsDefaults.Policy)            

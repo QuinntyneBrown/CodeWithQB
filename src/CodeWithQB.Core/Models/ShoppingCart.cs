@@ -6,11 +6,10 @@ namespace CodeWithQB.Core.Models
 {
     public class ShoppingCart: AggregateRoot
     {
-        public ShoppingCart(string name)
-            => Apply(new ShoppingCartCreated(ShoppingCartId,name));
+        public ShoppingCart(Guid userId)
+            => Apply(new ShoppingCartCreated(ShoppingCartId, userId));
 
-        public Guid ShoppingCartId { get; set; } = Guid.NewGuid();          
-		public string Name { get; set; }
+        public Guid ShoppingCartId { get; set; } = Guid.NewGuid();          		
         public Guid UserId { get; set; }
         public bool IsDeleted { get; set; }
 
@@ -23,24 +22,17 @@ namespace CodeWithQB.Core.Models
         {
             switch (@event)
             {
-                case ShoppingCartCreated shoppingCartCreated:
-                    Name = shoppingCartCreated.Name;
+                case ShoppingCartCreated shoppingCartCreated:                    
 					ShoppingCartId = shoppingCartCreated.ShoppingCartId;
+                    UserId = shoppingCartCreated.UserId;
                     break;
-
-                case ShoppingCartNameChanged shoppingCartNameChanged:
-                    Name = shoppingCartNameChanged.Name;
-                    break;
-
+                    
                 case ShoppingCartRemoved shoppingCartRemoved:
                     IsDeleted = true;
                     break;
             }
         }
-
-        public void ChangeName(string name)
-            => Apply(new ShoppingCartNameChanged(name));
-
+        
         public void Remove()
             => Apply(new ShoppingCartRemoved());
     }
