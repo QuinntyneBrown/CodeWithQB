@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { ShoppingCartService } from './shopping-cart.service';
+import { ShoppingCartItemService } from './shopping-cart-item.service';
 
 const declarations = [
 
@@ -15,7 +16,8 @@ const entryComponents = [
 ];
 
 const providers = [
-  ShoppingCartService
+  ShoppingCartService,
+  ShoppingCartItemService
 ];
 
 @NgModule({

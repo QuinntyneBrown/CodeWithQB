@@ -27,9 +27,9 @@ namespace IntegrationTests.Features
                         }
                     });
 
-                var entity = eventStore.Query<ShoppingCart>().First();
+                var entity = eventStore.Query<ShoppingCart>().Single(x => x.ShoppingCartId == response.ShoppingCartId);
 
-                Assert.True(entity.UserId != default(Guid));
+                Assert.True(entity.ShoppingCartId == response.ShoppingCartId);
             }
         }
 

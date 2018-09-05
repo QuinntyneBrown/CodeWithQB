@@ -31,8 +31,9 @@ namespace CodeWithQB.Core.Models
                     ProductId = productCreated.ProductId;
                     break;
 
-                case ProductNameChanged productNameChanged:
-                    Name = productNameChanged.Name;
+                case ProductUpdated productUpdated:
+                    Name = productUpdated.Name;
+                    Description = productUpdated.Description;
                     break;
 
                 case ProductRemoved productRemoved:
@@ -41,8 +42,8 @@ namespace CodeWithQB.Core.Models
             }
         }
 
-        public void ChangeName(string name)
-            => Apply(new ProductNameChanged(name));
+        public void Update(string name, string description)
+            => Apply(new ProductUpdated(name, description));
 
         public void Remove()
             => Apply(new ProductRemoved());

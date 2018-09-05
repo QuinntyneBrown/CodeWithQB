@@ -1,0 +1,6 @@
+<h2>Products</h2>
+
+
+<app-grid [columns]="columns"
+          [data]="products$ | async"
+          (cellClick)="handleCellClick($event)"></app-grid>

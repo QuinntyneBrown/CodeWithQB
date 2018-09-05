@@ -1,6 +1,7 @@
 using CodeWithQB.API.Features.ShoppingCarts;
 using CodeWithQB.Core.Extensions;
 using CodeWithQB.Core.Interfaces;
+using CodeWithQB.Core.Models;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,19 +17,26 @@ namespace IntegrationTests.Features
         {
             using (var server = CreateServer())
             {
-                IAppDbContext context = server.Host.Services.GetService(typeof(IAppDbContext)) as IAppDbContext;
+                IEventStore eventStore = server.Host.Services.GetService(typeof(IEventStore)) as IEventStore;
+                var client = server.CreateClient();
 
-                var response = await server.CreateClient()
+                var product = eventStore.Query<Product>().First();
+
+                var response = await client
                     .PostAsAsync<CreateShoppingCartItemCommand.Request, CreateShoppingCartItemCommand.Response>(Post.ShoppingCartItems, new CreateShoppingCartItemCommand.Request() {
                         ShoppingCartItem = new ShoppingCartItemDto()
                         {
-
+                            ProductId = product.ProductId
                         }
                     });
-     
-	            //var entity = context.ShoppingCartItems.First();
 
-                //Assert.Equal("Name", entity.Name);
+                Assert.True(response.ShoppingCartItemId != default(Guid));
+                Assert.True(response.ShoppingCartId != default(Guid));
+
+                var cart = await client.GetAsync<GetShoppingCartByIdQuery.Response>(Get.ShoppingCartById(response.ShoppingCartId));
+
+                Assert.Single(cart.ShoppingCart.ShoppingCartItemIds);
+
             }
         }
 
@@ -60,7 +68,7 @@ namespace IntegrationTests.Features
             using (var server = CreateServer())
             {
                 var getByIdResponse = await server.CreateClient()
-                    .GetAsync<GetShoppingCartItemByIdQuery.Response>(Get.ShoppingCartItemById(1));
+                    .GetAsync<GetShoppingCartItemByIdQuery.Response>(Get.ShoppingCartItemById(Guid.NewGuid()));
 
                 Assert.True(getByIdResponse.ShoppingCartItem.ShoppingCartItemId != default(Guid));
 

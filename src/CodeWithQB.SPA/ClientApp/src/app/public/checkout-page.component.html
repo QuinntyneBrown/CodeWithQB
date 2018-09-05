@@ -1,0 +1,7 @@
+<section *ngIf="!(shoppingCart$ | async)">
+  <h2>No Items in Shopping Cart</h2>
+</section>
+
+<section *ngIf="(shoppingCart$ | async)">
+  <button (click)="checkout()">Checkout</button>
+</section>

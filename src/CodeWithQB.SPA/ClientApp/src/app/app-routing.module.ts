@@ -9,6 +9,7 @@ import { HomePageComponent } from './public/home-page.component';
 import { PublicMasterPageComponent } from './public-master-page.component';
 import { ProductsPageComponent } from './products/products-page.component';
 import { ProductPageComponent } from './products/product-page.component';
+import { CheckoutPageComponent } from './public/checkout-page.component';
 
 export const routes: Routes = [
   {
@@ -35,7 +36,7 @@ export const routes: Routes = [
         component: ProductsPageComponent
       },
       {
-        path: 'products/edit/:id',
+        path: 'products/edit/:productId',
         component: ProductPageComponent
       }
     ]
@@ -48,6 +49,10 @@ export const routes: Routes = [
       {
         path: '',
         component: HomePageComponent,
+      },
+      {
+        path: 'checkout',
+        component: CheckoutPageComponent,
       },
       {
         path: 'signup',

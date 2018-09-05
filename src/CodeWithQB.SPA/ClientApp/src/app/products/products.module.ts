@@ -29,6 +29,7 @@ const providers = [
   entryComponents,
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,

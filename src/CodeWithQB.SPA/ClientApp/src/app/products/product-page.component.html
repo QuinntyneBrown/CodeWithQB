@@ -1,0 +1,16 @@
+<h2>
+  Product Page
+</h2>
+
+<form class="home-content-container" novalidate autocomplete="off" spellcheck="false" [formGroup]="form">
+  <mat-form-field>
+    <input matInput placeholder="Name" id="title" formControlName="name">
+  </mat-form-field>
+
+  <app-quill-text-editor formControlName="description" [editorPlaceholder]="Description"></app-quill-text-editor>
+
+
+  <div class="actions">
+    <button mat-button (click)="handleSaveClick()">Save</button>    
+  </div>
+</form>

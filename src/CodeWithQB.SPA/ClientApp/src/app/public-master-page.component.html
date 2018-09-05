@@ -1,6 +1,22 @@
 <section>
   <h1>Code With QB</h1>
-  <app-login-sign-up (logout)="tryToLogout()"></app-login-sign-up>
+
+  <section>
+    <section *ngIf="!accessToken">
+      <a [routerLink]="['/login']">Login</a> | <a>Sign up</a>
+    </section>
+
+    <section *ngIf="accessToken && (shoppingCart$ | async)">
+      <a>{{ username }}</a> | <a [routerLink]="['/checkout']">Shopping Cart ({{ (shoppingCart$ | async).shoppingCartItemIds.length }})</a> | <a (click)="tryToLogout()">Logout</a>
+    </section>
+
+    <section *ngIf="accessToken && !(shoppingCart$ | async)">
+      <a>{{ username }}</a> | <a [routerLink]="['/checkout']">Shopping Cart</a> | <a (click)="tryToLogout()">Logout</a>
+    </section>
+  </section>
+  <section class="nav">
+
+  </section>
 </section>
 
 <router-outlet></router-outlet>

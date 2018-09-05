@@ -1,7 +1,6 @@
 export class ShoppingCartItem {
-  public shoppingCartItemId: string;
-  public shoppingCartId: string;
-  public name: string;
+  public shoppingCartItemId?: string;
+  public shoppingCartId?: string;  
   public productId: string;
-  public quantity: number;
+  public quantity?: number;
 }

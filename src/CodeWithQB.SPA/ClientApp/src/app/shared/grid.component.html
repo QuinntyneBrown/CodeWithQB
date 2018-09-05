@@ -2,7 +2,8 @@
           [data]="data"
           [autoGenerate]="false"
           height="100%"
-          width="100%">
+          width="100%"
+          (onCellClick)="cellClick.emit($event)">
   <igx-column *ngFor="let column of columns"
               [field]="column.field"
               [header]="column.header"

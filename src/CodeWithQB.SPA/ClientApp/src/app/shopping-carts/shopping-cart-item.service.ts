@@ -30,8 +30,8 @@ export class ShoppingCartItemService {
     return this._client.delete<void>(`${this._baseUrl}api/shoppingCartItems/${options.shoppingCartItem.shoppingCartItemId}`);
   }
 
-  public create(options: { shoppingCartItem: ShoppingCartItem }): Observable<{ shoppingCartItemId: string }> {
-    return this._client.post<{ shoppingCartItemId: string }>(`${this._baseUrl}api/shoppingCartItems`, { shoppingCartItem: options.shoppingCartItem });
+  public create(options: { shoppingCartItem: ShoppingCartItem }): Observable<{ shoppingCartItemId: string, shoppingCartId: string }> {
+    return this._client.post<{ shoppingCartItemId: string, shoppingCartId: string }>(`${this._baseUrl}api/shoppingCartItems`, { shoppingCartItem: options.shoppingCartItem });
   }
 
   public update(options: { shoppingCartItem: ShoppingCartItem }): Observable<{ shoppingCartItemId: string }> {

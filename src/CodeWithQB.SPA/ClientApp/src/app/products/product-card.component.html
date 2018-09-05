@@ -1,8 +1,13 @@
 <h2>{{ product.name }}</h2>
 
-<div>
-  {{ product.description }}
+<div [innerHTML]="product.description" class="product-description">
+
 </div>
 
-<button *ngIf="isAuthenticated"
-        (click)="buy.emit({ product: product })">buy</button>
+<section>
+  <button *ngIf="isAuthenticated"
+          (click)="buy.emit({ product: product })">
+    buy
+  </button>
+</section>
+

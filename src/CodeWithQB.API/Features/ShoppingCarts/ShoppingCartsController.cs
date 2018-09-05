@@ -20,9 +20,9 @@ namespace CodeWithQB.API.Features.ShoppingCarts
             => await _mediator.Send(request);
 
         [HttpPost]
-        [Route("{shoppingCardId}/checkout")]
-        public async Task<ActionResult<CheckoutCommand.Response>> Checkout(CheckoutCommand.Request request)
-            => await _mediator.Send(request);
+        [Route("checkout")]
+        public async Task<ActionResult<CheckoutCommand.Response>> Checkout()
+            => await _mediator.Send(new CheckoutCommand.Request());
 
         [HttpPut]
         public async Task<ActionResult<UpdateShoppingCartCommand.Response>> Update([FromBody]UpdateShoppingCartCommand.Request request)
@@ -30,7 +30,11 @@ namespace CodeWithQB.API.Features.ShoppingCarts
         
         [HttpDelete("{shoppingCartId}")]
         public async Task Remove([FromRoute]RemoveShoppingCartCommand.Request request)
-            => await _mediator.Send(request);            
+            => await _mediator.Send(request);
+
+        [HttpGet("current")]
+        public async Task<ActionResult<GetCurrentShoppingCartCommand.Response>> Current()
+            => await _mediator.Send(new GetCurrentShoppingCartCommand.Request());
 
         [HttpGet("{shoppingCartId}")]
         public async Task<ActionResult<GetShoppingCartByIdQuery.Response>> GetById([FromRoute]GetShoppingCartByIdQuery.Request request)
@@ -39,5 +43,7 @@ namespace CodeWithQB.API.Features.ShoppingCarts
         [HttpGet]
         public async Task<ActionResult<GetShoppingCartsQuery.Response>> Get()
             => await _mediator.Send(new GetShoppingCartsQuery.Request());
+        
+
     }
 }

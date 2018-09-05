@@ -6,6 +6,8 @@ import { AuthService } from "../core/auth.service";
 import { LocalStorageService } from "../core/local-storage.service";
 import { accessTokenKey } from "../core/constants";
 import { ShoppingCartService } from "../shopping-carts/shopping-cart.service";
+import { ShoppingCartItemService } from "../shopping-carts/shopping-cart-item.service";
+import { switchMap, takeUntil, tap } from "rxjs/operators";
 
 @Component({
   templateUrl: "./home-page.component.html",
@@ -17,7 +19,8 @@ export class HomePageComponent {
   constructor(
     private _localStorageService: LocalStorageService,
     private _productService: ProductService,
-    private _shoppingCartService: ShoppingCartService
+    private _shoppingCartService: ShoppingCartService,
+    private _shoppingCartItemService: ShoppingCartItemService
   ) { }
 
   public get accessToken() {
@@ -33,7 +36,22 @@ export class HomePageComponent {
   public readonly onDestroy: Subject<void> = new Subject<void>();
 
   public handleBuy($event) {
-    alert($event.product.name);
+    var shoppingCartId;
+
+    if (this._shoppingCartService.shoppingCart$.value)
+      shoppingCartId = this._shoppingCartService.shoppingCart$.value.shoppingCartId;
+
+    this._shoppingCartItemService.create({
+      shoppingCartItem: {
+        shoppingCartId,
+        productId: $event.product.productId
+      }
+    })
+      .pipe(
+        switchMap(x => this._shoppingCartService.getById({ shoppingCartId: x.shoppingCartId })),
+        tap(x => this._shoppingCartService.shoppingCart$.next(x)),
+        takeUntil(this.onDestroy))
+      .subscribe();
   }
 
   ngOnDestroy() {

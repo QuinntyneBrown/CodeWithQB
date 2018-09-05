@@ -40,11 +40,13 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { GridComponent } from './grid.component';
 import { HeaderComponent } from './header.component';
+import { QuillTextEditorComponent } from './quill-text-editor.component';
 
 @NgModule({
   declarations: [
     GridComponent,
-    HeaderComponent
+    HeaderComponent,
+    QuillTextEditorComponent
   ],
   imports: [
     IgxGridModule,
@@ -90,6 +92,7 @@ import { HeaderComponent } from './header.component';
   exports: [
     IgxGridModule,
     IgxIconModule,
+    QuillTextEditorComponent,
 
     HeaderComponent,
 

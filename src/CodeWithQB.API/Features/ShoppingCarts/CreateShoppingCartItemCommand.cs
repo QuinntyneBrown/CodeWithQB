@@ -5,6 +5,8 @@ using MediatR;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using CodeWithQB.Core.Common;
+using System.Linq;
 
 namespace CodeWithQB.API.Features.ShoppingCarts
 {
@@ -17,12 +19,13 @@ namespace CodeWithQB.API.Features.ShoppingCarts
             }
         }
 
-        public class Request : IRequest<Response> {
+        public class Request : AuthenticatedRequest<Response> {
             public ShoppingCartItemDto ShoppingCartItem { get; set; }
         }
 
         public class Response
-        {			
+        {
+            public Guid ShoppingCartId { get; set; }
             public Guid ShoppingCartItemId { get; set; }
         }
 
@@ -34,11 +37,23 @@ namespace CodeWithQB.API.Features.ShoppingCarts
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var shoppingCartItem = new ShoppingCartItem();
+                var shoppingCart = _eventStore.Query<ShoppingCart>()
+                    .SingleOrDefault(x => x.ShoppingCartId == request.ShoppingCartItem.ShoppingCartId && x.Status == ShoppingCartStatus.Shopping);
+
+                if (shoppingCart == null) shoppingCart = new ShoppingCart(request.CurrentUserId);
+                
+                var shoppingCartItem = new ShoppingCartItem(request.ShoppingCartItem.ProductId, 1);
+                
+                shoppingCart.AddShoppingCartItem(shoppingCartItem.ShoppingCartItemId);
+
+                _eventStore.Save(shoppingCart);
 
                 _eventStore.Save(shoppingCartItem);
-                
-                return Task.FromResult(new Response() { ShoppingCartItemId = shoppingCartItem.ShoppingCartItemId });
+              
+                return Task.FromResult(new Response() {
+                    ShoppingCartId = shoppingCart.ShoppingCartId,
+                    ShoppingCartItemId = shoppingCartItem.ShoppingCartItemId
+                });
             }
         }
     }

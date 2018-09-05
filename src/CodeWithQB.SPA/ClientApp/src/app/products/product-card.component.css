@@ -1,0 +1,9 @@
+:host {
+  display: grid;
+  grid-template-rows: 100px 100px 40px;
+  grid-row-gap: 20px;
+}
+
+.product-description {
+  overflow:hidden;
+}

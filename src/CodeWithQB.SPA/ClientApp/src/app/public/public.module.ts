@@ -8,8 +8,14 @@ import { HomePageComponent } from './home-page.component';
 import { ProductsModule } from '../products/products.module';
 import { SignUpPageComponent } from './sign-up-page.component';
 import { ShoppingCartsModule } from '../shopping-carts/shopping-carts.module';
+import { CheckoutPageComponent } from './checkout-page.component';
+import { ContactPageComponent } from './contact-page.component';
+import { AboutPageComponent } from './about-page.component';
 
 const declarations = [
+  AboutPageComponent,
+  CheckoutPageComponent,
+  ContactPageComponent,
   HomePageComponent,
   SignUpPageComponent
 ];

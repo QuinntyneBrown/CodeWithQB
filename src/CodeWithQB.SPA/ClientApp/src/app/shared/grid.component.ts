@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input } from "@angular/core";
+import { Component, ViewChild, Input, Output, EventEmitter } from "@angular/core";
 import { Subject, Observable } from "rxjs";
 import { IgxGridComponent } from "igniteui-angular";
 
@@ -24,6 +24,9 @@ export class GridComponent {
   data: any;
 
   afterViewInit: boolean;
+
+  @Output()
+  cellClick: EventEmitter<any> = new EventEmitter();
 
   public tryToDelete(cell: any) {
     console.log(cell);

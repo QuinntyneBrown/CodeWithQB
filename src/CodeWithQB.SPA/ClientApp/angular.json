@@ -29,11 +29,20 @@
               {
                 "input": "./node_modules/igniteui-angular/styles/igniteui-angular.css"
               },
+              {
+                "input": "./node_modules/quill/dist/quill.core.css"
+              },
+              {
+                "input": "./node_modules/quill/dist/quill.bubble.css"
+              },
               "src/styles.scss"
             ],
             "scripts": [
               {
                 "input": "./node_modules/hammerjs/hammer.min.js"
+              },
+              {
+                "input": "./node_modules/quill/dist/quill.min.js"
               }
             ]
           },

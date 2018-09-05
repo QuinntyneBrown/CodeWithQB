@@ -1,26 +1,27 @@
-using CodeWithQB.Core.Common;
-using CodeWithQB.Core.Interfaces;
-using CodeWithQB.Core.Models;
 using MediatR;
-using System;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Threading;
+using System.Collections.Generic;
+using CodeWithQB.Core.Interfaces;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using CodeWithQB.Core.Common;
+using CodeWithQB.Core.Models;
 
 namespace CodeWithQB.API.Features.ShoppingCarts
 {
-    public class CheckoutCommand
+    public class GetCurrentShoppingCartCommand
     {
         public class Request : AuthenticatedRequest<Response> { }
 
         public class Response
         {
-            public Guid ShoppingCartId { get;set; }
+            public ShoppingCartDto ShoppingCart { get;set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
         {
-            private readonly IEventStore _eventStore;
+            public IEventStore _eventStore { get; set; }
             public Handler(IEventStore eventStore) => _eventStore = eventStore;
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken) {
@@ -28,13 +29,9 @@ namespace CodeWithQB.API.Features.ShoppingCarts
                 var shoppingCart = _eventStore.Query<ShoppingCart>()
                     .SingleOrDefault(x => x.UserId == request.CurrentUserId && x.Status == ShoppingCartStatus.Shopping);
 
-                shoppingCart.Checkout();
-                
-                _eventStore.Save(shoppingCart);
+                if (shoppingCart != null) return new Response() { ShoppingCart = ShoppingCartDto.FromShoppingCart(shoppingCart) };
 
-                return await Task.FromResult(new Response() {
-                    ShoppingCartId = shoppingCart.ShoppingCartId
-                });
+                return new Response() { };
             }
         }
     }

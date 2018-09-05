@@ -6,8 +6,8 @@ namespace CodeWithQB.Core.Models
 {
     public class ShoppingCartItem: AggregateRoot
     {
-        public ShoppingCartItem()
-            => Apply(new ShoppingCartItemCreated(ShoppingCartItemId));
+        public ShoppingCartItem(Guid productId, int quantity)
+            => Apply(new ShoppingCartItemCreated(ShoppingCartItemId, productId, quantity));
 
         public Guid ShoppingCartItemId { get; set; } = Guid.NewGuid();
         public Guid ShoppingCardId { get; set; }
@@ -26,6 +26,8 @@ namespace CodeWithQB.Core.Models
             {
                 case ShoppingCartItemCreated shoppingCartItemCreated:                    
 					ShoppingCartItemId = shoppingCartItemCreated.ShoppingCartItemId;
+                    ProductId = shoppingCartItemCreated.ProductId;
+                    Quantity = shoppingCartItemCreated.Quantity;
                     break;
                     
                 case ShoppingCartItemRemoved shoppingCartItemRemoved:

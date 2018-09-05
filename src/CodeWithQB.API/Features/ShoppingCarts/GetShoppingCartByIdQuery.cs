@@ -35,10 +35,16 @@ namespace CodeWithQB.API.Features.ShoppingCarts
 			public Handler(IEventStore eventStore) => _eventStore = eventStore;
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
-			     => Task.FromResult(new Response()
+            {
+                var shoppingCart = _eventStore.Query<ShoppingCart>().Single(x => x.ShoppingCartId == request.ShoppingCartId);
+
+                var dto = ShoppingCartDto.FromShoppingCart(shoppingCart);
+
+                return Task.FromResult(new Response()
                 {
-                    ShoppingCart = ShoppingCartDto.FromShoppingCart(_eventStore.Query<ShoppingCart>().Single(x => x.ShoppingCartId == request.ShoppingCartId))
+                    ShoppingCart = dto
                 });
+            }
         }
     }
 }

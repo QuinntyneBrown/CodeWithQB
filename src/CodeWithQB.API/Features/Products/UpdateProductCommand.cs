@@ -37,7 +37,7 @@ namespace CodeWithQB.API.Features.Products
             {
                 var product = _eventStore.Query<Product>().Single(x => x.ProductId == request.Product.ProductId);
 
-                product.ChangeName(request.Product.Name);
+                product.Update(request.Product.Name, request.Product.Description);
 
                 _eventStore.Save(product);
 
