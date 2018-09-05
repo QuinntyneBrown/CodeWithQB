@@ -4,11 +4,11 @@ namespace CodeWithQB.Core.DomainEvents
 {
     public class ShoppingCartItemAdded: DomainEvent
     {
-        public ShoppingCartItemAdded(Guid shoppingCartItemId)
+        public ShoppingCartItemAdded(Guid productId)
         {
-            ShoppingCartItemId = shoppingCartItemId;
+            ProductId = productId;
         }
 
-        public Guid ShoppingCartItemId { get; set; }
+        public Guid ProductId { get; set; }
     }
 }

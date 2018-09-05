@@ -15,6 +15,10 @@ namespace CodeWithQB.API.Features.ShoppingCarts
 
         public ShoppingCartsController(IMediator mediator) => _mediator = mediator;
 
+        [HttpPost("{shoppingCartId}/shoppingCartItem")]
+        public async Task<ActionResult<CreateShoppingCartItemCommand.Response>> Create(CreateShoppingCartItemCommand.Request request)
+            => await _mediator.Send(request);
+
         [HttpPost]
         public async Task<ActionResult<CreateShoppingCartCommand.Response>> Create(CreateShoppingCartCommand.Request request)
             => await _mediator.Send(request);

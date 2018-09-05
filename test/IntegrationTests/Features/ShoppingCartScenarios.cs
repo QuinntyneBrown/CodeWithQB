@@ -33,6 +33,58 @@ namespace IntegrationTests.Features
             }
         }
 
+
+        [Fact]
+        public async Task ShouldFailToCreateShoppingCartItem()
+        {
+            using (var server = CreateServer())
+            {
+                IEventStore eventStore = server.Host.Services.GetService(typeof(IEventStore)) as IEventStore;
+                var client = server.CreateClient();
+
+                var product = eventStore.Query<Product>().First();
+
+                var response = await client
+                    .PostAsAsync<CreateShoppingCartItemCommand.Request, CreateShoppingCartItemCommand.Response>(Post.ShoppingCartItem(default(Guid)), new CreateShoppingCartItemCommand.Request()
+                    {
+                        ProductId = product.ProductId
+                    });
+                
+                await Assert.ThrowsAsync<Exception>(async () => await client
+                    .PostAsAsync<CreateShoppingCartItemCommand.Request, CreateShoppingCartItemCommand.Response>(Post.ShoppingCartItem(default(Guid)), new CreateShoppingCartItemCommand.Request()
+                    {
+                        ShoppingCartId = response.ShoppingCartId,
+                        ProductId = product.ProductId
+                    }));
+            }
+        }
+
+
+        [Fact]
+        public async Task ShouldCreateShoppingCartItem()
+        {
+            using (var server = CreateServer())
+            {
+                IEventStore eventStore = server.Host.Services.GetService(typeof(IEventStore)) as IEventStore;
+                var client = server.CreateClient();
+
+                var product = eventStore.Query<Product>().First();
+
+                var response = await client
+                    .PostAsAsync<CreateShoppingCartItemCommand.Request, CreateShoppingCartItemCommand.Response>(Post.ShoppingCartItem(default(Guid)), new CreateShoppingCartItemCommand.Request()
+                    {
+                        ProductId = product.ProductId
+                    });
+
+                Assert.True(response.ShoppingCartId != default(Guid));
+
+                var cart = await client.GetAsync<GetShoppingCartByIdQuery.Response>(Get.ShoppingCartById(response.ShoppingCartId));
+
+                Assert.Single(cart.ShoppingCart.ShoppingCartItems);
+
+            }
+        }
+
         [Fact]
         public async Task ShouldGetAll()
         {
@@ -61,7 +113,7 @@ namespace IntegrationTests.Features
             using (var server = CreateServer())
             {
                 var getByIdResponse = await server.CreateClient()
-                    .GetAsync<GetShoppingCartByIdQuery.Response>(Get.ShoppingCartById(1));
+                    .GetAsync<GetShoppingCartByIdQuery.Response>(Get.ShoppingCartById(default(Guid)));
 
                 Assert.True(getByIdResponse.ShoppingCart.ShoppingCartId != default(Guid));
 

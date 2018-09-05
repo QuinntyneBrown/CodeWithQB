@@ -48,6 +48,13 @@ export class ShoppingCartService {
     return this._client.post<{ shoppingCartId: string }>(`${this._baseUrl}api/shoppingCarts`, { shoppingCart: options.shoppingCart });
   }
 
+  public createShoppingCartItem(options: { shoppingCartId: string, productId: string }): Observable<{ shoppingCartId: string }> {
+    return this._client.post<{ shoppingCartId: string, productId: string }>(`${this._baseUrl}api/shoppingCarts/${options.shoppingCartId}/shoppingCartItem`, {
+      shoppingCartId: options.shoppingCartId,
+      productId: options.productId
+    });
+  }
+
   public update(options: { shoppingCart: ShoppingCart }): Observable<{ shoppingCartId: string }> {
     return this._client.put<{ shoppingCartId: string }>(`${this._baseUrl}api/shoppingCarts`, { shoppingCart: options.shoppingCart });
   }

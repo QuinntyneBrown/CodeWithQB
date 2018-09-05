@@ -13,13 +13,14 @@ namespace CodeWithQB.Core.Models
 
         public Guid ShoppingCartId { get; set; } = Guid.NewGuid(); 
         public ICollection<Guid> ShoppingCartItemIds { get; set; }
+        public ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
         public Guid UserId { get; set; }
         public ShoppingCartStatus Status { get; set; }
         public bool IsDeleted { get; set; }
 
         protected override void EnsureValidState()
         {
-            
+
         }
 
         protected override void When(DomainEvent @event)
@@ -30,11 +31,17 @@ namespace CodeWithQB.Core.Models
 					ShoppingCartId = shoppingCartCreated.ShoppingCartId;
                     UserId = shoppingCartCreated.UserId;
                     Status = ShoppingCartStatus.Shopping;
-                    ShoppingCartItemIds = new HashSet<Guid>();
+                    ShoppingCartItems = new List<ShoppingCartItem>();
                     break;
 
                 case ShoppingCartItemAdded shoppingCartItemAdded:
-                    ShoppingCartItemIds = ShoppingCartItemIds.Concat(new Guid[] { shoppingCartItemAdded.ShoppingCartItemId }).ToList();
+                    
+                    var item = new ShoppingCartItem(ShoppingCartId, shoppingCartItemAdded.ProductId, 1);
+
+                    if (ShoppingCartItems.Contains(item))
+                        throw new Exception();
+
+                    ShoppingCartItems.Add(item);                    
                     break;
 
                 case ShoppingCartCheckedOut shoppingCartCheckedOut:
@@ -47,8 +54,8 @@ namespace CodeWithQB.Core.Models
             }
         }
 
-        public void AddShoppingCartItem(Guid shoppingCartItemId)
-            => Apply(new ShoppingCartItemAdded(shoppingCartItemId));
+        public void AddShoppingCartItem(Guid productId)
+            => Apply(new ShoppingCartItemAdded(productId));
 
         public void Checkout()
             => Apply(new ShoppingCartCheckedOut());

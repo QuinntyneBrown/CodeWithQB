@@ -10,6 +10,8 @@ import { PublicMasterPageComponent } from './public-master-page.component';
 import { ProductsPageComponent } from './products/products-page.component';
 import { ProductPageComponent } from './products/product-page.component';
 import { CheckoutPageComponent } from './public/checkout-page.component';
+import { ContactPageComponent } from './public/contact-page.component';
+import { AboutPageComponent } from './public/about-page.component';
 
 export const routes: Routes = [
   {
@@ -53,6 +55,14 @@ export const routes: Routes = [
       {
         path: 'checkout',
         component: CheckoutPageComponent,
+      },
+      {
+        path: 'about',
+        component: AboutPageComponent,
+      },
+      {
+        path: 'contact',
+        component: ContactPageComponent,
       },
       {
         path: 'signup',

@@ -1,3 +1,5 @@
+using System;
+
 namespace IntegrationTests.Features
 {
     public class ShoppingCartScenarioBase: ScenarioBase
@@ -6,7 +8,7 @@ namespace IntegrationTests.Features
         {
             public static string ShoppingCarts = "api/shoppingCarts";
 
-            public static string ShoppingCartById(int id)
+            public static string ShoppingCartById(Guid id)
             {
                 return $"api/shoppingCarts/{id}";
             }
@@ -15,6 +17,11 @@ namespace IntegrationTests.Features
         public static class Post
         {
             public static string ShoppingCarts = "api/shoppingCarts";
+
+            public static string ShoppingCartItem(Guid shoppingCartId)
+            {
+                return $"api/shoppingCarts/{shoppingCartId}/shoppingCartItem";
+            }
         }
 
         public static class Delete

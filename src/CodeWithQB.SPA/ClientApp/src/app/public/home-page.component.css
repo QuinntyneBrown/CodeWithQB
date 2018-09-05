@@ -2,4 +2,7 @@
   display:grid;
   grid-template-columns: 1fr 1fr 1fr;
   column-gap:20px;
+  grid-template-rows:280px;
+  overflow:hidden;
+  height:280px;
 }

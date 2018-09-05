@@ -15,18 +15,18 @@ namespace CodeWithQB.API.Features.ShoppingCarts
         public class Validator: AbstractValidator<Request> {
             public Validator()
             {
-                RuleFor(request => request.ShoppingCartItem.ShoppingCartItemId).NotNull();
+                RuleFor(request => request.ProductId).NotNull();
             }
         }
 
         public class Request : AuthenticatedRequest<Response> {
-            public ShoppingCartItemDto ShoppingCartItem { get; set; }
+            public Guid ShoppingCartId { get; set; }
+            public Guid ProductId { get; set; }
         }
 
         public class Response
         {
             public Guid ShoppingCartId { get; set; }
-            public Guid ShoppingCartItemId { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -38,21 +38,16 @@ namespace CodeWithQB.API.Features.ShoppingCarts
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                 var shoppingCart = _eventStore.Query<ShoppingCart>()
-                    .SingleOrDefault(x => x.ShoppingCartId == request.ShoppingCartItem.ShoppingCartId && x.Status == ShoppingCartStatus.Shopping);
+                    .SingleOrDefault(x => x.ShoppingCartId == request.ShoppingCartId && x.Status == ShoppingCartStatus.Shopping);
 
                 if (shoppingCart == null) shoppingCart = new ShoppingCart(request.CurrentUserId);
                 
-                var shoppingCartItem = new ShoppingCartItem(request.ShoppingCartItem.ProductId, 1);
+                shoppingCart.AddShoppingCartItem(request.ProductId);
                 
-                shoppingCart.AddShoppingCartItem(shoppingCartItem.ShoppingCartItemId);
-
                 _eventStore.Save(shoppingCart);
-
-                _eventStore.Save(shoppingCartItem);
-              
+                
                 return Task.FromResult(new Response() {
-                    ShoppingCartId = shoppingCart.ShoppingCartId,
-                    ShoppingCartItemId = shoppingCartItem.ShoppingCartItemId
+                    ShoppingCartId = shoppingCart.ShoppingCartId
                 });
             }
         }
