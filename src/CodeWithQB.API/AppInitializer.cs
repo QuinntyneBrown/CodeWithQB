@@ -172,13 +172,13 @@ namespace CodeWithQB.API
         public static void Seed(AppDbContext context, IDateTime dateTime, IEventStore eventStore)
         {
             if (eventStore.Query<Product>().SingleOrDefault(x => x.Name == "Mentoring") == null)
-                AggregateHelper.Save(new Product("Mentoring", 300, ""), dateTime, context, eventStore);
+                AggregateHelper.Save(new Product("Mentoring", 300, "<p>I provide remote mentoring in area of Software Development to all ages and levels of experience.</p>"), dateTime, context, eventStore);
 
             if (eventStore.Query<Product>().SingleOrDefault(x => x.Name == "Training") == null)
-                AggregateHelper.Save(new Product("Training", 300, ""), dateTime, context, eventStore);
+                AggregateHelper.Save(new Product("Training", 300, "<p>I provide invidual training and group training</p>"), dateTime, context, eventStore);
 
             if (eventStore.Query<Product>().SingleOrDefault(x => x.Name == "Assessments") == null)
-                AggregateHelper.Save(new Product("Assessments", 300, ""), dateTime, context, eventStore);
+                AggregateHelper.Save(new Product("Assessments", 300, "<p>I provide assements of Developer skills.</p>"), dateTime, context, eventStore);
 
         }
     }

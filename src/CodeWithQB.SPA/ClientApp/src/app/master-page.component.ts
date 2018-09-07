@@ -2,6 +2,7 @@ import { Component, HostBinding, ElementRef } from '@angular/core';
 import { AuthService } from './core/auth.service';
 import { map, tap, takeUntil } from 'rxjs/operators';
 import { LoginRedirectService } from './core/redirect.service';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './master-page.component.html',
@@ -18,7 +19,7 @@ export class MasterPageComponent {
     this._authService.logout();
     this._loginRedirect.redirectToLogin();
   }
-
+  
   public closeErrorConsole() {
     this.isErrorConsoleOpen = false;
   }

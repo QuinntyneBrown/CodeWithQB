@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CodeWithQB.Core.Models
 {
@@ -11,3 +9,7 @@ namespace CodeWithQB.Core.Models
         public string Data { get; set; }
     }
 }
+
+
+
+

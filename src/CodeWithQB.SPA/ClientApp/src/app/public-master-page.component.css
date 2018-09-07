@@ -11,6 +11,7 @@ a {
 h1, a {
   line-height:1.25em;
   margin:0;
+  cursor:pointer;
 }
 
 .nav {

@@ -3,5 +3,12 @@
 </section>
 
 <section *ngIf="(shoppingCart$ | async)">
+
+  <ul>
+    <li *ngFor="let product of (products$ | async)">
+      {{ product.name }}
+    </li>
+  </ul>
   <button (click)="checkout()">Checkout</button>
 </section>
+

@@ -8,7 +8,7 @@ namespace CodeWithQB.Core.Models
 {
     public class User: AggregateRoot
     {
-        public User(string username = null, byte[] salt= null, string password = null) 
+        public User(string username, byte[] salt, string password) 
             => Apply(new UserCreated(UserId, username,salt,password));
 
         protected override void When(DomainEvent @event)
@@ -31,7 +31,8 @@ namespace CodeWithQB.Core.Models
 
         protected override void EnsureValidState()
         {
-
+            if (Password == default(string))
+                throw new Exception();
         }
 
         public void AddRole(Guid roleId)

@@ -1,6 +1,5 @@
 <section>
-  <h1>Code With QB</h1>
-
+  <h1 [routerLink]="['/']">Code With QB</h1>
   <section>
     <section *ngIf="!accessToken">
       <a [routerLink]="['/login']">Login</a> | <a>Sign up</a>

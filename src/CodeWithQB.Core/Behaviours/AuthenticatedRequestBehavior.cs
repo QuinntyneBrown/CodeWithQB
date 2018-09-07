@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Linq;
+using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,22 +12,16 @@ namespace CodeWithQB.Core.Behaviours
         where TRequest : IRequest<TResponse>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IDateTime _dateTime;
 
-        public AuthenticatedRequestBehavior(IDateTime dateTime,IHttpContextAccessor httpContextAccessor)
-        {
-            _httpContextAccessor = httpContextAccessor;
-            _dateTime = dateTime;
-        }
+        public AuthenticatedRequestBehavior(IHttpContextAccessor httpContextAccessor)
+            => _httpContextAccessor = httpContextAccessor;
         
         public Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
         {
-            var claims = _httpContextAccessor.HttpContext.User.Claims;
-
             switch (request)
             {
                 case IAuthenticatedRequest authenticatedRequest:
-                    authenticatedRequest.CurrentUserId = new Guid(claims.Single(x => x.Type == "UserId").Value);
+                    authenticatedRequest.CurrentUserId = new Guid(_httpContextAccessor.HttpContext.User.FindFirstValue("UserId"));
                     break;
             }
 

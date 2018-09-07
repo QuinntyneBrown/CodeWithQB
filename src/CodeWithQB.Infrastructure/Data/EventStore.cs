@@ -8,8 +8,10 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Threading.Tasks;
 using static CodeWithQB.Infrastructure.Data.DeserializedEventStore;
@@ -206,7 +208,7 @@ namespace CodeWithQB.Infrastructure.Data
 
             return result.ToArray();
         }
-
+        
         public TAggregateRoot[] Query<TAggregateRoot>(string assemblyQualifiedName)
             where TAggregateRoot : AggregateRoot
         {
@@ -234,7 +236,7 @@ namespace CodeWithQB.Infrastructure.Data
 
             return aggregate;
         }
-        protected List<DeserializedStoredEvent> Get()
+        public List<DeserializedStoredEvent> Get()
         {
             using (var scope = _serviceScopeFactory.CreateScope())
             using (var context = scope.ServiceProvider.GetRequiredService<AppDbContext>())
