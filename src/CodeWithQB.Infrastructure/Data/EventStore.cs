@@ -257,8 +257,7 @@ namespace CodeWithQB.Infrastructure.Data
         {
             Events.TryAdd(@event.StoredEventId, new DeserializedStoredEvent(@event));
             Persist(@event);
-            Next(new AggregateChanged() { AggregateId = @event.StreamId });
-            Producer.Start();
+            Next(new AggregateChanged() { AggregateId = @event.StreamId });            
         }
 
         public void Persist(StoredEvent @event)
@@ -288,18 +287,10 @@ namespace CodeWithQB.Infrastructure.Data
 
         }
 
-        public ObservingProducer<AggregateChanged>  Producer = new ObservingProducer<AggregateChanged>();
-
-        public async Task Subscribe(IConsume<AggregateChanged> observer)
-        {
-            Producer.Attach(observer);
-
-            await Task.CompletedTask;
-        }
-
-        public void Next(AggregateChanged message)
-        {            
-            Producer.Produces(new[] { message });            
-        }
+        public Hub Hub { get; set; } = new Hub();
+        
+        public void Subscribe(IConsume<AggregateChanged> observer) => Hub.Subscribe(observer);
+        
+        public void Next(AggregateChanged message) => Hub.Publish(message);
     }
 }
