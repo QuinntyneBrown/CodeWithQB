@@ -19,6 +19,6 @@ namespace CodeWithQB.Core.Interfaces
 
         Task PersistStateAsync();
 
-        void Subscribe(IConsume<AggregateChanged> observer);
+        void Subscribe(IObserver<AggregateChanged> observer);
     }
 }

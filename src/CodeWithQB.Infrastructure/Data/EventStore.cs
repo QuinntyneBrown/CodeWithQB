@@ -12,6 +12,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
@@ -288,9 +289,11 @@ namespace CodeWithQB.Infrastructure.Data
         }
 
         public Hub Hub { get; set; } = new Hub();
+
+        public Subject<AggregateChanged> Subject = new Subject<AggregateChanged>();
         
-        public void Subscribe(IConsume<AggregateChanged> observer) => Hub.Subscribe(observer);
+        public void Subscribe(IObserver<AggregateChanged> observer) => Subject.Subscribe(observer);
         
-        public void Next(AggregateChanged message) => Hub.Publish(message);
+        public void Next(AggregateChanged message) => Subject.OnNext(message);
     }
 }

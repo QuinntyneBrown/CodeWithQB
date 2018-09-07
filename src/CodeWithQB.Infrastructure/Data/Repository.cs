@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using CodeWithQB.Core.Common;
 using CodeWithQB.Core.DomainEvents;
 using CodeWithQB.Core.Interfaces;
@@ -6,17 +7,26 @@ using reactive.pipes;
 
 namespace CodeWithQB.Infrastructure.Data
 {
-    public class Repository : IRepository, IConsume<AggregateChanged>
+    public class Repository : IRepository, IObserver<AggregateChanged>
     {
         public Repository(IEventStore eventStore)
         {
             eventStore.Subscribe(this);
         }
-
-        public async Task<bool> HandleAsync(AggregateChanged message)
+        
+        public void OnCompleted()
         {
 
-            return await Task.FromResult(true);
+        }
+
+        public void OnError(Exception error)
+        {
+
+        }
+
+        public void OnNext(AggregateChanged value)
+        {
+            Console.WriteLine("Works?");
         }
 
         public TAggregateRoot[] Query<TAggregateRoot>() where TAggregateRoot : AggregateRoot
