@@ -5,6 +5,8 @@ using CodeWithQB.Core.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
+using reactive.pipes;
+using reactive.pipes.Producers;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -255,6 +257,8 @@ namespace CodeWithQB.Infrastructure.Data
         {
             Events.TryAdd(@event.StoredEventId, new DeserializedStoredEvent(@event));
             Persist(@event);
+            Next(new AggregateChanged() { AggregateId = @event.StreamId });
+            Producer.Start();
         }
 
         public void Persist(StoredEvent @event)
@@ -282,6 +286,20 @@ namespace CodeWithQB.Infrastructure.Data
                 await Task.CompletedTask;
             });
 
+        }
+
+        public ObservingProducer<AggregateChanged>  Producer = new ObservingProducer<AggregateChanged>();
+
+        public async Task Subscribe(IConsume<AggregateChanged> observer)
+        {
+            Producer.Attach(observer);
+
+            await Task.CompletedTask;
+        }
+
+        public void Next(AggregateChanged message)
+        {            
+            Producer.Produces(new[] { message });            
         }
     }
 }

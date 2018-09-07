@@ -1,4 +1,6 @@
 using CodeWithQB.Core.Common;
+using CodeWithQB.Core.DomainEvents;
+using reactive.pipes;
 using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
@@ -16,5 +18,7 @@ namespace CodeWithQB.Core.Interfaces
             where TAggregateRoot : AggregateRoot;
 
         Task PersistStateAsync();
+
+        Task Subscribe(IConsume<AggregateChanged> observer);
     }
 }

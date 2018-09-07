@@ -27,7 +27,8 @@ namespace CodeWithQB.API
         {                        
             services.AddSingleton<IDateTime, MachineDateTime>();
             services.AddSingleton<IEventStore, EventStore>();
-            
+            services.AddSingleton<IRepository, Repository>();
+
             services.AddHttpContextAccessor();
             services.AddHostedService<QueuedHostedService>();
             services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
@@ -47,6 +48,8 @@ namespace CodeWithQB.API
 
         public void Configure(IApplicationBuilder app)
         {
+            var repository = app.ApplicationServices.GetRequiredService<IRepository>() as IRepository;
+
             if(Configuration.GetValue<bool>("isTest"))
                 app.UseMiddleware<ByPassAuthMiddleware>();
                     
