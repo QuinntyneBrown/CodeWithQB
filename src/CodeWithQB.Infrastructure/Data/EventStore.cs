@@ -29,6 +29,7 @@ namespace CodeWithQB.Infrastructure.Data
         private readonly IDateTime _dateTime;
         private readonly IBackgroundTaskQueue _queue;
         private readonly IServiceScopeFactory _serviceScopeFactory;
+        public readonly BehaviorSubject<Dictionary<string, DeserializedStoredEvent>> Subject = new BehaviorSubject<Dictionary<string, DeserializedStoredEvent>>(new Dictionary<string, DeserializedStoredEvent>());
 
         public EventStore(
             IConfiguration configuration,

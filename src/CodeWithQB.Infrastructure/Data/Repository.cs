@@ -1,9 +1,9 @@
-﻿using System;
-using System.Threading.Tasks;
-using CodeWithQB.Core.Common;
+﻿using CodeWithQB.Core.Common;
 using CodeWithQB.Core.DomainEvents;
 using CodeWithQB.Core.Interfaces;
-using reactive.pipes;
+using System;
+
+//https://stackoverflow.com/questions/7821404/is-it-possible-to-invoke-subscriberss-onnexts-on-different-threads-in-rx
 
 namespace CodeWithQB.Infrastructure.Data
 {
