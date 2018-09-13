@@ -19,14 +19,14 @@ using static Newtonsoft.Json.JsonConvert;
 
 namespace CodeWithQB.Infrastructure.Data
 {
-
     public class EventStore : IEventStore
     {
         private readonly IConfiguration _configuration;
         private readonly IDateTime _dateTime;
         private readonly IBackgroundTaskQueue _queue;
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        
+        public Subject<EventStoreChanged> _subject = new Subject<EventStoreChanged>();
+
         public EventStore(
             IConfiguration configuration,
             IDateTime dateTime = default(IDateTime),
@@ -172,7 +172,6 @@ namespace CodeWithQB.Infrastructure.Data
             }
 
             Aggregates.TryUpdate(type.AssemblyQualifiedName, newAggregates, orginalAggregates);
-
         }
 
         public ConcurrentDictionary<string, ConcurrentBag<AggregateRoot>> UpdateState<TAggregateRoot>(Type type, TAggregateRoot aggregateRoot,Guid aggregateId)
@@ -255,7 +254,7 @@ namespace CodeWithQB.Infrastructure.Data
         {
             Events.TryAdd(@event.StoredEventId, new DeserializedStoredEvent(@event));
             Persist(@event);
-            Next(new AggregateChanged() { AggregateId = @event.StreamId });            
+            _subject.OnNext(new EventStoreChanged(@event));
         }
 
         public void Persist(StoredEvent @event)
@@ -284,13 +283,7 @@ namespace CodeWithQB.Infrastructure.Data
             });
 
         }
-
-        public Hub Hub { get; set; } = new Hub();
-
-        public Subject<AggregateChanged> Subject = new Subject<AggregateChanged>();
         
-        public void Subscribe(IObserver<AggregateChanged> observer) => Subject.Subscribe(observer);
-        
-        public void Next(AggregateChanged message) => Subject.OnNext(message);
+        public void Subscribe(Action<EventStoreChanged> onNext) => _subject.Subscribe(onNext);        
     }
 }

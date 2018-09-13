@@ -18,10 +18,11 @@ namespace CodeWithQB.Core.Common
         {
             var tcs = new TaskCompletionSource<TResponse>(TaskCreationOptions.RunContinuationsAsynchronously);
             var dependentKeys = default(IEnumerable<string>);
+            var partition = "";
 
             try
             {
-                lock (sync) dependentKeys = _registry.Register(request.Partition, request.Key, request.SideEffects).GetAwaiter().GetResult();
+                lock (sync) dependentKeys = _registry.Register(partition, request.Key, request.SideEffects).GetAwaiter().GetResult();
 
                 if (dependentKeys.Count() > 0)
                 {
@@ -42,7 +43,7 @@ namespace CodeWithQB.Core.Common
             }
             finally
             {
-                lock (sync) _registry.Clean(request.Partition, request.Key).GetAwaiter().GetResult();
+                lock (sync) _registry.Clean(partition, request.Key).GetAwaiter().GetResult();
             }
         }        
     }

@@ -1,35 +1,31 @@
 ﻿using CodeWithQB.Core.Common;
-using CodeWithQB.Core.DomainEvents;
 using CodeWithQB.Core.Interfaces;
 using System;
-
-//https://stackoverflow.com/questions/7821404/is-it-possible-to-invoke-subscriberss-onnexts-on-different-threads-in-rx
+using System.Collections.Concurrent;
 
 namespace CodeWithQB.Infrastructure.Data
 {
-    public class Repository : IRepository, IObserver<AggregateChanged>
+    public class Repository : IRepository
     {
+        public ConcurrentDictionary<string, ConcurrentBag<AggregateRoot>> Aggregates { get; set; } 
+            = new ConcurrentDictionary<string, ConcurrentBag<AggregateRoot>>();
+
         public Repository(IEventStore eventStore)
         {
-            eventStore.Subscribe(this);
+            eventStore.Subscribe(OnNext);
         }
         
-        public void OnCompleted()
-        {
-
-        }
-
-        public void OnError(Exception error)
-        {
-
-        }
-
-        public void OnNext(AggregateChanged value)
+        private void OnNext(EventStoreChanged value)
         {
             Console.WriteLine("Works?");
         }
 
         public TAggregateRoot[] Query<TAggregateRoot>() where TAggregateRoot : AggregateRoot
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public TAggregateRoot Query<TAggregateRoot>(Guid id) where TAggregateRoot : AggregateRoot
         {
             throw new System.NotImplementedException();
         }

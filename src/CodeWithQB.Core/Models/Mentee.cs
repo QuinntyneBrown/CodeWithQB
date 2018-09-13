@@ -14,7 +14,8 @@ namespace CodeWithQB.Core.Models
         public string LastName { get; set; }
         public string EmailAddress { get; set; }
         public bool IsDeleted { get; set; }
-        public MenteeStatus Status { get; set; }
+        public int Version { get; set; }
+        public MenteeStatus Status { get; set; }        
         protected override void EnsureValidState()
         {
             

@@ -1,6 +1,4 @@
 using CodeWithQB.Core.Common;
-using CodeWithQB.Core.DomainEvents;
-using reactive.pipes;
 using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
@@ -19,6 +17,6 @@ namespace CodeWithQB.Core.Interfaces
 
         Task PersistStateAsync();
 
-        void Subscribe(IObserver<AggregateChanged> observer);
+        void Subscribe(Action<EventStoreChanged> onNext);
     }
 }

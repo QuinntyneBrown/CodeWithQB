@@ -44,9 +44,11 @@ namespace CodeWithQB.Core.Models
         public byte[] Salt { get; private set; }
         public ICollection<Guid> RoleIds { get; private set; }
         public UserStatus Status { get; private set; }
+        public int Version { get; private set; }
     }
 
     public enum UserStatus {
-
+        Active,
+        InActive
     }
 }
