@@ -6,15 +6,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
 using reactive.pipes;
-using reactive.pipes.Producers;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reactive.Subjects;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Threading.Tasks;
 using static CodeWithQB.Infrastructure.Data.DeserializedEventStore;
@@ -29,8 +26,7 @@ namespace CodeWithQB.Infrastructure.Data
         private readonly IDateTime _dateTime;
         private readonly IBackgroundTaskQueue _queue;
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        public readonly BehaviorSubject<Dictionary<string, DeserializedStoredEvent>> Subject = new BehaviorSubject<Dictionary<string, DeserializedStoredEvent>>(new Dictionary<string, DeserializedStoredEvent>());
-
+        
         public EventStore(
             IConfiguration configuration,
             IDateTime dateTime = default(IDateTime),

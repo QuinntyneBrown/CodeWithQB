@@ -7,6 +7,7 @@ using System.Threading;
 using System;
 using CodeWithQB.Core.Common;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace CodeWithQB.API.Features.ShoppingCarts
 {
@@ -19,9 +20,12 @@ namespace CodeWithQB.API.Features.ShoppingCarts
             }
         }
 
-        public class Request : AuthenticatedRequest<Response> {
+        public class Request : AuthenticatedRequest<Response>, ICommandRequest<Response> {
             public Guid ShoppingCartId { get; set; }
             public Guid ProductId { get; set; }
+            public string Key { get; set; }
+            public string Partition { get; set; }
+            public IEnumerable<string> SideEffects { get; set; } = new List<string>();
         }
 
         public class Response

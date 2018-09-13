@@ -1,3 +1,4 @@
+using CodeWithQB.Core.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +13,15 @@ namespace CodeWithQB.API.Features.ShoppingCarts
     public class ShoppingCartsController
     {
         private readonly IMediator _mediator;
-
-        public ShoppingCartsController(IMediator mediator) => _mediator = mediator;
+        private readonly ICommandRequestProcessor _commandRequestProcessor;
+        public ShoppingCartsController(ICommandRequestProcessor commandRequestProcessor, IMediator mediator) {
+            _commandRequestProcessor = commandRequestProcessor;
+            _mediator = mediator;
+        }
 
         [HttpPost("{shoppingCartId}/shoppingCartItem")]
         public async Task<ActionResult<CreateShoppingCartItemCommand.Response>> Create(CreateShoppingCartItemCommand.Request request)
-            => await _mediator.Send(request);
+            => await _commandRequestProcessor.Process(request, x => _mediator.Send(x));
 
         [HttpPost]
         public async Task<ActionResult<CreateShoppingCartCommand.Response>> Create(CreateShoppingCartCommand.Request request)
@@ -46,8 +50,6 @@ namespace CodeWithQB.API.Features.ShoppingCarts
 
         [HttpGet]
         public async Task<ActionResult<GetShoppingCartsQuery.Response>> Get()
-            => await _mediator.Send(new GetShoppingCartsQuery.Request());
-        
-
+            => await _mediator.Send(new GetShoppingCartsQuery.Request());        
     }
 }

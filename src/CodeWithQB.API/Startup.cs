@@ -28,6 +28,8 @@ namespace CodeWithQB.API
             services.AddSingleton<IDateTime, MachineDateTime>();
             services.AddSingleton<IEventStore, EventStore>();
             services.AddSingleton<IRepository, Repository>();
+            services.AddSingleton<ICommandRequestProcessor, CommandRequestProcessor>();
+            services.AddSingleton<ICommandRequestRegistry, CommandRequestRegistry>();
 
             services.AddHttpContextAccessor();
             services.AddHostedService<QueuedHostedService>();
