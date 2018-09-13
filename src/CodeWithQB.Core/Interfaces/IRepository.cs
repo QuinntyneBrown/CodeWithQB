@@ -1,5 +1,5 @@
 ﻿using CodeWithQB.Core.Common;
-using MediatR;
+using System;
 
 namespace CodeWithQB.Core.Interfaces
 {
@@ -7,5 +7,6 @@ namespace CodeWithQB.Core.Interfaces
     {
         TAggregateRoot[] Query<TAggregateRoot>() where TAggregateRoot : AggregateRoot;
 
+        TAggregateRoot Query<TAggregateRoot>(Guid id) where TAggregateRoot : AggregateRoot;
     }
 }

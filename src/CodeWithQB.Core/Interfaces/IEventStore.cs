@@ -1,6 +1,7 @@
 using CodeWithQB.Core.Common;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CodeWithQB.Core.Interfaces
@@ -18,5 +19,7 @@ namespace CodeWithQB.Core.Interfaces
         Task PersistStateAsync();
 
         void Subscribe(Action<EventStoreChanged> onNext);
+
+        Task<Dictionary<string, IEnumerable<object>>> GetStateAsync();
     }
 }

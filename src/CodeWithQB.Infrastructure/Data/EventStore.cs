@@ -5,7 +5,6 @@ using CodeWithQB.Core.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
-using reactive.pipes;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -46,7 +45,7 @@ namespace CodeWithQB.Infrastructure.Data
 
         public async Task OnActivateAsync() {
 
-            Dictionary<string,IEnumerable<object>> state = await LoadStateAsync();
+            Dictionary<string,IEnumerable<object>> state = await GetStateAsync();
 
             if (state == null)
             {
@@ -78,7 +77,7 @@ namespace CodeWithQB.Infrastructure.Data
             await Task.CompletedTask;
         }
 
-        public async Task<Dictionary<string, IEnumerable<object>>> LoadStateAsync() {
+        public async Task<Dictionary<string, IEnumerable<object>>> GetStateAsync() {
 
             var dateTime = _configuration?.GetValue<DateTime>("ViewAt");
 
