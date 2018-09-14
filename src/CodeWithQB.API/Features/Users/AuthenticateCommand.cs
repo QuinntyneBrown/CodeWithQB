@@ -1,11 +1,8 @@
-using CodeWithQB.Core.DomainEvents;
 using CodeWithQB.Core.Identity;
 using CodeWithQB.Core.Interfaces;
 using CodeWithQB.Core.Models;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,30 +38,31 @@ namespace CodeWithQB.API.Features.Users
 
         public class Handler : IRequestHandler<Request, Response>
         {
-            private readonly IEventStore _eventStore;
+            private readonly IRepository _repository;
             private readonly IPasswordHasher _passwordHasher;
             private readonly ISecurityTokenFactory _securityTokenFactory;
 
             public Handler(
-                IEventStore eventStore, 
+                IRepository repository,
                 ISecurityTokenFactory securityTokenFactory, 
                 IPasswordHasher passwordHasher)
             {
-                _eventStore = eventStore;
+                _repository = repository;
                 _securityTokenFactory = securityTokenFactory;
                 _passwordHasher = passwordHasher;
             }
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {                                
-                var user = _eventStore.Query<User>().Single(x => x.Username == request.Username);
+                var user = _repository.Query<User>().Single(x => x.Username == request.Username);
+
                 var roles = new List<string>();
 
                 if (user.Password != _passwordHasher.HashPassword(user.Salt, request.Password))
                     throw new System.Exception();
 
                 foreach (var roleId in user.RoleIds)
-                    roles.Add(_eventStore.Query<Role>().Single(x => x.RoleId == roleId).Name);
+                    roles.Add(_repository.Query<Role>(roleId).Name);
 
                 return Task.FromResult(new Response()
                 {

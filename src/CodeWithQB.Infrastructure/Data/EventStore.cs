@@ -146,6 +146,7 @@ namespace CodeWithQB.Infrastructure.Data
                 {
                     StoredEventId = Guid.NewGuid(),
                     Aggregate = aggregate,
+                    AggregateDotNetType = aggregate.GetType().AssemblyQualifiedName,
                     Data = SerializeObject(@event),
                     StreamId = aggregateId,
                     DotNetType = @event.GetType().AssemblyQualifiedName,

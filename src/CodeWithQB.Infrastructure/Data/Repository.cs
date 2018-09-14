@@ -6,6 +6,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 
 namespace CodeWithQB.Infrastructure.Data
 {
@@ -15,38 +16,63 @@ namespace CodeWithQB.Infrastructure.Data
             = new ConcurrentDictionary<string, ConcurrentBag<AggregateRoot>>();
 
         public Repository(IEventStore eventStore)
-        {            
-            foreach (var item in eventStore.GetStateAsync().GetAwaiter().GetResult())
+        {
+            var state = eventStore.GetStateAsync().GetAwaiter().GetResult();
+
+            if (state == null) state = new Dictionary<string, IEnumerable<object>>();
+
+            foreach (var item in state)
                 _aggregates.TryAdd(item.Key, new ConcurrentBag<AggregateRoot>(item.Value.Select(x => (AggregateRoot)x).ToList()));
 
             eventStore.Subscribe(OnNext);
         }
         
-        private void OnNext(EventStoreChanged value)
+        public void OnNext(EventStoreChanged value)
         {
-            var id = $"{value.Event.Aggregate}Id";
-            var aggregates = _aggregates.Single(x => x.Key == value.Event.DotNetType).Value;
+            var type = Type.GetType(value.Event.AggregateDotNetType);
+            var aggregates = _aggregates.SingleOrDefault(x => x.Key == value.Event.AggregateDotNetType).Value;            
+            var aggregateId = value.Event.StreamId;
 
-            foreach (var aggregate in aggregates)
+            if (aggregates != null)
             {
-                var type = aggregate.GetType();
-                Guid aggregateId = (Guid)type.GetProperty($"{type.Name}Id").GetValue(aggregate, null);
-
-                if (value.Event.StreamId == aggregateId) {
-                    aggregate.Apply(JsonConvert.DeserializeObject<DomainEvent>(value.Event.Data));
-
-                    var newAggregates = new ConcurrentBag<AggregateRoot>() { aggregate };
-
-                    foreach (var originalAggregate in aggregates)
-                    {
-                        var originalId = (Guid)type.GetProperty($"{type.Name}Id").GetValue(originalAggregate, null);
-
-                        if (aggregateId != originalId)
-                            newAggregates.Add(originalAggregate);
-                    }
-
-                    _aggregates.TryUpdate(type.AssemblyQualifiedName, newAggregates, aggregates);
+                AggregateRoot e = default(AggregateRoot);
+                foreach (var aggregate in aggregates)
+                {                                        
+                    if (value.Event.StreamId == (Guid)type.GetProperty($"{type.Name}Id").GetValue(aggregate, null))
+                        e = aggregate;
                 }
+
+                if (e == default(AggregateRoot))
+                    e = (AggregateRoot)FormatterServices.GetUninitializedObject(Type.GetType(value.Event.AggregateDotNetType));
+
+                
+                e.Apply(JsonConvert.DeserializeObject(value.Event.Data,Type.GetType(value.Event.DotNetType)) as DomainEvent);
+
+                var newAggregates = new ConcurrentBag<AggregateRoot>() { e };
+
+                foreach (var originalAggregate in aggregates)
+                {
+                    var originalId = (Guid)type.GetProperty($"{type.Name}Id").GetValue(originalAggregate, null);
+
+                    if (aggregateId != originalId)
+                        newAggregates.Add(originalAggregate);
+                }
+
+                _aggregates.TryUpdate(type.AssemblyQualifiedName, newAggregates, aggregates);
+            }
+            
+            if (aggregates == null)
+            {
+                var aggregate = (AggregateRoot)FormatterServices.GetUninitializedObject(Type.GetType(value.Event.AggregateDotNetType));
+
+                aggregates = new ConcurrentBag<AggregateRoot>() { aggregate };
+
+                var domainEvent = JsonConvert.DeserializeObject(value.Event.Data, Type.GetType(value.Event.DotNetType)) as DomainEvent;
+
+                aggregate.Apply(domainEvent);
+                
+                _aggregates.TryAdd(value.Event.AggregateDotNetType, aggregates);
+
             }            
         }
 
@@ -60,6 +86,23 @@ namespace CodeWithQB.Infrastructure.Data
             foreach (var a in aggregates)
                 result.Add(a as TAggregateRoot);
 
+            return result.ToArray();
+        }
+
+        public TAggregateRoot[] Query<TAggregateRoot>(IEnumerable<Guid> ids) where TAggregateRoot : AggregateRoot
+        {
+            var type = typeof(TAggregateRoot);
+            var result = new List<TAggregateRoot>();
+            var assemblyQualifiedName = typeof(TAggregateRoot).AssemblyQualifiedName;
+
+            _aggregates.TryGetValue(assemblyQualifiedName, out ConcurrentBag<AggregateRoot> aggregates);
+
+            foreach (var aggregate in aggregates)
+            {
+                if (ids.Contains((Guid)type.GetProperty($"{type.Name}Id").GetValue(aggregate, null)))
+                    result.Add(aggregate as TAggregateRoot);                
+            }
+            
             return result.ToArray();
         }
 
