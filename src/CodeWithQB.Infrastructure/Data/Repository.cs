@@ -97,6 +97,8 @@ namespace CodeWithQB.Infrastructure.Data
 
             _aggregates.TryGetValue(assemblyQualifiedName, out ConcurrentBag<AggregateRoot> aggregates);
 
+            if (aggregates == null) return result.ToArray();
+
             foreach (var aggregate in aggregates)
             {
                 if (ids.Contains((Guid)type.GetProperty($"{type.Name}Id").GetValue(aggregate, null)))

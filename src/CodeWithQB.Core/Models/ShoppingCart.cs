@@ -11,8 +11,7 @@ namespace CodeWithQB.Core.Models
         public ShoppingCart(Guid userId)
             => Apply(new ShoppingCartCreated(ShoppingCartId, userId));
 
-        public Guid ShoppingCartId { get; set; } = Guid.NewGuid(); 
-        public ICollection<Guid> ShoppingCartItemIds { get; set; }
+        public Guid ShoppingCartId { get; set; } = Guid.NewGuid();         
         public ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
         public Guid UserId { get; set; }
         public ShoppingCartStatus Status { get; set; }
