@@ -21,7 +21,7 @@ export declare abstract class BaseLightweightPerformanceTestComponent extends HT
     protected readonly _anonymousHeaders: {
         "content-type": string;
     };
-    protected readonly _styles: import("lit-html").DirectiveFn<import("lit-html").NodePart>;
+    protected readonly _styles: any;
     protected abstract execute(): any;
     connectedCallback(): Promise<void>;
     protected readonly template: TemplateResult;

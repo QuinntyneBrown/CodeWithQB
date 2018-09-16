@@ -146,7 +146,7 @@ namespace CodeWithQB.Infrastructure.Data
                 {
                     StoredEventId = Guid.NewGuid(),
                     Aggregate = aggregate,
-                    AggregateDotNetType = aggregate.GetType().AssemblyQualifiedName,
+                    AggregateDotNetType = type.AssemblyQualifiedName,
                     Data = SerializeObject(@event),
                     StreamId = aggregateId,
                     DotNetType = @event.GetType().AssemblyQualifiedName,
@@ -158,20 +158,6 @@ namespace CodeWithQB.Infrastructure.Data
 
 
             aggregateRoot.ClearEvents();
-
-            Aggregates.TryGetValue(type.AssemblyQualifiedName, out ConcurrentBag<AggregateRoot> orginalAggregates);
-
-            var newAggregates = new ConcurrentBag<AggregateRoot>() { aggregateRoot };
-
-            foreach (var originalAggregate in orginalAggregates)
-            {
-                var originalId = (Guid)type.GetProperty($"{type.Name}Id").GetValue(originalAggregate, null);
-
-                if (aggregateId != originalId)
-                    newAggregates.Add(originalAggregate);
-            }
-
-            Aggregates.TryUpdate(type.AssemblyQualifiedName, newAggregates, orginalAggregates);
         }
 
         public ConcurrentDictionary<string, ConcurrentBag<AggregateRoot>> UpdateState<TAggregateRoot>(Type type, TAggregateRoot aggregateRoot,Guid aggregateId)

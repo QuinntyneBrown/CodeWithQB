@@ -48,6 +48,8 @@ namespace CodeWithQB.Infrastructure.Data
                 
                 e.Apply(JsonConvert.DeserializeObject(value.Event.Data,Type.GetType(value.Event.DotNetType)) as DomainEvent);
 
+                e.ClearEvents();
+
                 var newAggregates = new ConcurrentBag<AggregateRoot>() { e };
 
                 foreach (var originalAggregate in aggregates)
@@ -70,6 +72,8 @@ namespace CodeWithQB.Infrastructure.Data
                 var domainEvent = JsonConvert.DeserializeObject(value.Event.Data, Type.GetType(value.Event.DotNetType)) as DomainEvent;
 
                 aggregate.Apply(domainEvent);
+
+                aggregate.ClearEvents();
                 
                 _aggregates.TryAdd(value.Event.AggregateDotNetType, aggregates);
 
@@ -83,8 +87,9 @@ namespace CodeWithQB.Infrastructure.Data
 
             _aggregates.TryGetValue(assemblyQualifiedName, out ConcurrentBag<AggregateRoot> aggregates);
 
-            foreach (var a in aggregates)
-                result.Add(a as TAggregateRoot);
+            if(aggregates != null)
+                foreach (var a in aggregates)
+                    result.Add(a as TAggregateRoot);
 
             return result.ToArray();
         }
