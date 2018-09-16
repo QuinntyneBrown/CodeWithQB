@@ -194,6 +194,17 @@ namespace CodeWithQB.Infrastructure.Data
             return Aggregates;
         }
 
+        public TAggregateRoot Load<TAggregateRoot>(Guid id)
+            where TAggregateRoot : AggregateRoot
+        {
+            var aggregate = (AggregateRoot)FormatterServices.GetUninitializedObject(Type.GetType(typeof(TAggregateRoot).AssemblyQualifiedName));
+
+            foreach(var @event in Get().Where(x => x.StreamId == id))
+                aggregate.Apply(@event.Data as DomainEvent);
+
+            return aggregate as TAggregateRoot;
+        }
+
         public TAggregateRoot[] Query<TAggregateRoot>()
             where TAggregateRoot : AggregateRoot
         {

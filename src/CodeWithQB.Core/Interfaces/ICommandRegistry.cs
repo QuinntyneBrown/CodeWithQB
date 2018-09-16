@@ -5,13 +5,7 @@ using System.Threading.Tasks;
 
 namespace CodeWithQB.Core.Interfaces
 {
-    public interface ICommandRequestRegistryChanged
-    {
-        string Partition { get; set; }
-        string Key { get; set; }
-    }
-
-    public interface ICommandRequestRegistry
+    public interface ICommandRegistry
     {
         Task<IEnumerable<string>> Register(string partition, string key, IEnumerable<string> sideEffects, CancellationToken cancellationToken = default(CancellationToken));
 
@@ -19,6 +13,6 @@ namespace CodeWithQB.Core.Interfaces
 
         Task<bool> ContainsAny(IEnumerable<string> keys, CancellationToken cancellationToken = default(CancellationToken));
 
-        IDisposable Subscribe(Action<ICommandRequestRegistryChanged> onNext);
+        IDisposable Subscribe(Action<ICommandRegistryChanged> onNext);
     }
 }

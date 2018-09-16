@@ -1,4 +1,5 @@
-﻿using CodeWithQB.Core.Interfaces;
+﻿using CodeWithQB.Core.Exceptions;
+using CodeWithQB.Core.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,19 +7,19 @@ using System.Threading.Tasks;
 
 namespace CodeWithQB.Core.Common
 {
-    public class CommandRequestProcessor : ICommandRequestProcessor
+    public class CommandPreProcessor : ICommandPreProcessor
     {
-        private readonly ICommandRequestRegistry _registry;
+        private readonly ICommandRegistry _registry;
         private readonly object sync = new object();
 
-        public CommandRequestProcessor(ICommandRequestRegistry registry) => _registry = registry;
+        public CommandPreProcessor(ICommandRegistry registry) => _registry = registry;
 
-        public async Task<TResponse> Process<TRequest, TResponse>(TRequest request, Func<TRequest, Task<TResponse>> callback) 
-            where TRequest : ICommandRequest<TResponse>
+        public async Task<TResponse> Process<TRequest, TResponse>(TRequest request, Func<TRequest, Task<TResponse>> asyncHandler) 
+            where TRequest : ICommand<TResponse>
         {
             var tcs = new TaskCompletionSource<TResponse>(TaskCreationOptions.RunContinuationsAsynchronously);
             var dependentKeys = default(IEnumerable<string>);
-            var partition = "";
+            var partition = default(string);
 
             try
             {
@@ -29,17 +30,17 @@ namespace CodeWithQB.Core.Common
                     _registry.Subscribe(async (commandRegisteryChanged) =>
                     {
                         if (dependentKeys.Contains($"{commandRegisteryChanged.Partition}-{commandRegisteryChanged.Key}") && !_registry.ContainsAny(dependentKeys).GetAwaiter().GetResult())                        
-                            tcs.SetResult(await callback(request));                        
+                            tcs.SetResult(await asyncHandler(request));                        
                     });
 
                     return await tcs.Task;
                 }
                 else
-                    return await callback(request);
+                    return await asyncHandler(request);
             }
             catch (Exception e)
             {
-                throw e;
+                throw new ConcurrencyException();
             }
             finally
             {

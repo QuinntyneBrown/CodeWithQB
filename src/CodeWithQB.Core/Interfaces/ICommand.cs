@@ -2,7 +2,7 @@
 
 namespace CodeWithQB.Core.Interfaces
 {
-    public interface ICommandRequest<TResponse> 
+    public interface ICommand<TResponse> 
     {
         string Key { get; }        
         IEnumerable<string> SideEffects { get; }

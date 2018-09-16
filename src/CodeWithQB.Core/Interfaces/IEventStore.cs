@@ -12,6 +12,9 @@ namespace CodeWithQB.Core.Interfaces
         TAggregateRoot[] Query<TAggregateRoot>()
             where TAggregateRoot : AggregateRoot;
 
+        TAggregateRoot Load<TAggregateRoot>(Guid id)
+            where TAggregateRoot : AggregateRoot;
+
         ConcurrentDictionary<string, ConcurrentBag<AggregateRoot>> 
             UpdateState<TAggregateRoot>(Type type, TAggregateRoot aggregateRoot, Guid aggregateId)
             where TAggregateRoot : AggregateRoot;

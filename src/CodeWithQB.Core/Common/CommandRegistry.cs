@@ -9,27 +9,16 @@ using System.Threading.Tasks;
 
 namespace CodeWithQB.Core.Common
 {
-    public class CommandRequestRegistryChanged: ICommandRequestRegistryChanged
-    {
-        public CommandRequestRegistryChanged(string partition, string key)
-        {
-            Partition = partition;
-            Key = key;
-        }
-        public string Partition { get; set; }
-        public string Key { get; set; }
-    }
-
-    public class CommandRequestRegistry : ICommandRequestRegistry
+    public class CommandRegistry : ICommandRegistry
     {
         private readonly ConcurrentDictionary<string, IEnumerable<string>> _inner = new ConcurrentDictionary<string, IEnumerable<string>>();
-        private readonly Subject<ICommandRequestRegistryChanged> _subject = new Subject<ICommandRequestRegistryChanged>();
+        private readonly Subject<ICommandRegistryChanged> _subject = new Subject<ICommandRegistryChanged>();
 
         public async Task Clean(string partition, string key, CancellationToken cancellationToken = default(CancellationToken))
         {
             _inner.Remove($"{partition}-{key}", out IEnumerable<string> _);
 
-            _subject.OnNext(new CommandRequestRegistryChanged(partition, key));
+            _subject.OnNext(new CommandRegistryChanged(partition, key));
 
             await Task.CompletedTask;
         }
@@ -47,7 +36,7 @@ namespace CodeWithQB.Core.Common
             return await GetKeys(partition, key, sideEffects);
         }
 
-        public IDisposable Subscribe(Action<ICommandRequestRegistryChanged> onNext) => _subject.Subscribe(onNext);
+        public IDisposable Subscribe(Action<ICommandRegistryChanged> onNext) => _subject.Subscribe(onNext);
 
         private async Task<IEnumerable<string>> GetKeys(string partition, string key, IEnumerable<string> sideEffects)
         {

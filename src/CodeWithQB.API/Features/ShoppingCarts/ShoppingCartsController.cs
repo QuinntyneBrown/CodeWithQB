@@ -13,15 +13,15 @@ namespace CodeWithQB.API.Features.ShoppingCarts
     public class ShoppingCartsController
     {
         private readonly IMediator _mediator;
-        private readonly ICommandRequestProcessor _commandRequestProcessor;
-        public ShoppingCartsController(ICommandRequestProcessor commandRequestProcessor, IMediator mediator) {
-            _commandRequestProcessor = commandRequestProcessor;
+        private readonly ICommandPreProcessor _commandPreProcessor;
+        public ShoppingCartsController(ICommandPreProcessor commandPreProcessor, IMediator mediator) {
+            _commandPreProcessor = commandPreProcessor;
             _mediator = mediator;
         }
 
         [HttpPost("{shoppingCartId}/shoppingCartItem")]
         public async Task<ActionResult<CreateShoppingCartItemCommand.Response>> Create(CreateShoppingCartItemCommand.Request request)
-            => await _commandRequestProcessor.Process(request, x => _mediator.Send(x));
+            => await _commandPreProcessor.Process(request, x => _mediator.Send(x));
 
         [HttpPost]
         public async Task<ActionResult<CreateShoppingCartCommand.Response>> Create(CreateShoppingCartCommand.Request request)

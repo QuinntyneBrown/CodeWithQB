@@ -30,6 +30,11 @@ namespace UnitTests
             return await Task.FromResult(_state);
         }
 
+        public TAggregateRoot Load<TAggregateRoot>(Guid id) where TAggregateRoot : AggregateRoot
+        {
+            throw new NotImplementedException();
+        }
+
         public Task PersistStateAsync()
         {
             throw new NotImplementedException();

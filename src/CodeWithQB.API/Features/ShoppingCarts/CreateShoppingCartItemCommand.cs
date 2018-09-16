@@ -8,6 +8,7 @@ using System;
 using CodeWithQB.Core.Common;
 using System.Linq;
 using System.Collections.Generic;
+using CodeWithQB.Core.Exceptions;
 
 namespace CodeWithQB.API.Features.ShoppingCarts
 {
@@ -20,12 +21,10 @@ namespace CodeWithQB.API.Features.ShoppingCarts
             }
         }
 
-        public class Request : AuthenticatedRequest<Response>, ICommandRequest<Response> {
+        public class Request : AuthenticatedCommand<Response> {
             public Guid ShoppingCartId { get; set; }
             public Guid ProductId { get; set; }
-            public string Key { get; set; }
-            public string Partition { get; set; }
-            public IEnumerable<string> SideEffects { get; set; } = new List<string>();
+            public int Version { get; set; }
         }
 
         public class Response
@@ -43,6 +42,9 @@ namespace CodeWithQB.API.Features.ShoppingCarts
             {
                 var shoppingCart = _eventStore.Query<ShoppingCart>()
                     .SingleOrDefault(x => x.ShoppingCartId == request.ShoppingCartId && x.Status == ShoppingCartStatus.Shopping);
+
+                if (shoppingCart != null && shoppingCart.Version != request.Version)
+                    throw new ConcurrencyException();
 
                 if (shoppingCart == null) shoppingCart = new ShoppingCart(request.CurrentUserId);
                 
