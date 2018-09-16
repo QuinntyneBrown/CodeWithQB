@@ -21,12 +21,12 @@ namespace CodeWithQB.API.Features.ShoppingCarts
 
         public class Handler : IRequestHandler<Request, Response>
         {
-            public IEventStore _eventStore { get; set; }
-            public Handler(IEventStore eventStore) => _eventStore = eventStore;
+            private readonly IRepository _repository;
+            public Handler(IRepository repository) => _repository = repository;
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken) {
 
-                var shoppingCart = _eventStore.Query<ShoppingCart>()
+                var shoppingCart = _repository.Query<ShoppingCart>()
                     .SingleOrDefault(x => x.UserId == request.CurrentUserId && x.Status == ShoppingCartStatus.Shopping);
 
                 if (shoppingCart != null) return new Response() { ShoppingCart = ShoppingCartDto.FromShoppingCart(shoppingCart) };

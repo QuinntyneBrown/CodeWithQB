@@ -2,7 +2,6 @@ using CodeWithQB.Core.Common;
 using CodeWithQB.Core.DomainEvents;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CodeWithQB.Core.Models
 {
@@ -11,11 +10,11 @@ namespace CodeWithQB.Core.Models
         public ShoppingCart(Guid userId)
             => Apply(new ShoppingCartCreated(ShoppingCartId, userId));
 
-        public Guid ShoppingCartId { get; set; } = Guid.NewGuid(); 
-        public ICollection<Guid> ShoppingCartItemIds { get; set; }
+        public Guid ShoppingCartId { get; set; } = Guid.NewGuid();         
         public ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
         public Guid UserId { get; set; }
         public ShoppingCartStatus Status { get; set; }
+        public int Version { get; set; }
         public bool IsDeleted { get; set; }
 
         protected override void EnsureValidState()
@@ -41,14 +40,17 @@ namespace CodeWithQB.Core.Models
                     if (ShoppingCartItems.Contains(item))
                         throw new Exception();
 
-                    ShoppingCartItems.Add(item);                    
+                    ShoppingCartItems.Add(item);
+                    this.Version++;
                     break;
 
                 case ShoppingCartCheckedOut shoppingCartCheckedOut:
+                    this.Version++;
                     Status = ShoppingCartStatus.CheckedOut;
                     break;
 
                 case ShoppingCartRemoved shoppingCartRemoved:
+                    this.Version++;
                     IsDeleted = true;
                     break;
             }

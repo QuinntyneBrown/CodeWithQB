@@ -47,7 +47,8 @@ namespace CodeWithQB.API
                 {
                     context.Database.EnsureCreated();
                     var eventStore = scope.ServiceProvider.GetRequiredService<IEventStore>();
-                    AppInitializer.Seed(context, dateTime, eventStore,services);            
+                    var repository = scope.ServiceProvider.GetRequiredService<IRepository>();
+                    AppInitializer.Seed(context, dateTime, eventStore,services, repository);            
                 }
                 
                 if (args.Contains("stop"))

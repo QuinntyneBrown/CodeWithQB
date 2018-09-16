@@ -5,15 +5,12 @@ using CodeWithQB.Core.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json.Linq;
-using reactive.pipes;
-using reactive.pipes.Producers;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Threading.Tasks;
 using static CodeWithQB.Infrastructure.Data.DeserializedEventStore;
@@ -21,13 +18,13 @@ using static Newtonsoft.Json.JsonConvert;
 
 namespace CodeWithQB.Infrastructure.Data
 {
-
     public class EventStore : IEventStore
     {
         private readonly IConfiguration _configuration;
         private readonly IDateTime _dateTime;
         private readonly IBackgroundTaskQueue _queue;
         private readonly IServiceScopeFactory _serviceScopeFactory;
+        public Subject<EventStoreChanged> _subject = new Subject<EventStoreChanged>();
 
         public EventStore(
             IConfiguration configuration,
@@ -48,7 +45,7 @@ namespace CodeWithQB.Infrastructure.Data
 
         public async Task OnActivateAsync() {
 
-            Dictionary<string,IEnumerable<object>> state = await LoadStateAsync();
+            Dictionary<string,IEnumerable<object>> state = await GetStateAsync();
 
             if (state == null)
             {
@@ -80,7 +77,7 @@ namespace CodeWithQB.Infrastructure.Data
             await Task.CompletedTask;
         }
 
-        public async Task<Dictionary<string, IEnumerable<object>>> LoadStateAsync() {
+        public async Task<Dictionary<string, IEnumerable<object>>> GetStateAsync() {
 
             var dateTime = _configuration?.GetValue<DateTime>("ViewAt");
 
@@ -149,6 +146,7 @@ namespace CodeWithQB.Infrastructure.Data
                 {
                     StoredEventId = Guid.NewGuid(),
                     Aggregate = aggregate,
+                    AggregateDotNetType = aggregate.GetType().AssemblyQualifiedName,
                     Data = SerializeObject(@event),
                     StreamId = aggregateId,
                     DotNetType = @event.GetType().AssemblyQualifiedName,
@@ -174,7 +172,6 @@ namespace CodeWithQB.Infrastructure.Data
             }
 
             Aggregates.TryUpdate(type.AssemblyQualifiedName, newAggregates, orginalAggregates);
-
         }
 
         public ConcurrentDictionary<string, ConcurrentBag<AggregateRoot>> UpdateState<TAggregateRoot>(Type type, TAggregateRoot aggregateRoot,Guid aggregateId)
@@ -195,6 +192,17 @@ namespace CodeWithQB.Infrastructure.Data
             Aggregates.TryUpdate(type.AssemblyQualifiedName, newAggregates, orginalAggregates);
 
             return Aggregates;
+        }
+
+        public TAggregateRoot Load<TAggregateRoot>(Guid id)
+            where TAggregateRoot : AggregateRoot
+        {
+            var aggregate = (AggregateRoot)FormatterServices.GetUninitializedObject(Type.GetType(typeof(TAggregateRoot).AssemblyQualifiedName));
+
+            foreach(var @event in Get().Where(x => x.StreamId == id))
+                aggregate.Apply(@event.Data as DomainEvent);
+
+            return aggregate as TAggregateRoot;
         }
 
         public TAggregateRoot[] Query<TAggregateRoot>()
@@ -257,7 +265,7 @@ namespace CodeWithQB.Infrastructure.Data
         {
             Events.TryAdd(@event.StoredEventId, new DeserializedStoredEvent(@event));
             Persist(@event);
-            Next(new AggregateChanged() { AggregateId = @event.StreamId });            
+            _subject.OnNext(new EventStoreChanged(@event));
         }
 
         public void Persist(StoredEvent @event)
@@ -286,11 +294,7 @@ namespace CodeWithQB.Infrastructure.Data
             });
 
         }
-
-        public Hub Hub { get; set; } = new Hub();
         
-        public void Subscribe(IConsume<AggregateChanged> observer) => Hub.Subscribe(observer);
-        
-        public void Next(AggregateChanged message) => Hub.Publish(message);
+        public void Subscribe(Action<EventStoreChanged> onNext) => _subject.Subscribe(onNext);        
     }
 }

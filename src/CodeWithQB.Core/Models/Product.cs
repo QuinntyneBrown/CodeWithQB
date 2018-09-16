@@ -13,6 +13,8 @@ namespace CodeWithQB.Core.Models
         public string Name { get; set; }
         public string Description { get; set; }
         public float Price { get; set; }
+        public int Version { get; set; }
+
         public bool IsDeleted { get; set; }
 
         protected override void EnsureValidState()
@@ -44,6 +46,7 @@ namespace CodeWithQB.Core.Models
 
         public void Update(string name, string description)
             => Apply(new ProductUpdated(name, description));
+
 
         public void Remove()
             => Apply(new ProductRemoved());

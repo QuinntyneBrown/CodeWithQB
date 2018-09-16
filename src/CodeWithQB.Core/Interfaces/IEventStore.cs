@@ -1,8 +1,7 @@
 using CodeWithQB.Core.Common;
-using CodeWithQB.Core.DomainEvents;
-using reactive.pipes;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CodeWithQB.Core.Interfaces
@@ -13,12 +12,17 @@ namespace CodeWithQB.Core.Interfaces
         TAggregateRoot[] Query<TAggregateRoot>()
             where TAggregateRoot : AggregateRoot;
 
+        TAggregateRoot Load<TAggregateRoot>(Guid id)
+            where TAggregateRoot : AggregateRoot;
+
         ConcurrentDictionary<string, ConcurrentBag<AggregateRoot>> 
             UpdateState<TAggregateRoot>(Type type, TAggregateRoot aggregateRoot, Guid aggregateId)
             where TAggregateRoot : AggregateRoot;
 
         Task PersistStateAsync();
 
-        void Subscribe(IConsume<AggregateChanged> observer);
+        void Subscribe(Action<EventStoreChanged> onNext);
+
+        Task<Dictionary<string, IEnumerable<object>>> GetStateAsync();
     }
 }
