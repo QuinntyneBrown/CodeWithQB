@@ -18,7 +18,12 @@ namespace CodeWithQB.API
 {
     public class AppInitializer: IDesignTimeDbContextFactory<AppDbContext>
     {
-        public static void Seed(AppDbContext context, IDateTime dateTime, IEventStore eventStore, IServiceScopeFactory services, IRepository repository)
+        public static void Seed(
+            AppDbContext context, 
+            IDateTime dateTime, 
+            IEventStore eventStore, 
+            IServiceScopeFactory services, 
+            IRepository repository)
         {
             CardConfiguration.Seed(context, dateTime, eventStore, repository);
             RoleConfiguration.Seed(context, dateTime, eventStore, repository);

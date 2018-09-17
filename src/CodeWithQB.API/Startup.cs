@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using CodeWithQB.Core.Common;
 using System;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace CodeWithQB.API
 {
@@ -65,8 +67,9 @@ namespace CodeWithQB.API
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "CodeWithQB API");
                     options.RoutePrefix = string.Empty;
                 });
-        }        
+
+            if (Configuration.GetValue<bool>("isCI"))
+                new Timer((Object stateInfo) => Environment.Exit(0), null, 1000, 1000);
+        }
     }
-
-
 }
