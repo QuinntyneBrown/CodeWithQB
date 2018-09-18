@@ -1,5 +1,6 @@
 ﻿using CodeWithQB.Core.Common;
 using CodeWithQB.Core.Interfaces;
+using CodeWithQB.Core.Models;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -30,7 +31,12 @@ namespace UnitTests
             return await Task.FromResult(_state);
         }
 
-        public TAggregateRoot Load<TAggregateRoot>(Guid id) where TAggregateRoot : AggregateRoot
+        public Task<IEnumerable<StoredEvent>> GetStoredEvents()
+        {
+            throw new NotImplementedException();
+        }
+
+        public TAggregateRoot Load<TAggregateRoot>(Guid id) where TAggregateRoot : Entity
         {
             throw new NotImplementedException();
         }
@@ -40,12 +46,12 @@ namespace UnitTests
             throw new NotImplementedException();
         }
 
-        public TAggregateRoot[] Query<TAggregateRoot>() where TAggregateRoot : AggregateRoot
+        public TAggregateRoot[] Query<TAggregateRoot>() where TAggregateRoot : Entity
         {
             throw new NotImplementedException();
         }
 
-        public void Save(AggregateRoot aggregateRoot)
+        public void Save(Entity aggregateRoot)
         {
             throw new NotImplementedException();
         }
@@ -55,7 +61,7 @@ namespace UnitTests
             _subject.Subscribe(onNext);
         }
 
-        public ConcurrentDictionary<string, ConcurrentBag<AggregateRoot>> UpdateState<TAggregateRoot>(Type type, TAggregateRoot aggregateRoot, Guid aggregateId) where TAggregateRoot : AggregateRoot
+        public ConcurrentDictionary<string, ConcurrentBag<Entity>> UpdateState<TAggregateRoot>(Type type, TAggregateRoot aggregateRoot, Guid aggregateId) where TAggregateRoot : Entity
         {
             throw new NotImplementedException();
         }

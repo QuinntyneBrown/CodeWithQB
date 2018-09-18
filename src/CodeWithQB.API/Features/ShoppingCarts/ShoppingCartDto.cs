@@ -8,11 +8,13 @@ namespace CodeWithQB.API.Features.ShoppingCarts
     public class ShoppingCartDto
     {        
         public Guid ShoppingCartId { get; set; }
+        public int Version { get; set; }
         public ICollection<ShoppingCartItemDto> ShoppingCartItems { get; set; }
         public static ShoppingCartDto FromShoppingCart(ShoppingCart shoppingCart)
             => new ShoppingCartDto
             {
                 ShoppingCartId = shoppingCart.ShoppingCartId,
+                Version = shoppingCart.Version,
                 ShoppingCartItems = shoppingCart.ShoppingCartItems.Select(x => ShoppingCartItemDto.FromModel(x)).ToList()              
             };
     }

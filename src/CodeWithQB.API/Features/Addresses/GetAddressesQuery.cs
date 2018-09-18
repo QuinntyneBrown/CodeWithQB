@@ -19,14 +19,14 @@ namespace CodeWithQB.API.Features.Addresses
 
         public class Handler : IRequestHandler<Request, Response>
         {
-            private readonly IEventStore _eventStore;
+            private readonly IRepository _repository;
 
-            public Handler(IEventStore eventStore) => _eventStore = eventStore;
+            public Handler(IRepository repository) => _repository = repository;
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
                 => Task.FromResult(new Response()
                 {
-                    Addresses = _eventStore.Query<Address>().Select(x => AddressDto.FromAddress(x)).ToList()
+                    Addresses = _repository.Query<Address>().Select(x => AddressDto.FromAddress(x)).ToList()
                 });
         }
     }

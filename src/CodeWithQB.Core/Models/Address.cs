@@ -4,7 +4,7 @@ using System;
 
 namespace CodeWithQB.Core.Models
 {
-    public class Address: AggregateRoot
+    public class Address: Entity
     {
         public Address(string name)
             => Apply(new AddressCreated(AddressId,name));
@@ -18,7 +18,7 @@ namespace CodeWithQB.Core.Models
             
         }
 
-        protected override void When(DomainEvent @event)
+        protected override void When(object @event)
         {
             switch (@event)
             {

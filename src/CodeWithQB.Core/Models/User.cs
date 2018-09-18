@@ -6,12 +6,12 @@ using System.Linq;
 
 namespace CodeWithQB.Core.Models
 {
-    public class User: AggregateRoot
+    public class User: Entity
     {
         public User(string username, byte[] salt, string password) 
             => Apply(new UserCreated(UserId, username,salt,password));
 
-        protected override void When(DomainEvent @event)
+        protected override void When(object @event)
         {
             switch (@event)
             {

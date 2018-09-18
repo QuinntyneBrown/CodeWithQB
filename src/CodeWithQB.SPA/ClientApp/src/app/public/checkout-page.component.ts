@@ -5,6 +5,8 @@ import { Router } from "@angular/router";
 import { switchMap, map } from "rxjs/operators";
 import { Product } from "../products/product.model";
 import { ProductService } from "../products/product.service";
+import { LocalStorageService } from "../core/local-storage.service";
+import { shoppingCartInfoKey } from "../core/constants";
 
 @Component({
   templateUrl: "./checkout-page.component.html",
@@ -13,6 +15,7 @@ import { ProductService } from "../products/product.service";
 })
 export class CheckoutPageComponent { 
   constructor(
+    private _localStorageService: LocalStorageService,
     private _productService: ProductService,
     private _shoppingCartService: ShoppingCartService,
     private _router: Router
@@ -35,10 +38,14 @@ export class CheckoutPageComponent {
   }
 
   public checkout() {
-    this._shoppingCartService
-      .checkout()
-      .pipe(switchMap(() => this._shoppingCartService.getCurrentCart().pipe(map(x => this.shoppingCart$.next(x)))))
-      .subscribe(() => this._router.navigateByUrl("/"));    
+
+    this._localStorageService.put({ name: shoppingCartInfoKey, value: null });
+
+    this._router.navigateByUrl("/");
+    //this._shoppingCartService
+    //  .checkout()
+    //  .pipe(switchMap(() => this._shoppingCartService.getCurrentCart().pipe(map(x => this.shoppingCart$.next(x)))))
+    //  .subscribe(() => this._router.navigateByUrl("/"));    
   }
 
   public products$: BehaviorSubject<Product[]> = new BehaviorSubject([]);

@@ -1,7 +1,7 @@
 import { Component } from "@angular/core";
 import { Subject, Observable, BehaviorSubject } from "rxjs";
 import { AuthService } from "./core/auth.service";
-import { usernameKey, accessTokenKey } from "./core/constants";
+import { usernameKey, accessTokenKey, shoppingCartInfoKey } from "./core/constants";
 import { LocalStorageService } from "./core/local-storage.service";
 import { ShoppingCartService } from "./shopping-carts/shopping-cart.service";
 import { ShoppingCart } from "./shopping-carts/shopping-cart.model";
@@ -26,10 +26,16 @@ export class PublicMasterPageComponent {
   }
 
   ngOnInit() {
-    if (this.accessToken) {      
-      this._shoppingCartService.getCurrentCart()
-        .pipe(map(x => this.shoppingCart$.next(x)), takeUntil(this.onDestroy))
-        .subscribe();
+    if (this.accessToken) {
+      var shoppingCartInfo = JSON.parse(this._localStorageService.get({ name: shoppingCartInfoKey }));
+
+      if (shoppingCartInfo) {
+        alert(shoppingCartInfo.version);
+
+        this._shoppingCartService.getById({ shoppingCartId: shoppingCartInfo.shoppingCartId })
+          .pipe(map(x => this.shoppingCart$.next(x)), takeUntil(this.onDestroy))
+          .subscribe();
+      }
     }
   }
 

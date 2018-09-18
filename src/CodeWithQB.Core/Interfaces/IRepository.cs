@@ -6,11 +6,11 @@ namespace CodeWithQB.Core.Interfaces
 {
     public interface IRepository
     {
-        TAggregateRoot[] Query<TAggregateRoot>() where TAggregateRoot : AggregateRoot;
+        TAggregateRoot[] Query<TAggregateRoot>() where TAggregateRoot : Entity;
 
-        TAggregateRoot Query<TAggregateRoot>(Guid id) where TAggregateRoot : AggregateRoot;
+        TAggregateRoot Query<TAggregateRoot>(Guid id) where TAggregateRoot : Entity;
 
-        TAggregateRoot[] Query<TAggregateRoot>(IEnumerable<Guid> ids) where TAggregateRoot : AggregateRoot;
+        TAggregateRoot[] Query<TAggregateRoot>(IEnumerable<Guid> ids) where TAggregateRoot : Entity;
 
         void OnNext(EventStoreChanged onNext);
     }

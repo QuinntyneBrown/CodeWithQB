@@ -4,7 +4,7 @@ using System;
 
 namespace CodeWithQB.Core.Models
 {
-    public class NotificationTemplate: AggregateRoot
+    public class NotificationTemplate: Entity
     {
         public NotificationTemplate(string name)
             => Apply(new NotificationTemplateCreated(NotificationTemplateId,name));
@@ -18,7 +18,7 @@ namespace CodeWithQB.Core.Models
             
         }
 
-        protected override void When(DomainEvent @event)
+        protected override void When(object @event)
         {
             switch (@event)
             {

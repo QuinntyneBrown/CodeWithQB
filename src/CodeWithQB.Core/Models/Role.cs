@@ -4,7 +4,7 @@ using System;
 
 namespace CodeWithQB.Core.Models
 {
-    public class Role: AggregateRoot
+    public class Role: Entity
     {
         public Role(string name)
             => Apply(new RoleCreated(RoleId,name));
@@ -18,7 +18,7 @@ namespace CodeWithQB.Core.Models
             
         }
 
-        protected override void When(DomainEvent @event)
+        protected override void When(object @event)
         {
             switch (@event)
             {

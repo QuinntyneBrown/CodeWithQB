@@ -19,14 +19,14 @@ namespace CodeWithQB.API.Features.Dashboards
 
         public class Handler : IRequestHandler<Request, Response>
         {
-            private readonly IEventStore _eventStore;
+            private readonly IRepository _repository;
 
-            public Handler(IEventStore eventStore) => _eventStore = eventStore;
+            public Handler(IRepository repository) => _repository = repository;
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
                 => Task.FromResult(new Response()
                 {
-                    Dashboards = _eventStore.Query<Dashboard>().Select(x => DashboardDto.FromDashboard(x)).ToList()
+                    Dashboards = _repository.Query<Dashboard>().Select(x => DashboardDto.FromDashboard(x)).ToList()
                 });
         }
     }

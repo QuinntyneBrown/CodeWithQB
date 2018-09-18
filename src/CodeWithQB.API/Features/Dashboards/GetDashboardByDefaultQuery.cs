@@ -22,14 +22,16 @@ namespace CodeWithQB.API.Features.Dashboards
 
         public class Handler : IRequestHandler<Request, Response>
         {
-            private readonly IEventStore _eventStore;
-            public Handler(IEventStore eventStore) => _eventStore = eventStore;
+
+            private readonly IRepository _repository;
+
+            public Handler(IRepository repository) => _repository = repository;
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var dashboards = _eventStore.Query<Dashboard>().ToList();
+                var dashboards = _repository.Query<Dashboard>().ToList();
 
-                var dashboard = _eventStore.Query<Dashboard>()
+                var dashboard = _repository.Query<Dashboard>()
                     .Single(x => x.Name == "Default" && x.UserId == request.CurrentUserId);
 
                 var dashboardDto = DashboardDto.FromDashboard(dashboard);
@@ -38,8 +40,8 @@ namespace CodeWithQB.API.Features.Dashboards
 
                 foreach(var dashboardCardId in dashboard.DashboardCardIds)
                 {
-                    var dashboardCardDto = DashboardCardDto.FromDashboardCard(_eventStore.Query<DashboardCard>().Single(x => x.DashboardCardId == dashboardCardId));
-                    dashboardCardDto.Card = CardDto.FromCard(_eventStore.Query<Card>().Single(x => x.CardId == dashboardCardDto.CardId));                    
+                    var dashboardCardDto = DashboardCardDto.FromDashboardCard(_repository.Query<DashboardCard>(dashboardCardId));
+                    dashboardCardDto.Card = CardDto.FromCard(_repository.Query<Card>(dashboardCardDto.CardId));                    
                     dashboardCardDtos.Add(dashboardCardDto);
                 }
                        

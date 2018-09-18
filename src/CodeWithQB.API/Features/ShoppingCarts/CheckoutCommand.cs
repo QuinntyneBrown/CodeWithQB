@@ -11,7 +11,9 @@ namespace CodeWithQB.API.Features.ShoppingCarts
 {
     public class CheckoutCommand
     {
-        public class Request : AuthenticatedRequest<Response> { }
+        public class Request : AuthenticatedRequest<Response> {
+            public Guid ShoppingCartId { get; set; }
+        }
 
         public class Response
         {
@@ -25,8 +27,10 @@ namespace CodeWithQB.API.Features.ShoppingCarts
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken) {
 
-                var shoppingCart = _eventStore.Query<ShoppingCart>()
-                    .SingleOrDefault(x => x.UserId == request.CurrentUserId && x.Status == ShoppingCartStatus.Shopping);
+                var shoppingCart = _eventStore.Load<ShoppingCart>(request.ShoppingCartId);
+
+                if (shoppingCart.Status != ShoppingCartStatus.Shopping)
+                    throw new Exception();
 
                 shoppingCart.Checkout();
                 

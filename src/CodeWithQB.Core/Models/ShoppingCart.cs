@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace CodeWithQB.Core.Models
 {
-    public class ShoppingCart: AggregateRoot
+    public class ShoppingCart: Entity
     {
         public ShoppingCart(Guid userId)
             => Apply(new ShoppingCartCreated(ShoppingCartId, userId));
@@ -22,7 +22,7 @@ namespace CodeWithQB.Core.Models
 
         }
 
-        protected override void When(DomainEvent @event)
+        protected override void When(object @event)
         {
             switch (@event)
             {
@@ -33,24 +33,19 @@ namespace CodeWithQB.Core.Models
                     ShoppingCartItems = new List<ShoppingCartItem>();
                     break;
 
-                case ShoppingCartItemAdded shoppingCartItemAdded:
-                    
+                case ShoppingCartItemAdded shoppingCartItemAdded:                    
                     var item = new ShoppingCartItem(ShoppingCartId, shoppingCartItemAdded.ProductId, 1);
-
-                    if (ShoppingCartItems.Contains(item))
-                        throw new Exception();
-
                     ShoppingCartItems.Add(item);
-                    this.Version++;
+                    Version++;
                     break;
 
                 case ShoppingCartCheckedOut shoppingCartCheckedOut:
-                    this.Version++;
+                    Version++;
                     Status = ShoppingCartStatus.CheckedOut;
                     break;
 
                 case ShoppingCartRemoved shoppingCartRemoved:
-                    this.Version++;
+                    Version++;
                     IsDeleted = true;
                     break;
             }

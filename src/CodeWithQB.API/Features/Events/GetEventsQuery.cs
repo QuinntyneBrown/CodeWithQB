@@ -19,14 +19,14 @@ namespace CodeWithQB.API.Features.Events
 
         public class Handler : IRequestHandler<Request, Response>
         {
-            private readonly IEventStore _eventStore;
+            private readonly IRepository _repository;
 
-            public Handler(IEventStore eventStore) => _eventStore = eventStore;
+            public Handler(IRepository repository) => _repository = repository;
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
                 => Task.FromResult(new Response()
                 {
-                    Events = _eventStore.Query<Event>().Select(x => EventDto.FromEvent(x)).ToList()
+                    Events = _repository.Query<Event>().Select(x => EventDto.FromEvent(x)).ToList()
                 });
         }
     }

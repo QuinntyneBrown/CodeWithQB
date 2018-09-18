@@ -8,4 +8,4 @@ export const signalRConnectionIdKey = 'signalRConnectionIdKey';
 export const userIdKey = 'userIdKey';
 export const rolesKey = 'rolesKey';
 export const usernameKey = 'usernameKey';
-export const shoppingCartIdKey = 'shoppingCartIdKey';
+export const shoppingCartInfoKey = 'shoppingCartIdKey';

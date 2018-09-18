@@ -32,7 +32,7 @@ namespace CodeWithQB.API.Features.Products
 
             public Task Handle(Request request, CancellationToken cancellationToken)
             {
-                var product = _eventStore.Query<Product>().Single(x => x.ProductId == request.ProductId);
+                var product = _eventStore.Load<Product>(request.ProductId);
 
                 product.Remove();
                 

@@ -1,9 +1,9 @@
-<section *ngIf="!(shoppingCart$ | async)">
+<!--<section *ngIf="!(shoppingCart$ | async)">
   <h2>No Items in Shopping Cart</h2>
-</section>
+</section>-->
 
-<section *ngIf="(shoppingCart$ | async)">
-
+<!--<section *ngIf="(shoppingCart$ | async)">-->
+<section>
   <ul>
     <li *ngFor="let product of (products$ | async)">
       {{ product.name }}

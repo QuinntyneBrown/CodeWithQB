@@ -30,14 +30,14 @@ namespace CodeWithQB.API.Features.Roles
 
         public class Handler : IRequestHandler<Request, Response>
         {
-            private readonly IEventStore _eventStore;
-            
-            public Handler(IEventStore eventStore) => _eventStore = eventStore;
+            private readonly IRepository _repository;
+
+            public Handler(IRepository repository) => _repository = repository;
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
                  => Task.FromResult(new Response()
                 {
-                    Role = RoleDto.FromRole(_eventStore.Query<Role>().Single(x => x.RoleId == request.RoleId))
+                    Role = RoleDto.FromRole(_repository.Query<Role>().Single(x => x.RoleId == request.RoleId))
                 });
         }
     }

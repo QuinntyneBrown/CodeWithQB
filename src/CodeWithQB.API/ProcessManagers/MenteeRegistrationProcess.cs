@@ -25,27 +25,27 @@ namespace CodeWithQB.API.ProcessManagers
 
         public async Task Handle(MenteeRegistrationRequested notification, CancellationToken cancellationToken)
         {
-            var user = _eventStore.Query<User>().Single(x => x.Username == notification.EmailAddress);
+            //var user = _eventStore.Query<User>().Single(x => x.Username == notification.EmailAddress);
 
-            var salt = new byte[128 / 8];
+            //var salt = new byte[128 / 8];
 
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(salt);
-            }
+            //using (var rng = RandomNumberGenerator.Create())
+            //{
+            //    rng.GetBytes(salt);
+            //}
 
-            if (user == null)
-                user = new User(notification.EmailAddress,salt,_passwordHasher.HashPassword(salt,notification.Password));
+            //if (user == null)
+            //    user = new User(notification.EmailAddress,salt,_passwordHasher.HashPassword(salt,notification.Password));
 
-            var role = _eventStore.Query<Role>().Single(x => x.Name == "Mentee");
+            //var role = _eventStore.Query<Role>().Single(x => x.Name == "Mentee");
 
-            user.AddRole(role.RoleId);
+            //user.AddRole(role.RoleId);
 
-            _eventStore.Save(user);
+            //_eventStore.Save(user);
 
-            var dashboard = new Dashboard("Default", user.UserId);
+            //var dashboard = new Dashboard("Default", user.UserId);
 
-            _eventStore.Save(dashboard);
+            //_eventStore.Save(dashboard);
 
             await Task.CompletedTask;
         }

@@ -30,14 +30,14 @@ namespace CodeWithQB.API.Features.Products
 
         public class Handler : IRequestHandler<Request, Response>
         {
-            private readonly IEventStore _eventStore;
-            
-            public Handler(IEventStore eventStore) => _eventStore = eventStore;
+            private readonly IRepository _repository;
+
+            public Handler(IRepository repository) => _repository = repository;
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
                  => Task.FromResult(new Response()
                 {
-                    Product = ProductDto.FromProduct(_eventStore.Query<Product>().Single(x => x.ProductId == request.ProductId))
+                    Product = ProductDto.FromProduct(_repository.Query<Product>().Single(x => x.ProductId == request.ProductId))
                 });
         }
     }

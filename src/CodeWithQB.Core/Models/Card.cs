@@ -4,7 +4,7 @@ using System;
 
 namespace CodeWithQB.Core.Models
 {
-    public class Card: AggregateRoot
+    public class Card: Entity
     {
         public Card(string name)
             => Apply(new CardCreated(name,CardId));
@@ -18,7 +18,7 @@ namespace CodeWithQB.Core.Models
             
         }
 
-        protected override void When(DomainEvent @event)
+        protected override void When(object @event)
         {
             switch (@event)
             {

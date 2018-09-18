@@ -32,7 +32,7 @@ namespace CodeWithQB.API.Features.Addresses
 
             public Task Handle(Request request, CancellationToken cancellationToken)
             {
-                var address = _eventStore.Query<Address>().Single(x => x.AddressId == request.AddressId);
+                var address = _eventStore.Load<Address>(request.AddressId);
 
                 address.Remove();
                 

@@ -39,7 +39,7 @@ namespace CodeWithQB.API.Features.DashboardCards
 
                 _eventStore.Save(dashboardCard);
 
-                var dashboard = _eventStore.Query<Dashboard>().Single(x => x.DashboardId == request.DashboardCard.DashboardId);
+                var dashboard = _eventStore.Load<Dashboard>(request.DashboardCard.DashboardId);
 
                 dashboard.AddDashboardCard(dashboardCard.DashboardCardId);
 

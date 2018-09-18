@@ -50,7 +50,7 @@ namespace CodeWithQB.API
                 .AddMediatR(typeof(Startup).Assembly);
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IBackgroundTaskQueue queue)
         {
             var repository = app.ApplicationServices.GetRequiredService<IRepository>() as IRepository;
 
@@ -69,7 +69,8 @@ namespace CodeWithQB.API
                 });
 
             if (Configuration.GetValue<bool>("isCI"))
-                new Timer((Object stateInfo) => Environment.Exit(0), null, 1000, 1000);
+                new Timer((Object stateInfo) => { Environment.Exit(0); }, null, 1000, 1000);
+
         }
     }
 }

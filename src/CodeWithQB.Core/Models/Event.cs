@@ -4,7 +4,7 @@ using System;
 
 namespace CodeWithQB.Core.Models
 {
-    public class Event: AggregateRoot
+    public class Event: Entity
     {
         public Event(string name)
             => Apply(new EventCreated(EventId,name));
@@ -19,7 +19,7 @@ namespace CodeWithQB.Core.Models
             
         }
 
-        protected override void When(DomainEvent @event)
+        protected override void When(object @event)
         {
             switch (@event)
             {

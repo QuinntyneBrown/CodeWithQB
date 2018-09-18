@@ -35,8 +35,7 @@ namespace CodeWithQB.API.Features.DashboardCards
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var dashboardCard = _eventStore.Query<DashboardCard>()
-                    .Single(x => x.DashboardCardId == request.DashboardCard.DashboardCardId);
+                var dashboardCard = _eventStore.Load<DashboardCard>(request.DashboardCard.DashboardCardId);
 
                 dashboardCard.UpdateOptions(
                     request.DashboardCard.Options.Top,

@@ -27,7 +27,7 @@ namespace IntegrationTests.Features
                         }
                     });
 
-                var entity = eventStore.Query<ShoppingCart>().Single(x => x.ShoppingCartId == response.ShoppingCartId);
+                var entity = eventStore.Load<ShoppingCart>(response.ShoppingCartId);
 
                 Assert.True(entity.ShoppingCartId == response.ShoppingCartId);
             }
@@ -40,9 +40,11 @@ namespace IntegrationTests.Features
             using (var server = CreateServer())
             {
                 IEventStore eventStore = server.Host.Services.GetService(typeof(IEventStore)) as IEventStore;
+                IRepository repository = server.Host.Services.GetService(typeof(IRepository)) as IRepository;
+
                 var client = server.CreateClient();
 
-                var product = eventStore.Query<Product>().First();
+                var product = repository.Query<Product>().First();
 
                 var response = await client
                     .PostAsAsync<CreateShoppingCartItemCommand.Request, CreateShoppingCartItemCommand.Response>(Post.ShoppingCartItem(default(Guid)), new CreateShoppingCartItemCommand.Request()
@@ -65,10 +67,11 @@ namespace IntegrationTests.Features
         {
             using (var server = CreateServer())
             {
-                IEventStore eventStore = server.Host.Services.GetService(typeof(IEventStore)) as IEventStore;
+                IRepository repository = server.Host.Services.GetService(typeof(IRepository)) as IRepository;
+
                 var client = server.CreateClient();
 
-                var product = eventStore.Query<Product>().First();
+                var product = repository.Query<Product>().First();
 
                 var response = await client
                     .PostAsAsync<CreateShoppingCartItemCommand.Request, CreateShoppingCartItemCommand.Response>(Post.ShoppingCartItem(default(Guid)), new CreateShoppingCartItemCommand.Request()

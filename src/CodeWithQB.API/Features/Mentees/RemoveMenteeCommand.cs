@@ -32,7 +32,7 @@ namespace CodeWithQB.API.Features.Mentees
 
             public Task Handle(Request request, CancellationToken cancellationToken)
             {
-                var mentee = _eventStore.Query<Mentee>().Single(x => x.MenteeId == request.MenteeId);
+                var mentee = _eventStore.Load<Mentee>(request.MenteeId);
 
                 mentee.Remove();
                 

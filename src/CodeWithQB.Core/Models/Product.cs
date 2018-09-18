@@ -4,7 +4,7 @@ using System;
 
 namespace CodeWithQB.Core.Models
 {
-    public class Product: AggregateRoot
+    public class Product: Entity
     {
         public Product(string name, float price, string description)
             => Apply(new ProductCreated(ProductId,name, price, description));
@@ -22,7 +22,7 @@ namespace CodeWithQB.Core.Models
             
         }
 
-        protected override void When(DomainEvent @event)
+        protected override void When(object @event)
         {
             switch (@event)
             {

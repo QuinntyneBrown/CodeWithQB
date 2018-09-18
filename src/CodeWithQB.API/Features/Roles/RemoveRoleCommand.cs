@@ -32,7 +32,7 @@ namespace CodeWithQB.API.Features.Roles
 
             public Task Handle(Request request, CancellationToken cancellationToken)
             {
-                var role = _eventStore.Query<Role>().Single(x => x.RoleId == request.RoleId);
+                var role = _eventStore.Load<Role>(request.RoleId);
 
                 role.Remove();
                 

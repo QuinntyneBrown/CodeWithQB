@@ -30,14 +30,14 @@ namespace CodeWithQB.API.Features.Mentees
 
         public class Handler : IRequestHandler<Request, Response>
         {
-            private readonly IEventStore _eventStore;
-            
-            public Handler(IEventStore eventStore) => _eventStore = eventStore;
+            private readonly IRepository _repository;
+
+            public Handler(IRepository repository) => _repository = repository;
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
                  => Task.FromResult(new Response()
                 {
-                    Mentee = MenteeDto.FromMentee(_eventStore.Query<Mentee>().Single(x => x.MenteeId == request.MenteeId))
+                    Mentee = MenteeDto.FromMentee(_repository.Query<Mentee>().Single(x => x.MenteeId == request.MenteeId))
                 });
         }
     }

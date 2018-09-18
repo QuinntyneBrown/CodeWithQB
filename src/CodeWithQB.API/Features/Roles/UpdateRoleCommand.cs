@@ -35,7 +35,7 @@ namespace CodeWithQB.API.Features.Roles
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var role = _eventStore.Query<Role>().Single(x => x.RoleId == request.Role.RoleId);
+                var role = _eventStore.Load<Role>(request.Role.RoleId);
 
                 role.ChangeName(request.Role.Name);
 

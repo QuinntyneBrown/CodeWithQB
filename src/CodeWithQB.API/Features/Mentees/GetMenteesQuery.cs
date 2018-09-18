@@ -19,14 +19,14 @@ namespace CodeWithQB.API.Features.Mentees
 
         public class Handler : IRequestHandler<Request, Response>
         {
-            private readonly IEventStore _eventStore;
+            private readonly IRepository _repository;
 
-            public Handler(IEventStore eventStore) => _eventStore = eventStore;
+            public Handler(IRepository repository) => _repository = repository;
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
                 => Task.FromResult(new Response()
                 {
-                    Mentees = _eventStore.Query<Mentee>().Select(x => MenteeDto.FromMentee(x)).ToList()
+                    Mentees = _repository.Query<Mentee>().Select(x => MenteeDto.FromMentee(x)).ToList()
                 });
         }
     }

@@ -1,28 +1,20 @@
 using CodeWithQB.Core.Common;
+using CodeWithQB.Core.Models;
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace CodeWithQB.Core.Interfaces
 {
-    public interface IEventStore : IDisposable
+    public interface IEventStore 
     {
-        void Save(AggregateRoot aggregateRoot);
-        TAggregateRoot[] Query<TAggregateRoot>()
-            where TAggregateRoot : AggregateRoot;
+        void Save(Entity aggregateRoot);
 
         TAggregateRoot Load<TAggregateRoot>(Guid id)
-            where TAggregateRoot : AggregateRoot;
-
-        ConcurrentDictionary<string, ConcurrentBag<AggregateRoot>> 
-            UpdateState<TAggregateRoot>(Type type, TAggregateRoot aggregateRoot, Guid aggregateId)
-            where TAggregateRoot : AggregateRoot;
-
-        Task PersistStateAsync();
+            where TAggregateRoot : Entity;
 
         void Subscribe(Action<EventStoreChanged> onNext);
 
-        Task<Dictionary<string, IEnumerable<object>>> GetStateAsync();
+        Task<IEnumerable<StoredEvent>> GetStoredEvents();
     }
 }

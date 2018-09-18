@@ -33,7 +33,7 @@ namespace CodeWithQB.API.Features.Dashboards
 
             public Task Handle(Request request, CancellationToken cancellationToken)
             {
-                var dashboard = _eventStore.Query<Dashboard>().Single(x => x.DashboardId == request.DashboardId);
+                var dashboard = _eventStore.Load<Dashboard>(request.DashboardId);
 
                 dashboard.Remove();
                 

@@ -7,6 +7,7 @@ namespace CodeWithQB.Core.Models
         public Guid SnapshotId { get; set; }
         public DateTime AsOfDateTime { get; set; }
         public string Data { get; set; }
+        public int Sequence { get; set; }
     }
 }
 

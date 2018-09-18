@@ -1,18 +1,23 @@
-using MediatR;
-using System;
 using System.Collections.Generic;
 
 namespace CodeWithQB.Core.Common
 {
-    public class Entity
+    public abstract class Entity
     {
-        public Entity() => _domainEvents = new List<INotification>();
-        public DateTime CreatedOn { get; set; }
-        public DateTime LastModifiedOn { get; set; }
-        public bool IsDeleted { get; set; }
-        private List<INotification> _domainEvents;
-        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents.AsReadOnly();
-        public void RaiseDomainEvent(INotification eventItem) => _domainEvents.Add(eventItem);
-        public void ClearEvents() => _domainEvents.Clear();
+        private List<object> _events;
+        public IReadOnlyCollection<object> DomainEvents => _events.AsReadOnly();
+        public void RaiseDomainEvent(object @event) {
+            _events = _events ?? new List<object>();
+            _events.Add(@event);
+        }
+        public void ClearChanges() => _events.Clear();
+        public void Apply(object @event)
+        {
+            When(@event);
+            EnsureValidState();
+            RaiseDomainEvent(@event);
+        }
+        protected abstract void When(object @event);
+        protected abstract void EnsureValidState();
     }
 }

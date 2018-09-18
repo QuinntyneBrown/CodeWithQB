@@ -30,14 +30,14 @@ namespace CodeWithQB.API.Features.Cards
 
         public class Handler : IRequestHandler<Request, Response>
         {
-            private readonly IEventStore _eventStore;
-            
-            public Handler(IEventStore eventStore) => _eventStore = eventStore;
+            private readonly IRepository _repository;
+
+            public Handler(IRepository repository) => _repository = repository;
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
                  => Task.FromResult(new Response()
                 {
-                    Card = CardDto.FromCard(_eventStore.Query<Card>().Single(x=>x.CardId == request.CardId))
+                    Card = CardDto.FromCard(_repository.Query<Card>().Single(x=>x.CardId == request.CardId))
                 });
         }
     }

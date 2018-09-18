@@ -35,7 +35,7 @@ namespace CodeWithQB.API.Features.Addresses
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var address = _eventStore.Query<Address>().Single(x => x.AddressId == request.Address.AddressId);
+                var address = _eventStore.Load<Address>(request.Address.AddressId);
 
                 address.ChangeName(request.Address.Name);
 

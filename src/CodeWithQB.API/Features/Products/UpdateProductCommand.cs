@@ -35,7 +35,7 @@ namespace CodeWithQB.API.Features.Products
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var product = _eventStore.Query<Product>().Single(x => x.ProductId == request.Product.ProductId);
+                var product = _eventStore.Load<Product>(request.Product.ProductId);
 
                 product.Update(request.Product.Name, request.Product.Description);
 

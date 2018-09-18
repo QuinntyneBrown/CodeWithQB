@@ -1,14 +1,12 @@
+using CodeWithQB.Core.Common;
+using CodeWithQB.Core.Exceptions;
 using CodeWithQB.Core.Interfaces;
 using CodeWithQB.Core.Models;
 using FluentValidation;
 using MediatR;
-using System.Threading.Tasks;
-using System.Threading;
 using System;
-using CodeWithQB.Core.Common;
-using System.Linq;
-using System.Collections.Generic;
-using CodeWithQB.Core.Exceptions;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CodeWithQB.API.Features.ShoppingCarts
 {
@@ -30,6 +28,7 @@ namespace CodeWithQB.API.Features.ShoppingCarts
         public class Response
         {
             public Guid ShoppingCartId { get; set; }
+            public int Version { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -40,20 +39,24 @@ namespace CodeWithQB.API.Features.ShoppingCarts
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var shoppingCart = _eventStore.Query<ShoppingCart>()
-                    .SingleOrDefault(x => x.ShoppingCartId == request.ShoppingCartId && x.Status == ShoppingCartStatus.Shopping);
+                var shoppingCart = _eventStore.Load<ShoppingCart>(request.ShoppingCartId);
+
+                if (request.ShoppingCartId == null)
+                    shoppingCart = new ShoppingCart(request.CurrentUserId);
+
+                if (shoppingCart.Status != ShoppingCartStatus.Shopping)
+                    throw new Exception();
 
                 if (shoppingCart != null && shoppingCart.Version != request.Version)
                     throw new ConcurrencyException();
-
-                if (shoppingCart == null) shoppingCart = new ShoppingCart(request.CurrentUserId);
-                
+              
                 shoppingCart.AddShoppingCartItem(request.ProductId);
                 
                 _eventStore.Save(shoppingCart);
                 
                 return Task.FromResult(new Response() {
-                    ShoppingCartId = shoppingCart.ShoppingCartId
+                    ShoppingCartId = shoppingCart.ShoppingCartId,
+                    Version = shoppingCart.Version
                 });
             }
         }

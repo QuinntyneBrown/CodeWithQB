@@ -35,7 +35,7 @@ namespace CodeWithQB.API.Features.Events
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var @event = _eventStore.Query<Event>().Single(x => x.EventId == request.Event.EventId);
+                var @event = _eventStore.Load<Event>(request.Event.EventId);
 
                 @event.ChangeName(request.Event.Name);
 

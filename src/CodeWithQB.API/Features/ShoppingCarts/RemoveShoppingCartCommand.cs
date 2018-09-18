@@ -32,7 +32,7 @@ namespace CodeWithQB.API.Features.ShoppingCarts
 
             public Task Handle(Request request, CancellationToken cancellationToken)
             {
-                var shoppingCart = _eventStore.Query<ShoppingCart>().Single(x => x.ShoppingCartId == request.ShoppingCartId);
+                var shoppingCart = _eventStore.Load<ShoppingCart>(request.ShoppingCartId);
 
                 shoppingCart.Remove();
                 

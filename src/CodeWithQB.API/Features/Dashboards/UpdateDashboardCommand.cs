@@ -35,7 +35,7 @@ namespace CodeWithQB.API.Features.Dashboards
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var dashboard = _eventStore.Query<Dashboard>().Single(x => x.DashboardId == request.Dashboard.DashboardId);
+                var dashboard = _eventStore.Load<Dashboard>(request.Dashboard.DashboardId);
 
                 dashboard.ChangeName(request.Dashboard.Name);
 

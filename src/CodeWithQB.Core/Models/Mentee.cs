@@ -4,7 +4,7 @@ using System;
 
 namespace CodeWithQB.Core.Models
 {
-    public class Mentee: AggregateRoot
+    public class Mentee: Entity
     {
         public Mentee(string firstName, string lastName, string emailAddress)
             => Apply(new MenteeCreated(MenteeId, firstName,lastName,emailAddress));
@@ -21,7 +21,7 @@ namespace CodeWithQB.Core.Models
             
         }
 
-        protected override void When(DomainEvent @event)
+        protected override void When(object @event)
         {
             switch (@event)
             {

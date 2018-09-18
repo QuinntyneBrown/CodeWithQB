@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace CodeWithQB.Core.Models
 {
-    public class Dashboard: AggregateRoot
+    public class Dashboard: Entity
     {
         public Dashboard(string name, Guid userId)
             => Apply(new DashboardCreated(name,DashboardId,userId));
@@ -21,7 +21,7 @@ namespace CodeWithQB.Core.Models
             
         }
 
-        protected override void When(DomainEvent @event)
+        protected override void When(object @event)
         {
             switch (@event)
             {

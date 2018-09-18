@@ -32,7 +32,7 @@ namespace CodeWithQB.API.Features.Events
 
             public Task Handle(Request request, CancellationToken cancellationToken)
             {
-                var @event = _eventStore.Query<Event>().Single(x => x.EventId == request.EventId);
+                var @event = _eventStore.Load<Event>(request.EventId);
 
                 @event.Remove();
                 

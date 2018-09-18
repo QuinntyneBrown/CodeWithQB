@@ -35,7 +35,7 @@ namespace CodeWithQB.API.Features.Mentees
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var mentee = _eventStore.Query<Mentee>().Single(x => x.MenteeId == request.Mentee.MenteeId);
+                var mentee = _eventStore.Load<Mentee>(request.Mentee.MenteeId);
 
                 mentee.ChangeName(request.Mentee.FirstName, request.Mentee.LastName);
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ namespace CodeWithQB.Infrastructure
     public interface IBackgroundTaskQueue
     {
         void QueueBackgroundWorkItem(Func<CancellationToken, Task> workItem);
+        ConcurrentQueue<Func<CancellationToken, Task>> WorkItems { get; }
 
         Task<Func<CancellationToken, Task>> DequeueAsync(
             CancellationToken cancellationToken);
@@ -17,6 +19,12 @@ namespace CodeWithQB.Infrastructure
     {
         private ConcurrentQueue<Func<CancellationToken, Task>> _workItems =
             new ConcurrentQueue<Func<CancellationToken, Task>>();
+
+        public ConcurrentQueue<Func<CancellationToken, Task>> WorkItems
+        {
+            get { return _workItems; }
+        }
+
         private SemaphoreSlim _signal = new SemaphoreSlim(0);
 
         public void QueueBackgroundWorkItem(

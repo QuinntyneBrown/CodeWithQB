@@ -5,7 +5,7 @@ using System;
 
 namespace CodeWithQB.Core.Models
 {
-    public class DashboardCard: AggregateRoot
+    public class DashboardCard: Entity
     {
         public DashboardCard(Guid dashoardId, Guid cardId)
             => Apply(new DashboardCardCreated(DashboardCardId,dashoardId,cardId));
@@ -21,7 +21,7 @@ namespace CodeWithQB.Core.Models
             
         }
 
-        protected override void When(DomainEvent @event)
+        protected override void When(object @event)
         {
             switch (@event)
             {

@@ -1,12 +1,10 @@
-using MediatR;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Collections.Generic;
-using CodeWithQB.Core.Interfaces;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
 using CodeWithQB.Core.Common;
+using CodeWithQB.Core.Interfaces;
 using CodeWithQB.Core.Models;
+using MediatR;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CodeWithQB.API.Features.ShoppingCarts
 {

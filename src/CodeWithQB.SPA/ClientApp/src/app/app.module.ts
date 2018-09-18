@@ -44,7 +44,7 @@ import { ProductsModule } from './products/products.module';
     UsersModule
   ],
   providers: [
-    { provide: baseUrl, useValue: 'http://localhost:51578/' }
+    { provide: baseUrl, useValue: 'http://localhost:3908/' }
   ],
   bootstrap: [AppComponent]
 })
