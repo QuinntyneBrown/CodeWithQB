@@ -25,6 +25,7 @@ namespace CodeWithQB.Core.Models
 
                 case UserRoleAdded userRoleAdded:
                     RoleIds = RoleIds.Concat(new Guid[] { userRoleAdded.RoleId }).ToList();
+                    Version++;
                     break;
             }            
         }

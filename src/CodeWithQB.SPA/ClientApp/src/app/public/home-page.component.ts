@@ -4,7 +4,7 @@ import { ProductService } from "../products/product.service";
 import { Product } from "../products/product.model";
 import { AuthService } from "../core/auth.service";
 import { LocalStorageService } from "../core/local-storage.service";
-import { accessTokenKey, shoppingCartInfoKey } from "../core/constants";
+import { accessTokenKey, currentShoppingCartKey } from "../core/constants";
 import { ShoppingCartService } from "../shopping-carts/shopping-cart.service";
 import { switchMap, takeUntil, tap } from "rxjs/operators";
 import { ShoppingCart } from "../shopping-carts/shopping-cart.model";
@@ -19,7 +19,8 @@ export class HomePageComponent {
   constructor(
     private _localStorageService: LocalStorageService,
     private _productService: ProductService,
-    private _shoppingCartService: ShoppingCartService
+    private _shoppingCartService: ShoppingCartService,
+    
   ) { }
 
   public get accessToken() {
@@ -35,52 +36,38 @@ export class HomePageComponent {
   public readonly onDestroy: Subject<void> = new Subject<void>();
 
   public handleBuy($event) {    
-    var shoppingCartInfo = JSON.parse(this._localStorageService.get({ name: shoppingCartInfoKey }));
+    var shoppingCart = this._localStorageService.get({ name: currentShoppingCartKey }) as ShoppingCart;
     
-    if (shoppingCartInfo == null) {
+    if (shoppingCart == null) {
       this._shoppingCartService
         .create({ shoppingCart: new ShoppingCart() })
-        .pipe(tap(x => {
-          this._localStorageService.put({
-            name: shoppingCartInfoKey, value: JSON.stringify({
-              shoppingCartId: x.shoppingCartId,
-              version: x.version
-            })
-          });
-        }),
+        .pipe(tap(x => this._localStorageService.put({ name: currentShoppingCartKey, value: x.shoppingCart })),
         switchMap(() => {
-          var info = JSON.parse(this._localStorageService.get({ name: shoppingCartInfoKey }));
+          shoppingCart = this._localStorageService.get({ name: currentShoppingCartKey }) as ShoppingCart;
 
           return this._shoppingCartService.createShoppingCartItem({
-            shoppingCartId: info.shoppingCartId,
+            shoppingCartId: shoppingCart.shoppingCartId,
             productId: $event.product.productId,
-            version: info.version
+            version: shoppingCart.version
           }).pipe(tap(x => {
-            var info = JSON.parse(this._localStorageService.get({ name: shoppingCartInfoKey }));
-            info.version = x.version;
-            this._localStorageService.put({ name: shoppingCartInfoKey, value: JSON.stringify(info) });
+              this._localStorageService.put({ name: currentShoppingCartKey, value: x.shoppingCart });
             }))
         }),
           takeUntil(this.onDestroy))
         .subscribe();
-    } else {
-      var info = JSON.parse(this._localStorageService.get({ name: shoppingCartInfoKey }));
-
+    } else {      
       this._shoppingCartService.createShoppingCartItem({
-        shoppingCartId: info.shoppingCartId,
+        shoppingCartId: shoppingCart.shoppingCartId,
         productId: $event.product.productId,
-        version: info.version
+        version: shoppingCart.version
       })
         .pipe(tap(x => {
-          var info = JSON.parse(this._localStorageService.get({ name: shoppingCartInfoKey }));
-          info.version = x.version;
-          this._localStorageService.put({ name: shoppingCartInfoKey, value: JSON.stringify(info) });
-        }),
-        takeUntil(this.onDestroy))
+          this._localStorageService.put({ name: currentShoppingCartKey, value: x.shoppingCart });
+        }), takeUntil(this.onDestroy))
         .subscribe();      
     }
   }
-
+  
   ngOnDestroy() {
     this.onDestroy.next();    
   }

@@ -55,7 +55,7 @@ namespace IntegrationTests.Features
                 await Assert.ThrowsAsync<Exception>(async () => await client
                     .PostAsAsync<CreateShoppingCartItemCommand.Request, CreateShoppingCartItemCommand.Response>(Post.ShoppingCartItem(default(Guid)), new CreateShoppingCartItemCommand.Request()
                     {
-                        ShoppingCartId = response.ShoppingCartId,
+                        ShoppingCartId = response.ShoppingCart.ShoppingCartId,
                         ProductId = product.ProductId
                     }));
             }
@@ -79,9 +79,9 @@ namespace IntegrationTests.Features
                         ProductId = product.ProductId
                     });
 
-                Assert.True(response.ShoppingCartId != default(Guid));
+                Assert.True(response.ShoppingCart.ShoppingCartId != default(Guid));
 
-                var cart = await client.GetAsync<GetShoppingCartByIdQuery.Response>(Get.ShoppingCartById(response.ShoppingCartId));
+                var cart = await client.GetAsync<GetShoppingCartByIdQuery.Response>(Get.ShoppingCartById(response.ShoppingCart.ShoppingCartId));
 
                 Assert.Single(cart.ShoppingCart.ShoppingCartItems);
 

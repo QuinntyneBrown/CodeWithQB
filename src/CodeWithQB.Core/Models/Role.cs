@@ -11,8 +11,7 @@ namespace CodeWithQB.Core.Models
 
         public Guid RoleId { get; set; } = Guid.NewGuid();          
         public string Name { get; set; }        
-        public bool IsDeleted { get; set; }
-
+        public RoleStatus Status { get; set; }
         protected override void EnsureValidState()
         {
             
@@ -32,7 +31,7 @@ namespace CodeWithQB.Core.Models
                     break;
 
                 case RoleRemoved roleRemoved:
-                    IsDeleted = true;
+                    Status = RoleStatus.InActive;
                     break;
             }
         }
@@ -42,5 +41,11 @@ namespace CodeWithQB.Core.Models
 
         public void Remove()
             => Apply(new RoleRemoved());
+    }
+
+    public enum RoleStatus
+    {
+        Active,
+        InActive
     }
 }

@@ -14,7 +14,7 @@ namespace CodeWithQB.Core.Common
 
         public CommandPreProcessor(ICommandRegistry registry) => _registry = registry;
 
-        public async Task<TResponse> Process<TRequest, TResponse>(TRequest request, Func<TRequest, Task<TResponse>> asyncHandler) 
+        public async Task<TResponse> Process<TRequest, TResponse>(TRequest request, Func<TRequest, Task<TResponse>> asyncCallback) 
             where TRequest : ICommand<TResponse>
         {
             var tcs = new TaskCompletionSource<TResponse>(TaskCreationOptions.RunContinuationsAsynchronously);
@@ -30,17 +30,21 @@ namespace CodeWithQB.Core.Common
                     _registry.Subscribe(async (commandRegisteryChanged) =>
                     {
                         if (dependentKeys.Contains($"{commandRegisteryChanged.Partition}-{commandRegisteryChanged.Key}") && !_registry.ContainsAny(dependentKeys).GetAwaiter().GetResult())                        
-                            tcs.SetResult(await asyncHandler(request));                        
+                            tcs.SetResult(await asyncCallback(request));                        
                     });
 
                     return await tcs.Task;
                 }
                 else
-                    return await asyncHandler(request);
+                    return await asyncCallback(request);
+            }
+            catch (ConcurrencyException e)
+            {
+                throw e;
             }
             catch (Exception e)
             {
-                throw new ConcurrencyException();
+                throw e;
             }
             finally
             {

@@ -12,8 +12,8 @@ namespace CodeWithQB.Core.Models
         public Guid EventId { get; set; } = Guid.NewGuid();          
         public string Name { get; set; }
         public Guid AddressId { get; set; }
-        public bool IsDeleted { get; set; }
-
+        public EventStatus Status { get; set; }
+        public int Version { get; set; }
         protected override void EnsureValidState()
         {
             
@@ -30,10 +30,12 @@ namespace CodeWithQB.Core.Models
 
                 case EventNameChanged eventNameChanged:
                     Name = eventNameChanged.Name;
+                    Version++;
                     break;
 
                 case EventRemoved eventRemoved:
-                    IsDeleted = true;
+                    Status = EventStatus.InActive;
+                    Version++;
                     break;
             }
         }
@@ -43,5 +45,11 @@ namespace CodeWithQB.Core.Models
 
         public void Remove()
             => Apply(new EventRemoved());
+    }
+
+    public enum EventStatus
+    {
+        Active,
+        InActive
     }
 }

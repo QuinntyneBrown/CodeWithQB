@@ -10,8 +10,9 @@ namespace CodeWithQB.Core.Models
             => Apply(new GuestCreated(GuestId,name));
 
         public Guid GuestId { get; set; } = Guid.NewGuid();          
-        public string Name { get; set; }        
-        public bool IsDeleted { get; set; }
+        public string Name { get; set; }
+        public GuestStatus Status { get; set; }
+        public int Version { get; set; }
 
         protected override void EnsureValidState()
         {
@@ -29,10 +30,12 @@ namespace CodeWithQB.Core.Models
 
                 case GuestNameChanged guestNameChanged:
                     Name = guestNameChanged.Name;
+                    Version++;
                     break;
 
                 case GuestRemoved guestRemoved:
-                    IsDeleted = true;
+                    Status = GuestStatus.InActive;
+                    Version++;
                     break;
             }
         }
@@ -42,5 +45,11 @@ namespace CodeWithQB.Core.Models
 
         public void Remove()
             => Apply(new GuestRemoved());
+    }
+
+    public enum GuestStatus
+    {
+        Active,
+        InActive
     }
 }

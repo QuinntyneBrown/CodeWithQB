@@ -16,7 +16,13 @@ namespace CodeWithQB.API.ProcessManagers
         private readonly IEventStore _eventStore;
         private readonly IMediator _mediator;
         private readonly IPasswordHasher _passwordHasher;
-        public MenteeRegistrationProcess(IEventStore eventStore, IMediator mediator, IPasswordHasher passwordHasher)
+        private readonly IRepository _repository;
+        public MenteeRegistrationProcess(
+            IEventStore eventStore, 
+            IMediator mediator, 
+            IPasswordHasher passwordHasher,
+            IRepository repository
+            )
         {
             _eventStore = eventStore;
             _mediator = mediator;
@@ -25,31 +31,29 @@ namespace CodeWithQB.API.ProcessManagers
 
         public async Task Handle(MenteeRegistrationRequested notification, CancellationToken cancellationToken)
         {
-            //var user = _eventStore.Query<User>().Single(x => x.Username == notification.EmailAddress);
+            var user = _repository.Query<User>().Single(x => x.Username == notification.EmailAddress);
 
-            //var salt = new byte[128 / 8];
+            var salt = new byte[128 / 8];
 
-            //using (var rng = RandomNumberGenerator.Create())
-            //{
-            //    rng.GetBytes(salt);
-            //}
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+            }
 
-            //if (user == null)
-            //    user = new User(notification.EmailAddress,salt,_passwordHasher.HashPassword(salt,notification.Password));
+            if (user == null)
+                user = new User(notification.EmailAddress, salt, _passwordHasher.HashPassword(salt, notification.Password));
 
-            //var role = _eventStore.Query<Role>().Single(x => x.Name == "Mentee");
+            var role = _repository.Query<Role>().Single(x => x.Name == "Mentee");
 
-            //user.AddRole(role.RoleId);
+            user.AddRole(role.RoleId);
 
-            //_eventStore.Save(user);
+            _eventStore.Save(user);
 
-            //var dashboard = new Dashboard("Default", user.UserId);
+            var dashboard = new Dashboard("Default", user.UserId);
 
-            //_eventStore.Save(dashboard);
+            _eventStore.Save(dashboard);
 
             await Task.CompletedTask;
-        }
-
-
+        }        
     }
 }

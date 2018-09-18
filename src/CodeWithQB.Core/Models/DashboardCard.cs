@@ -14,7 +14,8 @@ namespace CodeWithQB.Core.Models
         public Guid DashboardId { get; set; }
         public Guid CardId { get; set; }
         public string Options { get; set; }
-        public bool IsDeleted { get; set; }
+        public int Version { get; set; }
+        public DashboardCardStatus Status { get; set; }
 
         protected override void EnsureValidState()
         {
@@ -29,11 +30,12 @@ namespace CodeWithQB.Core.Models
                     DashboardId = dashboardCardCreated.DashboardId;
                     CardId = dashboardCardCreated.CardId;
                     DashboardCardId = dashboardCardCreated.DashboardCardId;
-                    Options = "{}";
+                    Options = "{}";                    
                     break;
 
                 case DashboardCardRemoved dashboardCardRemoved:
-                    IsDeleted = true;
+                    Status = DashboardCardStatus.InActive;
+                    Version++;
                     break;
 
                 case DashboardCardOptionsUpdated dashboardCardOptionsUpdated:
@@ -43,6 +45,7 @@ namespace CodeWithQB.Core.Models
                         dashboardCardOptionsUpdated.Width,
                         dashboardCardOptionsUpdated.Left
                     });
+                    Version++;
                     break;
             }
         }
@@ -52,5 +55,11 @@ namespace CodeWithQB.Core.Models
 
         public void UpdateOptions(int top, int width, int left, int height)
             => Apply(new DashboardCardOptionsUpdated(top, left, height, width));
+    }
+
+    public enum DashboardCardStatus
+    {
+        Active,
+        InActive
     }
 }

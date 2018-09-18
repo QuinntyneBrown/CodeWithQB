@@ -6,7 +6,7 @@ import { switchMap, map } from "rxjs/operators";
 import { Product } from "../products/product.model";
 import { ProductService } from "../products/product.service";
 import { LocalStorageService } from "../core/local-storage.service";
-import { shoppingCartInfoKey } from "../core/constants";
+import { currentShoppingCartKey } from "../core/constants";
 
 @Component({
   templateUrl: "./checkout-page.component.html",
@@ -39,7 +39,7 @@ export class CheckoutPageComponent {
 
   public checkout() {
 
-    this._localStorageService.put({ name: shoppingCartInfoKey, value: null });
+    this._localStorageService.put({ name: currentShoppingCartKey, value: null });
 
     this._router.navigateByUrl("/");
     //this._shoppingCartService

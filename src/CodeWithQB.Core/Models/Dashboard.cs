@@ -13,9 +13,9 @@ namespace CodeWithQB.Core.Models
         public Guid DashboardId { get; set; } = Guid.NewGuid();
         public Guid UserId { get; set; }
         public ICollection<Guid> DashboardCardIds { get; set; }
-        public string Name { get; set; }        
-        public bool IsDeleted { get; set; }
-
+        public string Name { get; set; }
+        public DashboardStatus Status { get; set; }
+        public int Version { get; set; }
         protected override void EnsureValidState()
         {
             
@@ -34,18 +34,22 @@ namespace CodeWithQB.Core.Models
                     
                 case DashboardNameChanged dashboardNameChanged:
                     Name = dashboardNameChanged.Name;
+                    Version++;
                     break;
 
                 case DashboardRemoved dashboardRemoved:
-                    IsDeleted = true;
+                    Status = DashboardStatus.InActive;
+                    Version++;
                     break;
 
                 case DashboardCardAddedToDashboard dashboardCardAddedToDashboard:
                     DashboardCardIds.Add(dashboardCardAddedToDashboard.DashboardCardId);
+                    Version++;
                     break;
 
                 case DashboardCardRemovedFromDashboard dashboardCardRemovedFromDashboard:
                     DashboardCardIds.Remove(dashboardCardRemovedFromDashboard.DashboardCardId);
+                    Version++;
                     break;
             }
         }
@@ -66,5 +70,11 @@ namespace CodeWithQB.Core.Models
 
             Apply(new DashboardCardRemovedFromDashboard(dashboardCardId));
         }
+    }
+
+    public enum DashboardStatus
+    {
+        Active,
+        InActive
     }
 }

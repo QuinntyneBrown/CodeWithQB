@@ -38,7 +38,7 @@ namespace CodeWithQB.Infrastructure.Data
             _dateTime = dateTime;
         }
 
-        public async Task<IEnumerable<StoredEvent>> GetStoredEvents() {
+        public async Task<IEnumerable<StoredEvent>> GetEvents() {
             var storedEvents = default(IEnumerable<StoredEvent>);
 
             using (var scope = _serviceScopeFactory.CreateScope())
@@ -81,7 +81,7 @@ namespace CodeWithQB.Infrastructure.Data
         {
             var events = Get().Where(x => x.StreamId == id);
 
-            if (events.Count() > 1) return null;
+            if (events.Count() == 0) return null;
 
             var aggregate = (Entity)FormatterServices.GetUninitializedObject(Type.GetType(typeof(TAggregateRoot).AssemblyQualifiedName));
 

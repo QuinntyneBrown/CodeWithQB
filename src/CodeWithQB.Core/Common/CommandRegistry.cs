@@ -1,4 +1,5 @@
-﻿using CodeWithQB.Core.Interfaces;
+﻿using CodeWithQB.Core.Exceptions;
+using CodeWithQB.Core.Interfaces;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -24,12 +25,11 @@ namespace CodeWithQB.Core.Common
         }
 
         public async Task<bool> ContainsAny(IEnumerable<string> keys, CancellationToken cancellationToken = default(CancellationToken)) => await Task.FromResult(keys.Any(x => _inner.ContainsKey(x)));
-
-
+        
         public async Task<IEnumerable<string>> Register(string partition, string key, IEnumerable<string> sideEffects, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (_inner.ContainsKey($"{partition}-{key}"))
-                throw new Exception("Duplicate");
+                throw new ConcurrencyException();
 
             _inner.TryAdd($"{partition}-{key}", sideEffects);
 

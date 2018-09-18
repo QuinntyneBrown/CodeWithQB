@@ -15,8 +15,7 @@ namespace CodeWithQB.Core.Models
         public Guid UserId { get; set; }
         public ShoppingCartStatus Status { get; set; }
         public int Version { get; set; }
-        public bool IsDeleted { get; set; }
-
+        
         protected override void EnsureValidState()
         {
 
@@ -46,7 +45,7 @@ namespace CodeWithQB.Core.Models
 
                 case ShoppingCartRemoved shoppingCartRemoved:
                     Version++;
-                    IsDeleted = true;
+                    Status = ShoppingCartStatus.InActive;
                     break;
             }
         }
@@ -64,6 +63,7 @@ namespace CodeWithQB.Core.Models
     public enum ShoppingCartStatus
     {
         Shopping = 0,
-        CheckedOut = 1
+        CheckedOut = 1,
+        InActive = 2
     }
 }

@@ -24,6 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\registry.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="ClientApp\src\app\mentees\" />
     <Folder Include="ClientApp\src\app\events\" />
     <Folder Include="ClientApp\src\app\shopping-carts\" />

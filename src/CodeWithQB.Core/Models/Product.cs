@@ -14,8 +14,7 @@ namespace CodeWithQB.Core.Models
         public string Description { get; set; }
         public float Price { get; set; }
         public int Version { get; set; }
-
-        public bool IsDeleted { get; set; }
+        public ProductStatus Status { get; set; } = ProductStatus.Active;
 
         protected override void EnsureValidState()
         {
@@ -36,19 +35,27 @@ namespace CodeWithQB.Core.Models
                 case ProductUpdated productUpdated:
                     Name = productUpdated.Name;
                     Description = productUpdated.Description;
+                    Version++;
                     break;
 
                 case ProductRemoved productRemoved:
-                    IsDeleted = true;
+                    Status = ProductStatus.InActive; 
+                    Version++;
+
                     break;
             }
         }
 
         public void Update(string name, string description)
             => Apply(new ProductUpdated(name, description));
-
-
+        
         public void Remove()
             => Apply(new ProductRemoved());
+    }
+
+    public enum ProductStatus
+    {
+        Active,
+        InActive
     }
 }

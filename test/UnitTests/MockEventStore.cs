@@ -31,7 +31,7 @@ namespace UnitTests
             return await Task.FromResult(_state);
         }
 
-        public Task<IEnumerable<StoredEvent>> GetStoredEvents()
+        public Task<IEnumerable<StoredEvent>> GetEvents()
         {
             throw new NotImplementedException();
         }

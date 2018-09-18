@@ -24,7 +24,7 @@ namespace CodeWithQB.API.Features.ShoppingCarts
 
         public class Response
         {			
-            public Guid ShoppingCartId { get; set; }
+            public ShoppingCartDto ShoppingCart { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -39,7 +39,7 @@ namespace CodeWithQB.API.Features.ShoppingCarts
 
                 _eventStore.Save(shoppingCart);
                 
-                return Task.FromResult(new Response() { ShoppingCartId = shoppingCart.ShoppingCartId });
+                return Task.FromResult(new Response() { ShoppingCart = ShoppingCartDto.FromShoppingCart(shoppingCart) });
             }
         }
     }

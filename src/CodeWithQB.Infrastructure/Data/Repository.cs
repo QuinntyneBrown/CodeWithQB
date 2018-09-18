@@ -17,10 +17,10 @@ namespace CodeWithQB.Infrastructure.Data
 
         public Repository(IEventStore eventStore)
         {
-            var storedEvents = eventStore.GetStoredEvents().GetAwaiter().GetResult();
+            var events = eventStore.GetEvents().GetAwaiter().GetResult();
 
-            if(storedEvents != null)
-                foreach (var @event in storedEvents)
+            if(events != null)
+                foreach (var @event in events)
                     OnNext(new EventStoreChanged(@event));
             
             eventStore.Subscribe(OnNext);

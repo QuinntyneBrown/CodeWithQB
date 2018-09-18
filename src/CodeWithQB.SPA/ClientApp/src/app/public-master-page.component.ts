@@ -1,11 +1,9 @@
 import { Component } from "@angular/core";
-import { Subject, Observable, BehaviorSubject } from "rxjs";
+import { BehaviorSubject, Subject } from "rxjs";
 import { AuthService } from "./core/auth.service";
-import { usernameKey, accessTokenKey, shoppingCartInfoKey } from "./core/constants";
+import { accessTokenKey, currentShoppingCartKey, usernameKey } from "./core/constants";
 import { LocalStorageService } from "./core/local-storage.service";
-import { ShoppingCartService } from "./shopping-carts/shopping-cart.service";
 import { ShoppingCart } from "./shopping-carts/shopping-cart.model";
-import { map, takeUntil } from "rxjs/operators";
 
 @Component({
   templateUrl: "./public-master-page.component.html",
@@ -15,28 +13,22 @@ import { map, takeUntil } from "rxjs/operators";
 export class PublicMasterPageComponent { 
   constructor(
     private _authService: AuthService,
-    private _localStorageService: LocalStorageService,
-    private _shoppingCartService: ShoppingCartService
-  ) {
+    private _localStorageService: LocalStorageService 
+  ) { }
 
-  }
-
-  public get shoppingCart$(): BehaviorSubject<ShoppingCart> {
-    return this._shoppingCartService.shoppingCart$;
-  }
-
+  public shoppingCart$: BehaviorSubject<ShoppingCart> = new BehaviorSubject<ShoppingCart>(null);
+  
   ngOnInit() {
-    if (this.accessToken) {
-      var shoppingCartInfo = JSON.parse(this._localStorageService.get({ name: shoppingCartInfoKey }));
+    if (this.accessToken) {      
+      var shoppingCart = this._localStorageService.get({ name: currentShoppingCartKey });
 
-      if (shoppingCartInfo) {
-        alert(shoppingCartInfo.version);
-
-        this._shoppingCartService.getById({ shoppingCartId: shoppingCartInfo.shoppingCartId })
-          .pipe(map(x => this.shoppingCart$.next(x)), takeUntil(this.onDestroy))
-          .subscribe();
-      }
+      if (shoppingCart)        
+        this.shoppingCart$.next(shoppingCart as ShoppingCart);      
     }
+
+    this._localStorageService.localStorageServiceChanged.subscribe(() => {      
+      this.shoppingCart$.next(this._localStorageService.get({ name: currentShoppingCartKey }) as ShoppingCart);
+    });
   }
 
   public onDestroy: Subject<void> = new Subject<void>();

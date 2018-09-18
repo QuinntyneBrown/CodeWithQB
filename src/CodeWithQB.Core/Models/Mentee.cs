@@ -32,10 +32,12 @@ namespace CodeWithQB.Core.Models
 
                 case MenteeNameChanged menteeNameChanged:
                     FirstName = menteeNameChanged.FirstName;
+                    Version++;
                     break;
 
                 case MenteeRemoved menteeRemoved:
-                    IsDeleted = true;
+                    Status = MenteeStatus.InActive;
+                    Version++;
                     break;
             }
         }
@@ -48,6 +50,7 @@ namespace CodeWithQB.Core.Models
     }
 
     public enum MenteeStatus {
-
+        Active,
+        InActive
     }
 }

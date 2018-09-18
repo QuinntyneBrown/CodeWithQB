@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { storageKey } from './constants';
+import { Subject } from 'rxjs';
 
 @Injectable()
 export class LocalStorageService {
   private _items = null;
+
+  public localStorageServiceChanged: Subject<void> = new Subject();
 
   public get items() {
     if (this._items === null) {
@@ -49,5 +52,6 @@ export class LocalStorageService {
   };
   public updateLocalStorage() {
     localStorage.setItem(storageKey, JSON.stringify(this._items));
+    this.localStorageServiceChanged.next();
   }
 }

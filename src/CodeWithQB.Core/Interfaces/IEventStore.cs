@@ -15,6 +15,6 @@ namespace CodeWithQB.Core.Interfaces
 
         void Subscribe(Action<EventStoreChanged> onNext);
 
-        Task<IEnumerable<StoredEvent>> GetStoredEvents();
+        Task<IEnumerable<StoredEvent>> GetEvents();
     }
 }
