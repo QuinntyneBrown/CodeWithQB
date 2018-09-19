@@ -12,8 +12,7 @@ namespace CodeWithQB.Core.Models
         public Guid MenteeId { get; set; } = Guid.NewGuid();          
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string EmailAddress { get; set; }
-        public bool IsDeleted { get; set; }
+        public string EmailAddress { get; set; }        
         public int Version { get; set; }
         public MenteeStatus Status { get; set; }        
         protected override void EnsureValidState()

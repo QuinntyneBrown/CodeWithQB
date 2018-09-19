@@ -7,12 +7,13 @@ namespace CodeWithQB.Core.Models
 {
     public class ShoppingCart: Entity
     {
-        public ShoppingCart(Guid userId)
-            => Apply(new ShoppingCartCreated(ShoppingCartId, userId));
+        public ShoppingCart(Guid userId, DateTime createdOn)
+            => Apply(new ShoppingCartCreated(ShoppingCartId, userId, createdOn));
 
         public Guid ShoppingCartId { get; set; } = Guid.NewGuid();         
         public ICollection<ShoppingCartItem> ShoppingCartItems { get; set; }
         public Guid UserId { get; set; }
+        public DateTime CreatedOn { get; set; }
         public ShoppingCartStatus Status { get; set; }
         public int Version { get; set; }
         
@@ -29,6 +30,7 @@ namespace CodeWithQB.Core.Models
 					ShoppingCartId = shoppingCartCreated.ShoppingCartId;
                     UserId = shoppingCartCreated.UserId;
                     Status = ShoppingCartStatus.Shopping;
+                    CreatedOn = shoppingCartCreated.CreatedOn;
                     ShoppingCartItems = new List<ShoppingCartItem>();
                     break;
 

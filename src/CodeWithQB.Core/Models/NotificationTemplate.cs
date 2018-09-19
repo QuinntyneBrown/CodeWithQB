@@ -11,8 +11,7 @@ namespace CodeWithQB.Core.Models
 
         public Guid NotificationTemplateId { get; set; } = Guid.NewGuid();          
         public string Name { get; set; }        
-        public bool IsDeleted { get; set; }
-
+        
         protected override void EnsureValidState()
         {
             
@@ -32,7 +31,7 @@ namespace CodeWithQB.Core.Models
                     break;
 
                 case NotificationTemplateRemoved notificationTemplateRemoved:
-                    IsDeleted = true;
+                    
                     break;
             }
         }

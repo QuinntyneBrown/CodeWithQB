@@ -50,8 +50,14 @@ export class LocalStorageService {
 
     this.updateLocalStorage();
   };
+
   public updateLocalStorage() {
     localStorage.setItem(storageKey, JSON.stringify(this._items));
     this.localStorageServiceChanged.next();
+  }
+
+  public clear() {
+    this.items = [];
+    localStorage.clear();
   }
 }

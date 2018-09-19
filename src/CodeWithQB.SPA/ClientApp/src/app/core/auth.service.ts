@@ -19,7 +19,7 @@ export class AuthService {
 
   public logout() {
     this._hubClient.disconnect();
-    this._localStorageService.put({ name: accessTokenKey, value: null });
+    this._localStorageService.clear();
   }
 
   public tryToLogin(options: { username: string; password: string }) {

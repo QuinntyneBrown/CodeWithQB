@@ -11,8 +11,6 @@ namespace CodeWithQB.Core.Models
 
         public Guid CardId { get; set; } = Guid.NewGuid();          
         public string Name { get; set; }        
-        public bool IsDeleted { get; set; }
-
         protected override void EnsureValidState()
         {
             
@@ -32,7 +30,7 @@ namespace CodeWithQB.Core.Models
                     break;
 
                 case CardRemoved cardRemoved:
-                    IsDeleted = true;
+                    
                     break;
             }
         }
