@@ -11,6 +11,8 @@
     <Folder Include="Features\Addresses\" />
     <Folder Include="Features\Attendees\" />
     <Folder Include="Features\Customers\" />
+    <Folder Include="Features\Bookings\" />
+    <Folder Include="Features\ServiceProviders\" />
     <Folder Include="Features\ShoppingCarts\" />
     <Folder Include="Features\Products\" />
     <Folder Include="wwwroot\" />
