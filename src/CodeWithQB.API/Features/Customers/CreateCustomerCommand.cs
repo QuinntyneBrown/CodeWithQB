@@ -6,39 +6,39 @@ using System.Threading.Tasks;
 using System.Threading;
 using System;
 
-namespace CodeWithQB.API.Features.Addresses
+namespace CodeWithQB.API.Features.Customers
 {
-    public class CreateAddressCommand
+    public class CreateCustomerCommand
     {
         public class Validator: AbstractValidator<Request> {
             public Validator()
             {
-                RuleFor(request => request.Address.AddressId).NotNull();
+                RuleFor(request => request.Customer.CustomerId).NotNull();
             }
         }
 
         public class Request : IRequest<Response> {
-            public AddressDto Address { get; set; }
+            public CustomerDto Customer { get; set; }
         }
 
         public class Response
-        {            
-            public Guid AddressId { get; set; }
+        {			
+            public Guid CustomerId { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
         {
             private readonly IEventStore _eventStore;
             
-            public Handler(IEventStore eventStore) => _eventStore = eventStore;
+			public Handler(IEventStore eventStore) => _eventStore = eventStore;
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var address = new Address(request.Address.Name);
+                var customer = new Customer(request.Customer.FirstName);
 
-                _eventStore.Save(address);
+                _eventStore.Save(customer);
                 
-                return Task.FromResult(new Response() { AddressId = address.AddressId });
+                return Task.FromResult(new Response() { CustomerId = customer.CustomerId });
             }
         }
     }

@@ -7,6 +7,7 @@ namespace CodeWithQB.API.Features.Products
     {        
         public Guid ProductId { get; set; }
         public string Name { get; set; }
+        public float Price { get; set; }
         public string Description { get; set; }
         public int Version { get; set; }
         public static ProductDto FromProduct(Product product)
@@ -14,7 +15,9 @@ namespace CodeWithQB.API.Features.Products
             {
                 ProductId = product.ProductId,
                 Name = product.Name,
-                Description = product.Description
+                Price = product.Price,
+                Description = product.Description,
+                Version = product.Version
             };
     }
 }

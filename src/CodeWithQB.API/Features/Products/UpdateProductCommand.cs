@@ -2,10 +2,9 @@ using CodeWithQB.Core.Interfaces;
 using CodeWithQB.Core.Models;
 using FluentValidation;
 using MediatR;
-using System.Threading.Tasks;
-using System.Threading;
 using System;
-using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CodeWithQB.API.Features.Products
 {

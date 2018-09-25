@@ -6,15 +6,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Addresses
+namespace CodeWithQB.API.Features.Customers
 {
-    public class GetAddressesQuery
+    public class GetCustomersQuery
     {
         public class Request : IRequest<Response> { }
 
         public class Response
         {
-            public IEnumerable<AddressDto> Addresses { get; set; }
+            public IEnumerable<CustomerDto> Customers { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -26,7 +26,7 @@ namespace CodeWithQB.API.Features.Addresses
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
                 => Task.FromResult(new Response()
                 {
-                    Addresses = _repository.Query<Address>().Select(x => AddressDto.FromAddress(x)).ToList()
+                    Customers = _repository.Query<Customer>().Select(x => CustomerDto.FromCustomer(x)).ToList()
                 });
         }
     }

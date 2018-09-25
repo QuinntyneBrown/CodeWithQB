@@ -3,25 +3,25 @@ using CodeWithQB.Core.Models;
 using FluentValidation;
 using MediatR;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Threading;
-using System.Linq;
 
-namespace CodeWithQB.API.Features.Addresses
+namespace CodeWithQB.API.Features.Attendees
 {
-    public class RemoveAddressCommand
+    public class RemoveAttendeeCommand
     {
         public class Validator : AbstractValidator<Request>
         {
             public Validator()
             {
-                RuleFor(request => request.AddressId).NotEqual(default(Guid));
+                RuleFor(request => request.AttendeeId).NotEqual(default(Guid));
             }
         }
 
         public class Request : IRequest
         {
-            public Guid AddressId { get; set; }
+            public Guid AttendeeId { get; set; }
         }
 
         public class Handler : IRequestHandler<Request>
@@ -32,11 +32,11 @@ namespace CodeWithQB.API.Features.Addresses
 
             public Task Handle(Request request, CancellationToken cancellationToken)
             {
-                var address = _eventStore.Load<Address>(request.AddressId);
+				var attendee = _eventStore.Load<Attendee>(request.AttendeeId);
 
-                address.Remove();
+                attendee.Remove();
                 
-                _eventStore.Save(address);
+                _eventStore.Save(attendee);
 
                 return Task.CompletedTask;
             }

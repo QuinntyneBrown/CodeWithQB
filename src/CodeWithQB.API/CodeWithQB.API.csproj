@@ -7,8 +7,10 @@
 
   <ItemGroup>
     <Folder Include="Features\Mentees\" />
-    <Folder Include="Features\Addresses\" />
     <Folder Include="Features\Events\" />
+    <Folder Include="Features\Addresses\" />
+    <Folder Include="Features\Attendees\" />
+    <Folder Include="Features\Customers\" />
     <Folder Include="Features\ShoppingCarts\" />
     <Folder Include="Features\Products\" />
     <Folder Include="wwwroot\" />

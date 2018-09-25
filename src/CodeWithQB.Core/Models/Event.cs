@@ -1,6 +1,7 @@
 using CodeWithQB.Core.Common;
 using CodeWithQB.Core.DomainEvents;
 using System;
+using System.Collections.Generic;
 
 namespace CodeWithQB.Core.Models
 {
@@ -9,10 +10,14 @@ namespace CodeWithQB.Core.Models
         public Event(string name)
             => Apply(new EventCreated(EventId,name));
 
+        public Guid? ParentEventId { get; set; }
         public Guid EventId { get; set; } = Guid.NewGuid();          
         public string Name { get; set; }
-        public Guid AddressId { get; set; }
+        public Address Address { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
         public EventStatus Status { get; set; }
+        public IEnumerable<Event> Events { get; set; }
         public int Version { get; set; }
         protected override void EnsureValidState()
         {
@@ -26,6 +31,7 @@ namespace CodeWithQB.Core.Models
                 case EventCreated eventCreated:
                     Name = eventCreated.Name;
                     EventId = eventCreated.EventId;
+                    Events = new HashSet<Event>();
                     break;
 
                 case EventNameChanged eventNameChanged:

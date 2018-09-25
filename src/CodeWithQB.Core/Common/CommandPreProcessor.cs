@@ -1,4 +1,5 @@
-﻿using CodeWithQB.Core.Exceptions;
+﻿using AsyncUtilities;
+using CodeWithQB.Core.Exceptions;
 using CodeWithQB.Core.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,8 @@ namespace CodeWithQB.Core.Common
     public class CommandPreProcessor : ICommandPreProcessor
     {
         private readonly ICommandRegistry _registry;
-        private readonly object sync = new object();
+       
+        private readonly AsyncLock _lock = new AsyncLock();
 
         public CommandPreProcessor(ICommandRegistry registry) => _registry = registry;
 
@@ -23,7 +25,8 @@ namespace CodeWithQB.Core.Common
 
             try
             {
-                lock (sync) dependentKeys = _registry.Register(partition, request.Key, request.SideEffects).GetAwaiter().GetResult();
+                using (await _lock.LockAsync())
+                    dependentKeys = await _registry.Register(partition, request.Key, request.SideEffects);
 
                 if (dependentKeys.Count() > 0)
                 {
@@ -48,7 +51,8 @@ namespace CodeWithQB.Core.Common
             }
             finally
             {
-                lock (sync) _registry.Clean(partition, request.Key).GetAwaiter().GetResult();
+                using (await _lock.LockAsync())
+                    await _registry.Clean(partition, request.Key);
             }
         }        
     }

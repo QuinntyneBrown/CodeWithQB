@@ -4,13 +4,13 @@ namespace CodeWithQB.Core.DomainEvents
 {
     public class AddressCreated: DomainEvent
     {
-        public AddressCreated(Guid addressId, string name)
+        public AddressCreated(Guid addressId, string addressLine1)
         {
             AddressId = addressId;
-            Name = name;
+            AddressLine1 = addressLine1;
         }
 
         public Guid AddressId { get; set; }
-        public string Name { get; set; }
+        public string AddressLine1 { get; set; }
     }
 }

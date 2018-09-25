@@ -45,7 +45,7 @@ namespace CodeWithQB.Core.Extensions
         {
             HttpResponseMessage httpResponseMessage = await client.GetAsync(url);
 
-            return JsonConvert.DeserializeObject<T>((await httpResponseMessage.Content.ReadAsStringAsync()));
+            return JsonConvert.DeserializeObject<T>(await httpResponseMessage.Content.ReadAsStringAsync());
         }
     }
 }

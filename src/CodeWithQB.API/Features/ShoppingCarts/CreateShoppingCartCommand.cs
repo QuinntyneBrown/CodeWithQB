@@ -30,12 +30,17 @@ namespace CodeWithQB.API.Features.ShoppingCarts
         public class Handler : IRequestHandler<Request, Response>
         {
             private readonly IEventStore _eventStore;
-            
-			public Handler(IEventStore eventStore) => _eventStore = eventStore;
+            private readonly IDateTime _dateTime;
+
+            public Handler(IDateTime dateTime, IEventStore eventStore) {
+
+                _eventStore = eventStore;
+                _dateTime = dateTime;
+            }
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
-                var shoppingCart = new ShoppingCart(request.CurrentUserId);
+                var shoppingCart = new ShoppingCart(request.CurrentUserId, _dateTime.UtcNow);
 
                 _eventStore.Save(shoppingCart);
                 

@@ -1,4 +1,3 @@
-using CodeWithQB.Core.Common;
 using CodeWithQB.Core.Identity;
 using CodeWithQB.Core.Interfaces;
 using CodeWithQB.Core.Models;
@@ -7,28 +6,24 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
-using static Newtonsoft.Json.JsonConvert;
 
 namespace CodeWithQB.API
 {
     public class AppInitializer: IDesignTimeDbContextFactory<AppDbContext>
     {
         public static void Seed(
-            AppDbContext context, 
             IDateTime dateTime, 
             IEventStore eventStore, 
             IServiceScopeFactory services, 
             IRepository repository)
         {
-            CardConfiguration.Seed(context, dateTime, eventStore, repository);
-            RoleConfiguration.Seed(context, dateTime, eventStore, repository);
-            UserConfiguration.Seed(context, dateTime, eventStore, repository);
-            ProductConfiguration.Seed(context, dateTime, eventStore, repository);
+            CardConfiguration.Seed(dateTime, eventStore, repository);
+            RoleConfiguration.Seed(dateTime, eventStore, repository);
+            UserConfiguration.Seed(dateTime, eventStore, repository);
+            ProductConfiguration.Seed(dateTime, eventStore, repository);
         }
 
         public AppDbContext CreateDbContext(string[] args)
@@ -46,7 +41,7 @@ namespace CodeWithQB.API
 
     internal class UserConfiguration
     {
-        public static void Seed(AppDbContext context, IDateTime dateTime, IEventStore eventStore, IRepository repository)
+        public static void Seed(IDateTime dateTime, IEventStore eventStore, IRepository repository)
         {
             if (repository.Query<User>().SingleOrDefault(x => x.Username == "quinntynebrown@gmail.com") == null)
             {
@@ -74,9 +69,7 @@ namespace CodeWithQB.API
             {
                 var salt = new byte[128 / 8];
                 using (var rng = RandomNumberGenerator.Create())
-                {
                     rng.GetBytes(salt);
-                }
 
                 var hashedPassword = new PasswordHasher().HashPassword(salt, "P@ssw0rd");
 
@@ -97,19 +90,22 @@ namespace CodeWithQB.API
 
     internal class RoleConfiguration
     {
-        public static void Seed(AppDbContext context, IDateTime dateTime, IEventStore eventStore, IRepository repository)
+        public static void Seed(IDateTime dateTime, IEventStore eventStore, IRepository repository)
         {
             if (repository.Query<Role>().SingleOrDefault(x => x.Name == "Admin") == null)
                 eventStore.Save(new Role("Admin"));
 
             if (repository.Query<Role>().SingleOrDefault(x => x.Name == "Mentee") == null)
                 eventStore.Save(new Role("Mentee"));
+
+            if (repository.Query<Role>().SingleOrDefault(x => x.Name == "Customer") == null)
+                eventStore.Save(new Role("Customer"));
         }
     }
 
     internal class CardConfiguration
     {
-        public static void Seed(AppDbContext context, IDateTime dateTime, IEventStore eventStore, IRepository repository)
+        public static void Seed(IDateTime dateTime, IEventStore eventStore, IRepository repository)
         {
             if (repository.Query<Card>().SingleOrDefault(x => x.Name == "Events") == null)
                 eventStore.Save(new Card("Events"));
@@ -121,20 +117,20 @@ namespace CodeWithQB.API
 
     internal class DashboardConfiguration
     {
-        public static void Seed(AppDbContext context, IDateTime dateTime, IEventStore eventStore, IRepository repository)
+        public static void Seed(IDateTime dateTime, IEventStore eventStore, IRepository repository)
         {
         }
     }
 
     internal class DashboardTileConfiguration {
-        public static void Seed(AppDbContext context, IDateTime dateTime, IEventStore eventStore, IRepository repository)
+        public static void Seed(IDateTime dateTime, IEventStore eventStore, IRepository repository)
         {
         }
     }
 
     internal class ProductConfiguration
     {
-        public static void Seed(AppDbContext context, IDateTime dateTime, IEventStore eventStore, IRepository repository)
+        public static void Seed(IDateTime dateTime, IEventStore eventStore, IRepository repository)
         {
             if (repository.Query<Product>().SingleOrDefault(x => x.Name == "Mentoring") == null)
                 eventStore.Save(new Product("Mentoring", 300, "<p>I provide remote mentoring in area of Software Development to all ages and levels of experience.</p>"));
@@ -144,7 +140,6 @@ namespace CodeWithQB.API
 
             if (repository.Query<Product>().SingleOrDefault(x => x.Name == "Assessments") == null)
                 eventStore.Save(new Product("Assessments", 300, "<p>I provide assements of Developer skills.</p>"));
-
         }
     }
 }

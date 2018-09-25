@@ -1,6 +1,6 @@
 namespace CodeWithQB.Core.DomainEvents
 {
-    public class GuestRemoved: DomainEvent
+    public class AttendeeRemoved: DomainEvent
     {
 
     }

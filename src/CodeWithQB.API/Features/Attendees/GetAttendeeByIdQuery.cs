@@ -7,37 +7,37 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Addresses
+namespace CodeWithQB.API.Features.Attendees
 {
-    public class GetAddressByIdQuery
+    public class GetAttendeeByIdQuery
     {
         public class Validator : AbstractValidator<Request>
         {
             public Validator()
             {
-                RuleFor(request => request.AddressId).NotEqual(default(Guid));
+                RuleFor(request => request.AttendeeId).NotEqual(default(Guid));
             }
         }
 
         public class Request : IRequest<Response> {
-            public Guid AddressId { get; set; }
+            public Guid AttendeeId { get; set; }
         }
 
         public class Response
         {
-            public AddressDto Address { get; set; }
+            public AttendeeDto Attendee { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
         {
             private readonly IRepository _repository;
             
-            public Handler(IRepository repository) => _repository = repository;
+			public Handler(IRepository repository) => _repository = repository;
 
             public Task<Response> Handle(Request request, CancellationToken cancellationToken)
-                 => Task.FromResult(new Response()
+			     => Task.FromResult(new Response()
                 {
-                    Address = AddressDto.FromAddress(_repository.Query<Address>().Single(x => x.AddressId ==request.AddressId))
+                    Attendee = AttendeeDto.FromAttendee(_repository.Query<Attendee>().Single(x => x.AttendeeId == request.AttendeeId))
                 });
         }
     }
