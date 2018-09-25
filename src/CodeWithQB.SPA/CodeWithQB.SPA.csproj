@@ -30,6 +30,10 @@
   <ItemGroup>
     <Folder Include="ClientApp\src\app\mentees\" />
     <Folder Include="ClientApp\src\app\events\" />
+    <Folder Include="ClientApp\src\app\digital-assets\" />
+    <Folder Include="ClientApp\src\app\bookings\" />
+    <Folder Include="ClientApp\src\app\inventory-items\" />
+    <Folder Include="ClientApp\src\app\service-providers\" />
     <Folder Include="ClientApp\src\app\shopping-carts\" />
     <Folder Include="ClientApp\src\app\products\" />
   </ItemGroup>

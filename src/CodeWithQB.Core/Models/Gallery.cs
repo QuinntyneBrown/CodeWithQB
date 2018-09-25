@@ -12,7 +12,7 @@ namespace CodeWithQB.Core.Models
 
         public Guid GalleryId { get; set; } = Guid.NewGuid();          
 		public string Name { get; set; }
-        public ICollection<Guid> PhotoIds { get; set; }
+        public ICollection<Guid> GalleryPhotoIds { get; set; }
         public GalleryStatus Status { get; set; }
 		public int Version { get; set; }
 
