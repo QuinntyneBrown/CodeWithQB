@@ -1,6 +1,7 @@
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace CodeWithQB.API.Features.Customers
@@ -10,28 +11,26 @@ namespace CodeWithQB.API.Features.Customers
     [Route("api/customers")]
     public class CustomersController
     {
-        private readonly IMediator _mediator;
+        private readonly IMediator _meditator;
 
-        public CustomersController(IMediator mediator) => _mediator = mediator;
-
-        [HttpPost]
-        public async Task<ActionResult<CreateCustomerCommand.Response>> Create(CreateCustomerCommand.Request request)
-            => await _mediator.Send(request);
-
-        [HttpPut]
-        public async Task<ActionResult<UpdateCustomerCommand.Response>> Update([FromBody]UpdateCustomerCommand.Request request)
-            => await _mediator.Send(request);
-        
-        [HttpDelete("{customerId}")]
-        public async Task Remove([FromRoute]RemoveCustomerCommand.Request request)
-            => await _mediator.Send(request);            
-
-        [HttpGet("{customerId}")]
-        public async Task<ActionResult<GetCustomerByIdQuery.Response>> GetById([FromRoute]GetCustomerByIdQuery.Request request)
-            => await _mediator.Send(request);
+        public CustomersController(IMediator mediator) => _meditator = mediator;
 
         [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(GetCustomersQuery.Response), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<GetCustomersQuery.Response>> Get()
-            => await _mediator.Send(new GetCustomersQuery.Request());
+            => await _meditator.Send(new GetCustomersQuery.Request());
+
+        [HttpGet("{customerId}")]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(GetCustomerByIdQuery.Response), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<GetCustomerByIdQuery.Response>> GetById(GetCustomerByIdQuery.Request request)
+            => await _meditator.Send(request);
+
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(UpsertCustomerCommand.Response), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<UpsertCustomerCommand.Response>> Upsert(UpsertCustomerCommand.Request request)
+            => await _meditator.Send(request);
     }
 }

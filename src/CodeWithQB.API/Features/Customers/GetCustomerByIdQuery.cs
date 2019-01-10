@@ -1,24 +1,16 @@
-using CodeWithQB.Core.Interfaces;
-using CodeWithQB.Core.Models;
-using FluentValidation;
 using MediatR;
-using System;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
+using System.Threading;
+using System.Collections.Generic;
+using CodeWithQB.Core.Interfaces;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace CodeWithQB.API.Features.Customers
 {
     public class GetCustomerByIdQuery
     {
-        public class Validator : AbstractValidator<Request>
-        {
-            public Validator()
-            {
-                RuleFor(request => request.CustomerId).NotEqual(default(Guid));
-            }
-        }
-
         public class Request : IRequest<Response> {
             public Guid CustomerId { get; set; }
         }
@@ -30,15 +22,14 @@ namespace CodeWithQB.API.Features.Customers
 
         public class Handler : IRequestHandler<Request, Response>
         {
-            private readonly IRepository _repository;
-            
-			public Handler(IRepository repository) => _repository = repository;
+            public IAppDbContext _context { get; set; }
+            public Handler(IAppDbContext context) => _context = context;
 
-            public Task<Response> Handle(Request request, CancellationToken cancellationToken)
-			     => Task.FromResult(new Response()
+            public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
+                => new Response()
                 {
-                    Customer = CustomerDto.FromCustomer(_repository.Query<Customer>().Single(x => x.CustomerId == request.CustomerId))
-                });
+                    Customer = CustomerDto.FromCustomer(await _context.Customers.FindAsync(request.CustomerId))
+                };
         }
     }
 }

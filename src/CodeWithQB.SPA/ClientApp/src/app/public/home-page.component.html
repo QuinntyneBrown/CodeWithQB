@@ -1,6 +1,0 @@
-<app-product-card *ngFor="let product of (products$ | async)"
-                  [product]="product"
-                  (buy)="handleBuy($event)"
-                  [isAuthenticated]="accessToken != undefined">
-</app-product-card>
-

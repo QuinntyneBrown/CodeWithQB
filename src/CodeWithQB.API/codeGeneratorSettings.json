@@ -1,1 +1,4 @@
-{"RootNamespace":"CodeWithQB"}
+{
+  "RootNamespace": "CodeWithQB",
+  "EntityFrameworkCore": "true"
+}

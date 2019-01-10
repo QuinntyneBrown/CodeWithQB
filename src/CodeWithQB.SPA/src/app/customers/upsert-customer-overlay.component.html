@@ -1,0 +1,11 @@
+<h2>Add Customer</h2>
+
+<form novalidate autocomplete="off" spellcheck="false" [formGroup]="form">
+  <mat-form-field>
+    <input matInput placeholder="Name" id="name" formControlName="name">
+  </mat-form-field>
+
+  <button mat-button (click)="handleCancelClick()">Cancel</button>
+  <button mat-button (click)="handleSave(this.form.value)">Save</button>
+
+</form>

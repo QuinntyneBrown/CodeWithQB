@@ -1,15 +1,12 @@
-using CodeWithQB.Core.Interfaces;
+﻿using System;
+using System.Linq;
+using CodeWithQB.Core.Identity;
+using CodeWithQB.Core.Models;
 using CodeWithQB.Infrastructure;
-using CodeWithQB.Infrastructure.Data;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 
 namespace CodeWithQB.API
 {
@@ -17,29 +14,12 @@ namespace CodeWithQB.API
     {
         public static void Main(string[] args)
         {
-
-            var builder = CreateWebHostBuilder();
-
-            if(args.Contains("ci"))
-                builder.ConfigureAppConfiguration((builderContext, config) =>
-                 {
-                     config
-                     .AddInMemoryCollection(new Dictionary<string, string>
-                     {
-                         { "isCI", "true"}
-                     });
-                 });
-
-            var host = builder.Build();
+            var host = CreateWebHostBuilder().Build();
 
             ProcessDbCommands(args, host);
 
-            host.Run();            
+            host.Run();
         }
-        
-        public static IWebHostBuilder CreateWebHostBuilder() =>
-            WebHost.CreateDefaultBuilder()
-                .UseStartup<Startup>();
 
         private static void ProcessDbCommands(string[] args, IWebHost host)
         {
@@ -48,8 +28,6 @@ namespace CodeWithQB.API
             using (var scope = services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-                var dateTime = scope.ServiceProvider.GetRequiredService<IDateTime>();
-
 
                 if (args.Contains("ci"))
                     args = new string[4] { "dropdb", "migratedb", "seeddb", "stop" };
@@ -63,13 +41,32 @@ namespace CodeWithQB.API
                 if (args.Contains("seeddb"))
                 {
                     context.Database.EnsureCreated();
-                    var eventStore = scope.ServiceProvider.GetRequiredService<IEventStore>();
-                    var repository = scope.ServiceProvider.GetRequiredService<IRepository>();
-                    var queue = scope.ServiceProvider.GetRequiredService<IBackgroundTaskQueue>();
-                    AppInitializer.Seed(dateTime, eventStore,services, repository);
-                    queue.DequeueAsync(default(CancellationToken)).GetAwaiter().GetResult();
-                }               
+
+                    User user = default(User);
+
+                    if (context.Users.IgnoreQueryFilters().FirstOrDefault(x => x.Username == "quinntynebrown@gmail.com") == null)
+                    {
+                        user = new User()
+                        {
+                            Username = "quinntynebrown@gmail.com"
+                        };
+
+                        user.Password = new PasswordHasher().HashPassword(user.Salt, "P@ssw0rd");
+
+                        context.Users.Add(user);
+
+                    }
+                    
+                    context.SaveChanges();
+                }
+
+                if (args.Contains("stop"))
+                    Environment.Exit(0);
             }
-        }        
+        }
+
+        public static IWebHostBuilder CreateWebHostBuilder() =>
+            WebHost.CreateDefaultBuilder()
+                .UseStartup<Startup>();
     }
 }

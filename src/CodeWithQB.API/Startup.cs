@@ -1,76 +1,161 @@
-using FluentValidation.AspNetCore;
-using CodeWithQB.Core;
-using CodeWithQB.Core.Behaviours;
-using CodeWithQB.Core.Extensions;
+﻿using CodeWithQB.Core.Identity;
 using CodeWithQB.Core.Interfaces;
-using CodeWithQB.Core.Identity;
-using CodeWithQB.Infrastructure.Extensions;
 using CodeWithQB.Infrastructure;
-using CodeWithQB.Infrastructure.Data;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using CodeWithQB.Core.Common;
+using Microsoft.Extensions.Primitives;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 using System.Threading.Tasks;
-using System.Threading;
 
 namespace CodeWithQB.API
 {
     public class Startup
     {
         public Startup(IConfiguration configuration)
-            => Configuration = configuration;
-        
-        public IConfiguration Configuration { get; }
-
-        public void ConfigureServices(IServiceCollection services)
-        {                        
-            services.AddSingleton<IDateTime, MachineDateTime>();
-            services.AddSingleton<IEventStore, EventStore>();
-            services.AddSingleton<IRepository, Repository>();
-            services.AddSingleton<ICommandPreProcessor, CommandPreProcessor>();
-            services.AddSingleton<ICommandRegistry, CommandRegistry>();
-
-            services.AddHttpContextAccessor();
-            services.AddHostedService<QueuedHostedService>();
-            services.AddSingleton<IBackgroundTaskQueue, BackgroundTaskQueue>();
-
-            services.AddCustomMvc()
-                .AddFluentValidation(cfg => { cfg.RegisterValidatorsFromAssemblyContaining<Startup>(); });
-
-            services
-                .AddCustomSecurity(Configuration)
-                .AddCustomSignalR()
-                .AddCustomSwagger()
-                .AddDataStore(Configuration["Data:DefaultConnection:ConnectionString"],Configuration.GetValue<bool>("isTest"))
-                .AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>))
-                .AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthenticatedRequestBehavior<,>))
-                .AddMediatR(typeof(Startup).Assembly);
+        {
+            Configuration = configuration;
         }
 
-        public void Configure(IApplicationBuilder app, IBackgroundTaskQueue queue)
-        {
-            var repository = app.ApplicationServices.GetRequiredService<IRepository>() as IRepository;
+        public IConfiguration Configuration { get; }
 
-            if(Configuration.GetValue<bool>("isTest"))
-                app.UseMiddleware<ByPassAuthMiddleware>();
-                    
-            app.UseAuthentication()            
-                .UseCors(CorsDefaults.Policy)            
-                .UseMvc()
-                .UseSignalR(routes => routes.MapHub<IntegrationEventsHub>("/hub"))
-                .UseSwagger()
-                .UseSwaggerUI(options =>
+
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddCors(options => options.AddPolicy("CorsPolicy",
+                builder => builder
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(isOriginAllowed: _ => true)
+                .AllowCredentials()));
+
+            services.AddScoped<IAppDbContext, AppDbContext>();
+
+            services.AddSingleton<IPasswordHasher, PasswordHasher>();
+
+            services.AddSingleton<ISecurityTokenFactory, SecurityTokenFactory>();
+
+            var settings = new JsonSerializerSettings
+            {
+                ContractResolver = new SignalRContractResolver()
+            };
+
+            var serializer = JsonSerializer.Create(settings);
+
+            services.Add(new ServiceDescriptor(typeof(JsonSerializer),
+                                               provider => serializer,
+                                               ServiceLifetime.Transient));
+
+            services.AddSignalR().AddAzureSignalR(Configuration["SignalR:DefaultConnection:ConnectionString"]);
+            
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                options
+                .UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"], b => b.MigrationsAssembly("CodeWithQB.Infrastructure"));
+            });
+
+            services.AddSwaggerGen(options =>
+            {
+                options.DescribeAllEnumsAsStrings();
+                options.SwaggerDoc("v1", new Info
+                {
+                    Title = "CodeWithQB",
+                    Version = "v1",
+                    Description = "CodeWithQB REST API",
+                });
+                options.CustomSchemaIds(x => x.FullName);
+            });
+
+            services.ConfigureSwaggerGen(options => { });
+
+            var jwtSecurityTokenHandler = new JwtSecurityTokenHandler
+            {
+                InboundClaimTypeMap = new Dictionary<string, string>()
+            };
+
+            services
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.SecurityTokenValidators.Clear();
+                    options.SecurityTokenValidators.Add(jwtSecurityTokenHandler);
+                    options.TokenValidationParameters = GetTokenValidationParameters(Configuration);
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            context.Request.Query.TryGetValue("access_token", out StringValues token);
+
+                            if (!string.IsNullOrEmpty(token))
+                                context.Token = token;
+
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
+
+            services.AddMediatR(typeof(Startup));
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);            
+        }
+
+        private static TokenValidationParameters GetTokenValidationParameters(IConfiguration configuration)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Authentication:JwtKey"])),
+                ValidateIssuer = true,
+                ValidIssuer = configuration["Authentication:JwtIssuer"],
+                ValidateAudience = true,
+                ValidAudience = configuration["Authentication:JwtAudience"],
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero,
+                NameClaimType = JwtRegisteredClaimNames.UniqueName
+            };
+
+            return tokenValidationParameters;
+        }
+
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            app.UseCors("CorsPolicy");
+            app.UseAuthentication();
+
+            if (env.IsDevelopment())
+            {
+                app.UseSwagger();
+
+                app.UseSwaggerUI(options =>
                 {
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "CodeWithQB API");
                     options.RoutePrefix = string.Empty;
                 });
 
-            if (Configuration.GetValue<bool>("isCI"))
-                new Timer((Object stateInfo) => { Environment.Exit(0); }, null, 1000, 1000);
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseHsts();
+            }
 
+            app.UseAzureSignalR(routes => routes.MapHub<AppHub>("/hub"));
+
+            app.UseHttpsRedirection();
+            app.UseMvc();
         }
     }
 }

@@ -1,15 +1,12 @@
+﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
-using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System.Collections.Generic;
+using System.Text;
 
 namespace CodeWithQB.Core.Identity
 {
-    public interface IPasswordHasher
+    public class PasswordHasher: IPasswordHasher
     {
-        string HashPassword(Byte[] salt, string password);
-    }
-
-    public class PasswordHasher : IPasswordHasher
-    {        
         public string HashPassword(Byte[] salt, string password)
         {
             return Convert.ToBase64String(KeyDerivation.Pbkdf2(

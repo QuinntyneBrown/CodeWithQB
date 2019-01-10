@@ -1,0 +1,16 @@
+<mat-card>
+  <mat-card-title>
+    Login
+  </mat-card-title>
+  <form novalidate autocomplete="off" spellcheck="false" [formGroup]="form" [attr.disabled]="true">
+    <mat-form-field>
+      <input matInput placeholder="Username" id="username" formControlName="username" required>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Password" id="password" formControlName="password" type="password" required>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="tryToLogin({ value: this.form.value })" [disabled]="!form.valid">Submit</button>
+  </form>
+</mat-card>
