@@ -20,4 +20,11 @@
     <ProjectReference Include="..\CodeWithQB.Infrastructure\CodeWithQB.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Addresses\" />
+    <Folder Include="Features\Locations\" />
+    <Folder Include="Features\DigitalAssets\" />
+    <Folder Include="Features\Talks\" />
+  </ItemGroup>
+
 </Project>

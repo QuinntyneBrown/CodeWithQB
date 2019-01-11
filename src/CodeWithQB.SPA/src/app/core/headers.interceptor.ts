@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptionsArgs } from '@angular/http';
+//import { Http, Headers, RequestOptionsArgs } from '@angular/http';
 import { accessTokenKey, storageKey } from './constants';
 import { LocalStorageService } from './local-storage.service';
 import { Observable } from 'rxjs';
