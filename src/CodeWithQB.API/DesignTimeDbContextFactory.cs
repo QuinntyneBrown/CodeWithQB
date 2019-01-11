@@ -10,8 +10,8 @@ namespace CodeWithQB.API
     {
         public AppDbContext CreateDbContext(string[] args)
         {
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .AddUserSecrets(typeof(Startup).GetTypeInfo().Assembly)
+            IConfigurationRoot configuration = new ConfigurationBuilder()                
+                .AddJsonFile("appsettings.json", optional: false)
                 .Build();
             
             var options = new DbContextOptionsBuilder<AppDbContext>()

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using CodeWithQB.Core.Identity;
 using CodeWithQB.Core.Models;
@@ -6,6 +7,7 @@ using CodeWithQB.Infrastructure;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CodeWithQB.API
@@ -67,6 +69,18 @@ namespace CodeWithQB.API
 
         public static IWebHostBuilder CreateWebHostBuilder() =>
             WebHost.CreateDefaultBuilder()
+            .ConfigureAppConfiguration((context,builder) => {
+                builder.SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false);
+
+                var config = builder.Build();
+
+                builder.AddAzureKeyVault(
+                    $"https://{config["AzureKeyVault:Vault"]}.vault.azure.net/", 
+                    config["AzureKeyVault:ClientId"], 
+                    config["AzureKeyVault:Secret"]);
+                    
+            })
                 .UseStartup<Startup>();
     }
 }
