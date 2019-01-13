@@ -49,7 +49,6 @@ export class LoginComponent {
   public tryToLogin($event) {
     this.form.disable();
 
-
     this._authService
       .tryToLogin({
         username: $event.value.username,

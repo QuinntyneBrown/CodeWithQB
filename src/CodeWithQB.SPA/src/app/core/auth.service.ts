@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { accessTokenKey, baseUrl, currentUserNameKey } from './constants';
-import { HubClient } from './hub-client';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable()

@@ -35,6 +35,7 @@ namespace CodeWithQB.API
         {
             services.AddCors(options => options.AddPolicy("CorsPolicy",
                 builder => builder
+                .WithOrigins("https://codewithqb.z27.web.core.windows.net,http://localhost:4200")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .SetIsOriginAllowed(isOriginAllowed: _ => true)
@@ -138,13 +139,6 @@ namespace CodeWithQB.API
             
             if (env.IsDevelopment())
             {
-                app.UseSwagger();
-
-                app.UseSwaggerUI(options =>
-                {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "CodeWithQB API");
-                    options.RoutePrefix = string.Empty;
-                });
 
                 app.UseDeveloperExceptionPage();
             }
@@ -152,6 +146,14 @@ namespace CodeWithQB.API
             {
                 app.UseHsts();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(options =>
+            {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "CodeWithQB API");
+                options.RoutePrefix = string.Empty;
+            });
 
             app.UseAzureSignalR(routes => routes.MapHub<AppHub>("/hub"));
 

@@ -21,7 +21,7 @@ import { IdentityModule } from './identity/identity.module';
   ],
   providers: [{
     provide: baseUrl,
-    useValue:"https://localhost:44324/"
+    useValue:"https://codewithqb.azurewebsites.net/"
   }],
   bootstrap: [AppComponent]
 })

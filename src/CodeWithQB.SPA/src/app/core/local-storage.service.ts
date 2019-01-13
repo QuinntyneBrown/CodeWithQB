@@ -3,21 +3,20 @@ import { storageKey } from './constants';
 
 @Injectable()
 export class LocalStorageService {
-  private _items = null;
+  
+  public get items() {  
+    var storageItems = localStorage.getItem(storageKey);
 
-  public get items() {
-    if (this._items === null) {
-      var storageItems = localStorage.getItem(storageKey);
-      if (storageItems === 'null') {
-        storageItems = null;
-      }
-      this._items = JSON.parse(storageItems || '[]');
+    if (!storageItems) {
+      localStorage.setItem(storageKey, JSON.stringify([]));
+      return [];
     }
-    return this._items;
+    
+    return JSON.parse(storageItems);
   }
 
   public set items(value: Array<any>) {
-    this._items = value;
+    localStorage.setItem(storageKey, JSON.stringify(value));
   }
 
   public get = (options: { name: string }) => {
@@ -44,10 +43,5 @@ export class LocalStorageService {
       this.items = items;
       items = null;
     }
-
-    this.updateLocalStorage();
   };
-  public updateLocalStorage() {
-    localStorage.setItem(storageKey, JSON.stringify(this._items));
-  }
 }

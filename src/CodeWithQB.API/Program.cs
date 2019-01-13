@@ -16,7 +16,7 @@ namespace CodeWithQB.API
     {
         public static void Main(string[] args)
         {
-            var host = CreateWebHostBuilder().Build();
+            var host = CreateWebHostBuilder(args).Build();
 
             ProcessDbCommands(args, host);
 
@@ -67,19 +67,17 @@ namespace CodeWithQB.API
             }
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder() =>
-            WebHost.CreateDefaultBuilder()
-            .ConfigureAppConfiguration((context,builder) => {
-                builder.SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false);
-
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+            WebHost.CreateDefaultBuilder(args)
+            .ConfigureAppConfiguration((context, builder) =>
+            {
                 var config = builder.Build();
 
                 builder.AddAzureKeyVault(
-                    $"https://{config["AzureKeyVault:Vault"]}.vault.azure.net/", 
-                    config["AzureKeyVault:ClientId"], 
+                    $"https://{config["AzureKeyVault:Vault"]}.vault.azure.net/",
+                    config["AzureKeyVault:ClientId"],
                     config["AzureKeyVault:Secret"]);
-                    
+
             })
                 .UseStartup<Startup>();
     }

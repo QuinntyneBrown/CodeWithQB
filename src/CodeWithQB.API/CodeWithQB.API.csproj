@@ -2,13 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+    <UserSecretsId>7f9df59d-8f6f-4d3d-9b8f-bea111a12b0a</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="6.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.Azure.SignalR" Version="1.0.5" />
     <PackageReference Include="Microsoft.Extensions.Configuration.AzureKeyVault" Version="2.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
@@ -18,12 +19,4 @@
     <ProjectReference Include="..\CodeWithQB.Core\CodeWithQB.Core.csproj" />
     <ProjectReference Include="..\CodeWithQB.Infrastructure\CodeWithQB.Infrastructure.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Features\Addresses\" />
-    <Folder Include="Features\Locations\" />
-    <Folder Include="Features\DigitalAssets\" />
-    <Folder Include="Features\Talks\" />
-  </ItemGroup>
-
 </Project>
