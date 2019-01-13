@@ -6,6 +6,8 @@ using CodeWithQB.Core.Models;
 using CodeWithQB.Infrastructure;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Azure.KeyVault;
+using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -69,16 +71,21 @@ namespace CodeWithQB.API
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration((context, builder) =>
+            .ConfigureAppConfiguration((context, config) =>
             {
-                var config = builder.Build();
+                var builder = config.Build();
 
-                builder.AddAzureKeyVault(
-                    $"https://{config["AzureKeyVault:Vault"]}.vault.azure.net/",
-                    config["AzureKeyVault:ClientId"],
-                    config["AzureKeyVault:Secret"]);
+                var keyVaultEndpoint = $"https://codewithqb.vault.azure.net/";
 
+                var azureServiceTokenProvider = new AzureServiceTokenProvider();
+
+                var keyVaultClient = new KeyVaultClient(
+                    new KeyVaultClient.AuthenticationCallback(
+                    azureServiceTokenProvider.KeyVaultTokenCallback)
+                    );
+
+                config.AddAzureKeyVault(keyVaultEndpoint);                
             })
-                .UseStartup<Startup>();
+            .UseStartup<Startup>();
     }
 }

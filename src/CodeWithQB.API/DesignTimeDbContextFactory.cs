@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using System.Reflection;
 
 namespace CodeWithQB.API
 {
@@ -10,8 +9,8 @@ namespace CodeWithQB.API
     {
         public AppDbContext CreateDbContext(string[] args)
         {
-            IConfigurationRoot configuration = new ConfigurationBuilder()                
-                .AddJsonFile("appsettings.json", optional: false)
+            IConfigurationRoot configuration = new ConfigurationBuilder() 
+                .AddUserSecrets<Startup>()
                 .Build();
             
             var options = new DbContextOptionsBuilder<AppDbContext>()

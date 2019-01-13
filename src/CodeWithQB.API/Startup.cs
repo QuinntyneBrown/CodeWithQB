@@ -38,7 +38,6 @@ namespace CodeWithQB.API
                 .WithOrigins("https://codewithqb.z27.web.core.windows.net,http://localhost:4200")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .SetIsOriginAllowed(isOriginAllowed: _ => true)
                 .AllowCredentials()));
 
             services.AddScoped<IAppDbContext, AppDbContext>();
