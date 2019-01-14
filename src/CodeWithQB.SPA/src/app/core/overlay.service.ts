@@ -5,7 +5,6 @@ import { Observable } from "rxjs";
 import { OverlayRefProvider } from "./overlay-ref-provider";
 import { OverlayRefWrapper } from './overlay-ref-wrapper';
 
-@Injectable()
 export class OverlayService<TComponent> {
   constructor(
     public _injector: Injector,

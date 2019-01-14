@@ -1,8 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CodeWithQB.API.Features.Identity
@@ -13,10 +10,7 @@ namespace CodeWithQB.API.Features.Identity
     {
         private readonly IMediator _mediator;
 
-        public UsersController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        public UsersController(IMediator mediator) => _mediator = mediator;
 
         [HttpPost("token")]
         public async Task<ActionResult<AuthenticateCommand.Response>> SignIn(AuthenticateCommand.Request request)
