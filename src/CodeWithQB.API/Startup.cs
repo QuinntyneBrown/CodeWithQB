@@ -35,11 +35,12 @@ namespace CodeWithQB.API
         {
             services.AddCors(options => options.AddPolicy("CorsPolicy",
                 builder => builder
-                .WithOrigins("https://codewithqb.z27.web.core.windows.net")
-                .AllowAnyHeader()
+                .WithOrigins("https://codewithqb.z27.web.core.windows.net,http://localhost:4200")
                 .AllowAnyMethod()
+                .AllowAnyHeader()
+                .SetIsOriginAllowed(isOriginAllowed: _ => true)
                 .AllowCredentials()));
-            
+
             services.AddScoped<IAppDbContext, AppDbContext>();
 
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
