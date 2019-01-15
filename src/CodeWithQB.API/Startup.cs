@@ -133,9 +133,9 @@ namespace CodeWithQB.API
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            app.UseCors("CorsPolicy");
-
             app.UseAuthentication();
+
+            app.UseCors("CorsPolicy");
             
             if (env.IsDevelopment())
             {
