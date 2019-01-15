@@ -8,7 +8,7 @@ namespace CodeWithQB.API.Features.DigitalAssets
     public class DigitalAssetsController
     {
         public async Task<ActionResult<string>> Get() {
-            return await Task.FromResult("Digital Assets");
+            return await Task.FromResult("Digital Assets Controller");
         }
     }
 }
