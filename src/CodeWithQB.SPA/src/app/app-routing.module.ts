@@ -9,7 +9,7 @@ const routes: Routes = [
   {
     path: "",
     component: CustomersPageComponent,
-    canActivate: [AuthGuard, HubClientGuard],
+    canActivate: [AuthGuard],
   },
   {
     path: "login",    
