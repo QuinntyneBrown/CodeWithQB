@@ -15,12 +15,14 @@ export class HubClientGuard implements CanActivate {
   ) { }
 
   public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean | UrlTree> {
-    return new Promise(resolve =>
+    return new Promise((resolve,reject) =>
       this._hubClient.connect().then(() => {
         resolve(true);
       }, () => {
         this._loginRedirectService.lastPath = state.url;
 
+        reject(false);
+        
         return this._router.parseUrl(this._loginRedirectService.loginUrl);
       })
     );

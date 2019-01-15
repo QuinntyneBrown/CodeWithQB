@@ -20,7 +20,7 @@ export class HubClient {
   public connect(): Promise<any> {
     if (this._connect) return this._connect;
 
-    this._connect = new Promise(resolve => {
+    this._connect = new Promise((resolve, reject) => {
 
       const options: IHttpConnectionOptions = {        
         accessTokenFactory: () => this._storage.get({
@@ -38,7 +38,11 @@ export class HubClient {
         this._ngZone.run(() => this.messages$.next(value));
       });
 
-      this._connection.start().then(() => resolve());
+      this._connection.start()
+      .then(() => resolve())
+      .catch(() => {  
+        reject("Failed Hub Connection")
+      });
     });
 
     return this._connect;
