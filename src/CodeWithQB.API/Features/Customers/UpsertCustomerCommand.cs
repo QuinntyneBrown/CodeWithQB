@@ -32,6 +32,7 @@ namespace CodeWithQB.API.Features.Customers
                 }
 
                 customer.Name = request.Customer.Name;
+
                 customer.IsLive = request.Customer.IsLive;
 
                 await _context.SaveChangesAsync(cancellationToken);
