@@ -23,14 +23,10 @@ namespace CodeWithQB.API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        public Startup(IConfiguration configuration) => Configuration = configuration;
 
         public IConfiguration Configuration { get; }
-
-
+        
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors(options => options.AddPolicy("CorsPolicy",
@@ -139,7 +135,6 @@ namespace CodeWithQB.API
             
             if (env.IsDevelopment())
             {
-
                 app.UseDeveloperExceptionPage();
             }
             else
