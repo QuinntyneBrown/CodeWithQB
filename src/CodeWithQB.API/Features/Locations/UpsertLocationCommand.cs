@@ -6,25 +6,25 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Customers
+namespace CodeWithQB.API.Features.Locations
 {
-    public class UpsertCustomerCommand
+    public class UpsertLocationCommand
     {
-        public class Validator : AbstractValidator<Request>
-        {
+
+        public class Validator: AbstractValidator<Request> {
             public Validator()
             {
-                RuleFor(request => request.Customer.CustomerId).NotNull();
+                RuleFor(request => request.Location.LocationId).NotNull();
             }
         }
 
         public class Request : IRequest<Response> {
-            public CustomerDto Customer { get; set; }
+            public LocationDto Location { get; set; }
         }
 
         public class Response
         {
-            public Guid CustomerId { get;set; }
+            public Guid LocationId { get;set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -33,20 +33,18 @@ namespace CodeWithQB.API.Features.Customers
             public Handler(IAppDbContext context) => _context = context;
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken) {
-                var customer = await _context.Customers.FindAsync(request.Customer.CustomerId);
+                var location = await _context.Locations.FindAsync(request.Location.LocationId);
 
-                if (customer == null) {
-                    customer = new Customer();
-                    _context.Customers.Add(customer);
+                if (location == null) {
+                    location = new Location();
+                    _context.Locations.Add(location);
                 }
 
-                customer.Name = request.Customer.Name;
-
-                customer.IsLive = request.Customer.IsLive;
+                location.Name = request.Location.Name;
 
                 await _context.SaveChangesAsync(cancellationToken);
 
-                return new Response() { CustomerId = customer.CustomerId };
+                return new Response() { LocationId = location.LocationId };
             }
         }
     }

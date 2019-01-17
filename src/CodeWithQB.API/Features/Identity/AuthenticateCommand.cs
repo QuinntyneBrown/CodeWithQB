@@ -51,7 +51,6 @@ namespace CodeWithQB.API.Features.Identity
 
                 if (!ValidateUser(user, _passwordHasher.HashPassword(user.Salt, request.Password)))
                     throw new Exception("Invalid username or password");
-
                 
                 return new Response()
                 {

@@ -1,11 +1,8 @@
-using MediatR;
-using System.Threading.Tasks;
-using System.Threading;
-using System.Collections.Generic;
 using CodeWithQB.Core.Interfaces;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using MediatR;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace CodeWithQB.API.Features.Customers
 {

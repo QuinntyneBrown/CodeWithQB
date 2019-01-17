@@ -32,5 +32,11 @@ namespace CodeWithQB.API.Features.Customers
         [ProducesResponseType(typeof(UpsertCustomerCommand.Response), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<UpsertCustomerCommand.Response>> Upsert(UpsertCustomerCommand.Request request)
             => await _meditator.Send(request);
+
+        [HttpDelete]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(Unit), (int)HttpStatusCode.OK)]
+        public async Task<ActionResult<Unit>> Upsert([FromQuery]RemoveCustomerCommand.Request request)
+            => await _meditator.Send(request);
     }
 }

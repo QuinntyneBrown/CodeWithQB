@@ -7,10 +7,7 @@ namespace CodeWithQB.API.Features.Addresses
         private readonly IMediator _mediator;
 
         public AddressesController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
-
+            => _mediator = mediator;
         
     }
 }

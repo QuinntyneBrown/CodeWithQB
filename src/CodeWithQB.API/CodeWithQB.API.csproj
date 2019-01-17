@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Locations\" />
     <Folder Include="Features\Products\" />
   </ItemGroup>
 </Project>
