@@ -1,5 +1,6 @@
 using CodeWithQB.Core.Interfaces;
 using CodeWithQB.Core.Models;
+using FluentValidation;
 using MediatR;
 using System;
 using System.Threading;

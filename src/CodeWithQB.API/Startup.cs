@@ -1,4 +1,5 @@
-﻿using CodeWithQB.Core.Identity;
+﻿using CodeWithQB.API.Behaviours;
+using CodeWithQB.Core.Identity;
 using CodeWithQB.Core.Interfaces;
 using CodeWithQB.Infrastructure;
 using MediatR;
@@ -44,6 +45,8 @@ namespace CodeWithQB.API
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
             services.AddSingleton<ISecurityTokenFactory, SecurityTokenFactory>();
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
             var settings = new JsonSerializerSettings
             {
