@@ -13,15 +13,17 @@ namespace CodeWithQB.API.Features.Talks
         private readonly IMediator _mediator;
         
         public TalksController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+            => _mediator = mediator;
 
         [HttpGet]
         [Route("")]
         public async Task<GetTalksQuery.Response> Get()
-        {
-            return await _mediator.Send(new GetTalksQuery.Request());
-        }
+            => await _mediator.Send(new GetTalksQuery.Request());
+
+        [HttpPut]
+        [Route("")]
+        public async Task<UpsertTalkCommand.Response> Get([FromBody]UpsertTalkCommand.Request request)
+            => await _mediator.Send(request);
+
     }
 }

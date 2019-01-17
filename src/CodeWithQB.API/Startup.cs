@@ -39,6 +39,8 @@ namespace CodeWithQB.API
 
             services.AddScoped<IAppDbContext, AppDbContext>();
 
+            services.AddHttpContextAccessor();
+
             services.AddSingleton<IPasswordHasher, PasswordHasher>();
 
             services.AddSingleton<ISecurityTokenFactory, SecurityTokenFactory>();
@@ -74,7 +76,9 @@ namespace CodeWithQB.API
                 options.CustomSchemaIds(x => x.FullName);
             });
 
-            services.ConfigureSwaggerGen(options => { });
+            services.ConfigureSwaggerGen(options => {
+                options.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
+            });
 
             var jwtSecurityTokenHandler = new JwtSecurityTokenHandler
             {
