@@ -13,10 +13,10 @@ const routes: Routes = [
     canActivate: [AuthGuard, HubClientGuard],
   },
   {
-    path: "contacts",
+    path: "contact-requests",
     component: ContactRequestsPageComponent,
     canActivate: [AuthGuard, HubClientGuard],
-  }, 
+  },
   {
     path: "login",    
     component: LoginPageComponent
