@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { baseUrl } from './core/constants';
 import { CustomersModule } from './customers/customers.module';
 import { IdentityModule } from './identity/identity.module';
+import { ContactRequestsModule } from './contact-requests/contact-requests.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { IdentityModule } from './identity/identity.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     IdentityModule,
-    CustomersModule
+    CustomersModule,
+    ContactRequestsModule
   ],
   providers: [{
     provide: baseUrl,

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeWithQB.Core.Models;
+using System;
 
 namespace CodeWithQB.API.Features.Locations
 {
@@ -6,7 +7,7 @@ namespace CodeWithQB.API.Features.Locations
     {
         public Guid LocationId { get; set; }
         public string Name { get; set; }
-        public static LocationDto FromCustomer(LocationDto location)
+        public static LocationDto FromLocation(Location location)
             => new LocationDto
             {
                 LocationId = location.LocationId,

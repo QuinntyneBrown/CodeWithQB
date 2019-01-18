@@ -122,10 +122,8 @@ namespace CodeWithQB.API
             {
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Authentication:JwtKey"])),
-                ValidateIssuer = true,
-                ValidIssuer = configuration["Authentication:JwtIssuer"],
-                ValidateAudience = true,
-                ValidAudience = configuration["Authentication:JwtAudience"],
+                ValidateIssuer = false,
+                ValidateAudience = false,
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero,
                 NameClaimType = JwtRegisteredClaimNames.UniqueName
@@ -136,10 +134,10 @@ namespace CodeWithQB.API
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseCors("CorsPolicy");
+
             app.UseAuthentication();
 
-            app.UseCors("CorsPolicy");
-            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

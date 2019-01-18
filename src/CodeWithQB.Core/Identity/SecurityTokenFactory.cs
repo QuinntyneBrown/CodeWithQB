@@ -29,8 +29,6 @@ namespace CodeWithQB.Core.Identity
                 };
 
             var jwt = new JwtSecurityToken(
-                issuer: _configuration["Authentication:JwtIssuer"],
-                audience: _configuration["Authentication:JwtAudience"],
                 claims: claims,
                 notBefore: now,
                 expires: now.AddMinutes(Convert.ToInt16(_configuration["Authentication:ExpirationMinutes"])),

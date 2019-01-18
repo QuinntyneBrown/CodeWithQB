@@ -4,6 +4,7 @@ import { CustomersPageComponent } from './customers/customers-page.component';
 import { LoginPageComponent } from './identity/login-page.component';
 import { HubClientGuard } from './core/hub-client-guard';
 import { AuthGuard } from './core/auth.guard';
+import { ContactRequestsPageComponent } from './contact-requests/contact-requests-page.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,11 @@ const routes: Routes = [
     component: CustomersPageComponent,
     canActivate: [AuthGuard, HubClientGuard],
   },
+  {
+    path: "contacts",
+    component: ContactRequestsPageComponent,
+    canActivate: [AuthGuard, HubClientGuard],
+  }, 
   {
     path: "login",    
     component: LoginPageComponent

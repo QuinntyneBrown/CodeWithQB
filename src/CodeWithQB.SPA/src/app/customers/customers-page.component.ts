@@ -33,7 +33,7 @@ export class CustomersPageComponent {
       .subscribe();
   }
 
-  public readonly columnsToDisplay: string[] = ['customerId', 'name', 'isLive', 'edit', 'delete'];
+  public readonly columnsToDisplay: string[] = ['customerId', 'name', 'edit', 'delete'];
 
   public onCreate() {
     this.createOverlay();
