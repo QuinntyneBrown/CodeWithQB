@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using CodeWithQB.Core.Identity;
+﻿using CodeWithQB.Core.Identity;
 using CodeWithQB.Core.Models;
 using CodeWithQB.Infrastructure;
 using Microsoft.AspNetCore;
@@ -11,6 +8,8 @@ using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Linq;
 
 namespace CodeWithQB.API
 {
@@ -32,6 +31,7 @@ namespace CodeWithQB.API
             using (var scope = services.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                var configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
                 if (args.Contains("ci"))
                     args = new string[4] { "dropdb", "migratedb", "seeddb", "stop" };
@@ -48,14 +48,14 @@ namespace CodeWithQB.API
 
                     User user = default(User);
 
-                    if (context.Users.IgnoreQueryFilters().FirstOrDefault(x => x.Username == "quinntynebrown@gmail.com") == null)
+                    if (context.Users.IgnoreQueryFilters().FirstOrDefault(x => x.Username == configuration["Seed:DefaultUser:Username"]) == null)
                     {
                         user = new User()
                         {
-                            Username = "quinntynebrown@gmail.com"
+                            Username = configuration["Seed:DefaultUser:Username"]
                         };
 
-                        user.Password = new PasswordHasher().HashPassword(user.Salt, "P@ssw0rd");
+                        user.Password = new PasswordHasher().HashPassword(user.Salt, configuration["Seed:DefaultUser:Password"]);
 
                         context.Users.Add(user);
 

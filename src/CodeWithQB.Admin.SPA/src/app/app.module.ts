@@ -5,8 +5,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { baseUrl } from './core/constants';
+import { CustomersModule } from './customers/customers.module';
+import { IdentityModule } from './identity/identity.module';
 import { ContactRequestsModule } from './contact-requests/contact-requests.module';
-import { HomeModule } from './home/home.module';
 
 @NgModule({
   declarations: [
@@ -16,8 +17,9 @@ import { HomeModule } from './home/home.module';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    ContactRequestsModule,
-    HomeModule
+    IdentityModule,
+    CustomersModule,
+    ContactRequestsModule
   ],
   providers: [{
     provide: baseUrl,

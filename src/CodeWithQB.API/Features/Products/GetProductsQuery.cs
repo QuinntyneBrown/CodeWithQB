@@ -6,15 +6,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Locations
+namespace CodeWithQB.API.Features.Products
 {
-    public class GetLocationsQuery
+    public class GetProductsQuery
     {
         public class Request : IRequest<Response> { }
 
         public class Response
         {
-            public IEnumerable<LocationDto> Locations { get; set; }
+            public IEnumerable<ProductDto> Products { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -26,7 +26,7 @@ namespace CodeWithQB.API.Features.Locations
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
                 =>  new Response()
                 {
-                    Locations = await _context.Locations.Include(x => x.Address).Select(x => LocationDto.FromLocation(x)).ToArrayAsync()
+                    Products = await _context.Products.Select(x => ProductDto.FromProduct(x)).ToArrayAsync()
                 };
         }
     }

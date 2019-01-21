@@ -1,5 +1,4 @@
 using CodeWithQB.Core.Interfaces;
-using CodeWithQB.Core.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
