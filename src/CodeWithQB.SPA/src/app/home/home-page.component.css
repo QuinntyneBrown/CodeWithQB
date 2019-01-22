@@ -1,0 +1,26 @@
+:host {
+    display: block;
+    content: contain;
+    text-align: center;
+    padding: 80px 0px 0px 0px;
+}
+
+h1 {
+    font-weight: 600;
+    letter-spacing: -1px;
+    font-size: 3em;
+    line-height:1em;
+    color: #222;
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: 300;
+    color: #aaa;
+}
+
+img {
+
+    border-radius:50%;
+    height:200px;
+}
