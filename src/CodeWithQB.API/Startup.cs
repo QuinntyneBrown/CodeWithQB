@@ -154,7 +154,7 @@ namespace CodeWithQB.API
 
             app.UseHealthChecks("/health", new HealthCheckOptions
             {
-
+                
             });
 
             app.UseSwagger();
