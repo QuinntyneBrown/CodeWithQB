@@ -5,6 +5,7 @@ using CodeWithQB.Infrastructure;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -47,6 +48,10 @@ namespace CodeWithQB.API
             services.AddSingleton<ISecurityTokenFactory, SecurityTokenFactory>();
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+            services.AddHealthChecks()
+                .AddDbContextCheck<AppDbContext>()
+                .AddCheck<DbContextHealthCheck>("DbContext");
 
             var settings = new JsonSerializerSettings
             {
@@ -146,6 +151,11 @@ namespace CodeWithQB.API
             {
                 app.UseHsts();
             }
+
+            app.UseHealthChecks("/health", new HealthCheckOptions
+            {
+
+            });
 
             app.UseSwagger();
 
