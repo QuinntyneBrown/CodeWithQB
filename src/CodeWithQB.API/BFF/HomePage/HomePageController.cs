@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -8,6 +9,10 @@ namespace CodeWithQB.API.BFF.HomePage
     [Route("api/homepage")]
     public class HomePageController
     {
+        private readonly IMediator _mediator;
+
+        public HomePageController(IMediator mediator) => _mediator = mediator;
+
         [HttpGet]
         [ProducesResponseType(typeof(HomePageViewModel), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<HomePageViewModel>> Get() 

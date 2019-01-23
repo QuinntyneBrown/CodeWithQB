@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <Folder Include="Features\ContactRequests\" />
+    <Folder Include="Features\Mentors\" />
     <Folder Include="Features\Products\" />
   </ItemGroup>
 </Project>

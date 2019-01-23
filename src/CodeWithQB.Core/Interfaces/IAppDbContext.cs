@@ -11,6 +11,7 @@ namespace CodeWithQB.Core.Interfaces
         DbSet<Customer> Customers { get; }
         DbSet<DigitalAsset> DigitalAssets { get; }
         DbSet<Location> Locations { get; }
+        DbSet<Mentor> Mentors { get; }
         DbSet<Product> Products { get; }
         DbSet<Talk> Talks { get; }
         DbSet<User> Users { get; }

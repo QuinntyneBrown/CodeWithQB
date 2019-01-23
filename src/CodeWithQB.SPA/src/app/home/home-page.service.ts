@@ -6,7 +6,7 @@ import { baseUrl } from "../core/constants";
 import { HomePage } from './home-page.model';
 
 @Injectable()
-export class HomeService {
+export class HomePageService {
   constructor(
     @Inject(baseUrl) private _baseUrl:string,
     private _client: HttpClient

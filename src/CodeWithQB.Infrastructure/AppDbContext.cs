@@ -12,6 +12,7 @@ namespace CodeWithQB.Infrastructure
         public DbSet<Customer> Customers { private set; get; }
         public DbSet<DigitalAsset> DigitalAssets { private set; get; }
         public DbSet<Location> Locations { private set; get; }
+        public DbSet<Mentor> Mentors { private set; get; }
         public DbSet<Product> Products { private set; get; }
         public DbSet<Talk> Talks { private set; get; }
         public DbSet<User> Users { private set; get; }

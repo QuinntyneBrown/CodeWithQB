@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 import { Subject, Observable } from "rxjs";
-import { HomeService as HomePageService } from './home.service';
+import { HomePageService } from './home-page.service';
 import { HomePage } from './home-page.model';
 
 @Component({
