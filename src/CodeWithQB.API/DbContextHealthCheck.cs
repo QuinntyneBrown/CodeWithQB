@@ -12,10 +12,8 @@ namespace CodeWithQB.API
         public DbContextHealthCheck(AppDbContext context) => _context = context;
 
         public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = new CancellationToken())
-        {
-            return await _context.Database.CanConnectAsync(cancellationToken)
+            => await _context.Database.CanConnectAsync(cancellationToken)
                 ? HealthCheckResult.Healthy()
                 : HealthCheckResult.Degraded();
-        }
     }
 }

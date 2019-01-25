@@ -23,7 +23,7 @@ namespace CodeWithQB.API.BFF.HomePage
 
             public Handler(IAppDbContext context) => _context = context;
 
-            public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
+            public Task<Response> Handle(Request request, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }

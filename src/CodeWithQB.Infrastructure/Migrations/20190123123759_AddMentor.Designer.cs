@@ -4,14 +4,16 @@ using CodeWithQB.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CodeWithQB.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190123123759_AddMentor")]
+    partial class AddMentor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,11 +100,7 @@ namespace CodeWithQB.Infrastructure.Migrations
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("ImageUrl");
-
                     b.Property<string>("Name");
-
-                    b.Property<float>("Price");
 
                     b.HasKey("ProductId");
 
@@ -116,9 +114,15 @@ namespace CodeWithQB.Infrastructure.Migrations
 
                     b.Property<string>("Abstract");
 
+                    b.Property<DateTime>("Date");
+
                     b.Property<string>("Description");
 
+                    b.Property<Guid>("LocationId");
+
                     b.HasKey("TalkId");
+
+                    b.HasIndex("LocationId");
 
                     b.ToTable("Talks");
                 });
@@ -162,6 +166,14 @@ namespace CodeWithQB.Infrastructure.Migrations
                                 .HasForeignKey("CodeWithQB.Core.Models.Address", "LocationId")
                                 .OnDelete(DeleteBehavior.Cascade);
                         });
+                });
+
+            modelBuilder.Entity("CodeWithQB.Core.Models.Talk", b =>
+                {
+                    b.HasOne("CodeWithQB.Core.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }
