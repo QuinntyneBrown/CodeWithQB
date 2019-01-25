@@ -10,14 +10,13 @@ import { HomePage } from './home-page.model';
 })
 export class HomePageComponent { 
   constructor(private readonly _homePageService: HomePageService) {
-
   }
 
   ngOnInit() {
-    this.home$ = this._homePageService.get();
+    this.homePage$ = this._homePageService.get();
   }
 
-  public home$: Observable<HomePage>;
+  public homePage$: Observable<HomePage>;
 
   public onDestroy: Subject<void> = new Subject<void>();
 

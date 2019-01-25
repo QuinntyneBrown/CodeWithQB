@@ -13,6 +13,7 @@ export class HomePageService {
   ) { }
 
   public get(): Observable<HomePage> {
-    return this._client.get<HomePage>(`${this._baseUrl}api/homepage`);
+    return this._client.get<{ homePage: HomePage}>(`${this._baseUrl}api/homepage`)
+      .pipe(map(x => x.homePage));
   }
 }
