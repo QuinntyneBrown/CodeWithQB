@@ -10,5 +10,7 @@ namespace CodeWithQB.Core.Models
         public string Title { get; set; }
         public string FullName { get; set; }
         public string ImageUrl { get; set; }
+        public ICollection<MentorTag> MentorTags { get; set; }
+            = new HashSet<MentorTag>();
     }
 }

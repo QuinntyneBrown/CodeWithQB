@@ -1,5 +1,8 @@
+using CodeWithQB.API.Features.Tags;
 using CodeWithQB.Core.Models;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace CodeWithQB.API.Features.Mentors
 {
@@ -10,13 +13,7 @@ namespace CodeWithQB.API.Features.Mentors
         public string Title { get; set; }
         public string ImageUrl { get; set; }
 
-        public static MentorDto FromMentor(Mentor mentor)
-            => new MentorDto
-            {
-                MentorId = mentor.MentorId,
-                FullName = mentor.FullName,
-                Title = mentor.Title,
-                ImageUrl = mentor.ImageUrl
-            };
+        public ICollection<TagDto> Tags { get; set; }
+            = new HashSet<TagDto>();        
     }
 }

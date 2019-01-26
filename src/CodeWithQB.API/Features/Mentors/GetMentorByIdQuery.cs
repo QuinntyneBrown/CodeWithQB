@@ -25,7 +25,7 @@ namespace CodeWithQB.API.Features.Mentors
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
                 => new Response()
                 {
-                    Mentor = MentorDto.FromMentor(await _context.Mentors.FindAsync(request.MentorId))
+                    Mentor = (await _context.Mentors.FindAsync(request.MentorId)).ToDto()
                 };
         }
     }

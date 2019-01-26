@@ -1,5 +1,4 @@
 using CodeWithQB.Core.Interfaces;
-using CodeWithQB.Core.Models;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -27,7 +26,7 @@ namespace CodeWithQB.API.Features.Mentors
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
                 =>  new Response()
                 {
-                    Mentors = await _context.Mentors.Select(x => MentorDto.FromMentor(x)).ToArrayAsync()
+                    Mentors = await _context.Mentors.Select(x => x.ToDto()).ToArrayAsync()
                 };
         }
     }
