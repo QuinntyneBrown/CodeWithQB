@@ -9,12 +9,5 @@ namespace CodeWithQB.API.Features.Locations
         public Guid LocationId { get; set; }
         public string Name { get; set; }
         public AddressDto Address { get; set; }
-        public static LocationDto FromLocation(Location location)
-            => new LocationDto
-            {
-                LocationId = location.LocationId,
-                Name = location.Name,
-                Address = location.Address.ToDto()
-            };
     }
 }

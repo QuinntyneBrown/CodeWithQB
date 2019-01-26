@@ -25,7 +25,7 @@ namespace CodeWithQB.API.Features.Locations
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
                 => new Response()
                 {
-                    Location = LocationDto.FromLocation(await _context.Locations.FindAsync(request.LocationId))
+                    Location = (await _context.Locations.FindAsync(request.LocationId)).ToDto()
                 };
         }
     }

@@ -26,7 +26,7 @@ namespace CodeWithQB.API.Features.Locations
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
                 =>  new Response()
                 {
-                    Locations = await _context.Locations.Include(x => x.Address).Select(x => LocationDto.FromLocation(x)).ToArrayAsync()
+                    Locations = await _context.Locations.Include(x => x.Address).Select(x => x.ToDto()).ToArrayAsync()
                 };
         }
     }
