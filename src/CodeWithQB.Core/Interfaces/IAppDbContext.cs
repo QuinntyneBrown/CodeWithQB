@@ -13,6 +13,7 @@ namespace CodeWithQB.Core.Interfaces
         DbSet<Location> Locations { get; }
         DbSet<Mentor> Mentors { get; }
         DbSet<Product> Products { get; }
+        DbSet<Tag> Tags { get; }
         DbSet<Talk> Talks { get; }
         DbSet<User> Users { get; }
 

@@ -10,7 +10,7 @@ namespace CodeWithQB.API.Features.Locations
             {
                 LocationId = x.LocationId,
                 Name = x.Name,
-                Address = x.Address.ToDto()
+                Address = x.Address?.ToDto()
             };
     }
 }

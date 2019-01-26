@@ -14,6 +14,7 @@ namespace CodeWithQB.Infrastructure
         public DbSet<Location> Locations { private set; get; }
         public DbSet<Mentor> Mentors { private set; get; }
         public DbSet<Product> Products { private set; get; }
+        public DbSet<Tag> Tags { get; private set; }
         public DbSet<Talk> Talks { private set; get; }
         public DbSet<User> Users { private set; get; }
 
@@ -21,6 +22,9 @@ namespace CodeWithQB.Infrastructure
         {
             modelBuilder.Entity<Location>()
                 .OwnsOne(e => e.Address);
+
+            modelBuilder.Entity<MentorTag>()
+                .HasKey(t => new { t.MentorId, t.TagId });
 
             base.OnModelCreating(modelBuilder);
         }
