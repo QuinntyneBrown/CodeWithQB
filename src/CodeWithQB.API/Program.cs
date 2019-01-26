@@ -1,6 +1,7 @@
 ﻿using CodeWithQB.Core.Identity;
 using CodeWithQB.Core.Models;
 using CodeWithQB.Infrastructure;
+using Microsoft.ApplicationInsights;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.KeyVault;
@@ -8,6 +9,7 @@ using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Serilog;
 using System;
 using System.Linq;
 
@@ -85,6 +87,15 @@ namespace CodeWithQB.API
                     );
 
                 config.AddAzureKeyVault(keyVaultEndpoint);                
+            })
+            .UseApplicationInsights()
+            .UseSerilog((builderContext, config) =>
+            {
+                config
+                    .MinimumLevel.Information()
+                    .Enrich.FromLogContext()
+                    .WriteTo.Console()
+                    .WriteTo.ApplicationInsightsTraces(new TelemetryClient());
             })
             .UseStartup<Startup>();
     }

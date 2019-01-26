@@ -14,7 +14,7 @@ namespace CodeWithQB.API.Features.Locations
             {
                 LocationId = location.LocationId,
                 Name = location.Name,
-                Address = AddressDto.FromAddress(location.Address)
+                Address = location.Address.ToDto()
             };
     }
 }
