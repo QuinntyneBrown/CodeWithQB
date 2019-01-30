@@ -33,7 +33,7 @@ namespace CodeWithQB.API
         {
             services.AddCors(options => options.AddPolicy("CorsPolicy",
                 builder => builder
-                .WithOrigins("https://codewithqb.z27.web.core.windows.net,http://localhost:4200")
+                .WithOrigins("https://www.codewithqb.com,http://localhost:4200")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .SetIsOriginAllowed(isOriginAllowed: _ => true)
