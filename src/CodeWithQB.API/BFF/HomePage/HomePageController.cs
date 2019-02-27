@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -10,19 +11,17 @@ namespace CodeWithQB.API.BFF.HomePage
     public class HomePageController
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<HomePageController> _logger;
 
-        public HomePageController(IMediator mediator) => _mediator = mediator;
+        public HomePageController(ILogger<HomePageController> logger, IMediator mediator)
+        {
+            _logger = logger;
+            _mediator = mediator;
+        }
 
         [HttpGet]
         [ProducesResponseType(typeof(HomePageViewModel), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<GetHomePageViewModel.Response>> Get() 
-            => await Task.FromResult(new GetHomePageViewModel.Response {
-                HomePage = new HomePageViewModel
-                {
-                    FullName = "Quinntyne Brown",
-                    Title = "Architect and Senior Software Engineer",
-                    ImageUrl = "https://avatars0.githubusercontent.com/u/1749159?s=400&u=b36e138431ef4f0a383e51eef90248ad07066b28&v=4"
-                }
-            });
+        public async Task<ActionResult<GetHomePageQuery.Response>> Get() 
+            => await _mediator.Send(new GetHomePageQuery.Request());
     }
 }

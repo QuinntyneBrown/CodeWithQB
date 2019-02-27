@@ -8,6 +8,7 @@ namespace CodeWithQB.Core.Interfaces
     public interface IAppDbContext
     {
         DbSet<ContactRequest> ContactRequests { get; }
+        DbSet<Course> Courses { get; }
         DbSet<Customer> Customers { get; }
         DbSet<DigitalAsset> DigitalAssets { get; }
         DbSet<Location> Locations { get; }
@@ -16,6 +17,7 @@ namespace CodeWithQB.Core.Interfaces
         DbSet<Tag> Tags { get; }
         DbSet<Talk> Talks { get; }
         DbSet<User> Users { get; }
+        DbSet<Video> Videos { get; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }

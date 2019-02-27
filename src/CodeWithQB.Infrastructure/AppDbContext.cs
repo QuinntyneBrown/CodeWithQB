@@ -9,6 +9,7 @@ namespace CodeWithQB.Infrastructure
         public AppDbContext(DbContextOptions options)
             :base(options) { }        
         public DbSet<ContactRequest> ContactRequests { private set; get; }
+        public DbSet<Course> Courses { get; private set; }
         public DbSet<Customer> Customers { private set; get; }
         public DbSet<DigitalAsset> DigitalAssets { private set; get; }
         public DbSet<Location> Locations { private set; get; }
@@ -17,6 +18,7 @@ namespace CodeWithQB.Infrastructure
         public DbSet<Tag> Tags { get; private set; }
         public DbSet<Talk> Talks { private set; get; }
         public DbSet<User> Users { private set; get; }
+        public DbSet<Video> Videos { get; private set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
