@@ -1,6 +1,10 @@
-﻿using CodeWithQB.Core.Interfaces;
+﻿using CodeWithQB.API.Features.Courses;
+using CodeWithQB.API.Features.Videos;
+using CodeWithQB.Core.Interfaces;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,17 +30,19 @@ namespace CodeWithQB.API.BFF.HomePage
                 _logger = logger;
             }
 
-            public Task<Response> Handle(Request request, CancellationToken cancellationToken)
-            {
-                return Task.FromResult(new Response
+            public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
+            {                
+                return new Response
                 {
                     HomePage = new HomePageViewModel
                     {
                         FullName = "Quinntyne Brown",
                         Title = "Architect and Senior Software Engineer",
-                        ImageUrl = "https://avatars0.githubusercontent.com/u/1749159?s=400&u=b36e138431ef4f0a383e51eef90248ad07066b28&v=4"
+                        ImageUrl = "https://avatars0.githubusercontent.com/u/1749159?s=400&u=b36e138431ef4f0a383e51eef90248ad07066b28&v=4",
+                        Courses = await _context.Courses.Select(x => x.ToDto()).ToArrayAsync(),
+                        Videos = await _context.Videos.Select(x => x.ToDto()).ToArrayAsync()
                     }
-                });
+                };
             }
         }
     }
