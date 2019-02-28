@@ -42,6 +42,7 @@ namespace CodeWithQB.API.Features.Courses
 
                 course.Name = request.Course.Name;
                 course.Description = request.Course.Description;
+                course.Abstract = request.Course.Abstract;
 
                 await _context.SaveChangesAsync(cancellationToken);
 

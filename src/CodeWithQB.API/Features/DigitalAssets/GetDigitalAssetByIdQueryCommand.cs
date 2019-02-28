@@ -14,7 +14,7 @@ namespace CodeWithQB.API.Features.DigitalAssets
 
         public class Response
         {
-            public DigitalAssetApiModel DigitalAsset { get; set; }
+            public DigitalAssetDto DigitalAsset { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -26,7 +26,7 @@ namespace CodeWithQB.API.Features.DigitalAssets
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken)
                 => new Response()
                 {
-                    DigitalAsset = DigitalAssetApiModel.FromDigitalAsset(await _context.DigitalAssets.FindAsync(request.DigitalAssetId))
+                    DigitalAsset = (await _context.DigitalAssets.FindAsync(request.DigitalAssetId)).ToDto()
                 };
         }
     }

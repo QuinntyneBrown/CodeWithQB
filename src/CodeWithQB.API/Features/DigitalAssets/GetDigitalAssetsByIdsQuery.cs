@@ -17,7 +17,7 @@ namespace CodeWithQB.API.Features.DigitalAssets
 
         public class Response
         {
-            public IEnumerable<DigitalAssetApiModel> DigitalAssets { get; set; }
+            public IEnumerable<DigitalAssetDto> DigitalAssets { get; set; }
         }
 
         public class Handler : IRequestHandler<Request, Response>
@@ -30,7 +30,7 @@ namespace CodeWithQB.API.Features.DigitalAssets
                 {
                     DigitalAssets = await _context.DigitalAssets
                     .Where(x => request.DigitalAssetIds.Contains(x.DigitalAssetId))
-                    .Select(x => DigitalAssetApiModel.FromDigitalAsset(x)).ToListAsync()
+                    .Select(x => x.ToDto()).ToListAsync()
                 };
         }
     }

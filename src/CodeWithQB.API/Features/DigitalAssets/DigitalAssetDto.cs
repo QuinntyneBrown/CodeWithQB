@@ -3,15 +3,19 @@ using System;
 
 namespace CodeWithQB.API.Features.DigitalAssets
 {
-    public class DigitalAssetApiModel
+    public class DigitalAssetDto
     {        
         public Guid DigitalAssetId { get; set; }
         public string Name { get; set; }
         public string RelativePath { get { return $"api/digitalassets/serve/{DigitalAssetId}"; } }
         public byte[] Bytes { get; set; }
         public string ContentType { get; set; }
-        public static DigitalAssetApiModel FromDigitalAsset(DigitalAsset digitalAsset)
-            => new DigitalAssetApiModel
+    }
+
+    public static class DigitalAssetExtensions
+    {
+        public static DigitalAssetDto ToDto(this DigitalAsset digitalAsset)
+            => new DigitalAssetDto
             {
                 DigitalAssetId = digitalAsset.DigitalAssetId,
                 Name = digitalAsset.Name,

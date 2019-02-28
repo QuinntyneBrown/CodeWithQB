@@ -43,6 +43,7 @@ namespace CodeWithQB.API.Features.Videos
                 video.Name = request.Video.Name;
                 video.Description = request.Video.Description;
                 video.Url = request.Video.Url;
+                video.Abstract = request.Video.Abstract;
 
                 await _context.SaveChangesAsync(cancellationToken);
 

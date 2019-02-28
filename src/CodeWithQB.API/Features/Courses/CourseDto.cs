@@ -8,6 +8,7 @@ namespace CodeWithQB.API.Features.Courses
         public Guid CourseId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Abstract { get; set; }
     }
 
     public static class CourseExtensions

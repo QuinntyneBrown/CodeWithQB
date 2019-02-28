@@ -8,5 +8,6 @@ namespace CodeWithQB.Core.Models
 		public string Name { get; set; }
         public string Description { get; set; }
         public string Url { get; set; }
+        public string Abstract { get; set; }
     }
 }

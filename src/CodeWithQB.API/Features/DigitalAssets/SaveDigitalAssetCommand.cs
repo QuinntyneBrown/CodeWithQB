@@ -18,7 +18,7 @@ namespace CodeWithQB.API.Features.DigitalAssets
         }
 
         public class Request : IRequest<Response> {
-            public DigitalAssetApiModel DigitalAsset { get; set; }
+            public DigitalAssetDto DigitalAsset { get; set; }
         }
 
         public class Response
