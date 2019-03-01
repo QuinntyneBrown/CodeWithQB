@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Net;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace CodeWithQB.API.BFF.HomePage
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/homepage")]
     public class HomePageController
