@@ -32,6 +32,7 @@
   <ItemGroup>
     <Folder Include="Features\ContactRequests\" />
     <Folder Include="Features\Courses\" />
+    <Folder Include="Features\Books\" />
     <Folder Include="Features\Videos\" />
     <Folder Include="Features\Products\" />
   </ItemGroup>

@@ -1,15 +1,13 @@
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
 
 namespace CodeWithQB.API.Features.Tags
 {
-    [Authorize]
     [ApiController]
     [Route("api/tags")]
-    public class TagsController
+    public class TagsController: ControllerBase
     {
         private readonly IMediator _meditator;
 

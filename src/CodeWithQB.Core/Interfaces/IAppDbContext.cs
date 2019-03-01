@@ -7,6 +7,7 @@ namespace CodeWithQB.Core.Interfaces
 {
     public interface IAppDbContext
     {
+        DbSet<Book> Books { get; }
         DbSet<ContactRequest> ContactRequests { get; }
         DbSet<Course> Courses { get; }
         DbSet<Customer> Customers { get; }

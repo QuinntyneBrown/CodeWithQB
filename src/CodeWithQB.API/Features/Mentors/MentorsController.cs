@@ -1,15 +1,13 @@
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
 
 namespace CodeWithQB.API.Features.Mentors
 {
-    [Authorize]
     [ApiController]
     [Route("api/mentors")]
-    public class MentorsController
+    public class MentorsController: ControllerBase
     {
         private readonly IMediator _meditator;
 

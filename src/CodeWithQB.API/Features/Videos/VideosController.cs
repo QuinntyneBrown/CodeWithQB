@@ -1,15 +1,13 @@
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
 
 namespace CodeWithQB.API.Features.Videos
 {
-    [Authorize]
     [ApiController]
     [Route("api/videos")]
-    public class VideosController
+    public class VideosController: ControllerBase
     {
         private readonly IMediator _meditator;
 

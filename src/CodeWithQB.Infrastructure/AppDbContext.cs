@@ -8,6 +8,8 @@ namespace CodeWithQB.Infrastructure
     {
         public AppDbContext(DbContextOptions options)
             :base(options) { }        
+
+        public DbSet<Book> Books { get; private set; }
         public DbSet<ContactRequest> ContactRequests { private set; get; }
         public DbSet<Course> Courses { get; private set; }
         public DbSet<Customer> Customers { private set; get; }

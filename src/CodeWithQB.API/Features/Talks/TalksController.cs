@@ -1,14 +1,12 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace CodeWithQB.API.Features.Talks
 {
     [ApiController]
-    [Route("api/talks")]
-    [Authorize]
-    public class TalksController
+    [Route("api/talks")]    
+    public class TalksController: ControllerBase
     {
         private readonly IMediator _mediator;
         

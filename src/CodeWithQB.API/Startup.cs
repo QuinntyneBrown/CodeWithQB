@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -118,7 +119,9 @@ namespace CodeWithQB.API
 
             services.AddMediatR(typeof(Startup));
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);            
+            services.AddMvc(x => {
+                x.Filters.Add(new AuthorizeFilter());
+            }).SetCompatibilityVersion(CompatibilityVersion.Latest);            
         }
 
         private static TokenValidationParameters GetTokenValidationParameters(IConfiguration configuration)
