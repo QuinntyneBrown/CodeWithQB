@@ -6,9 +6,11 @@ import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { HomePageComponent } from './home-page.component';
 import { HomePageService } from './home-page.service';
+import { CoursePageComponent } from '../courses/course-page.component';
 
 const declarations = [
-    HomePageComponent
+    HomePageComponent,
+    CoursePageComponent
 ];
 
 const entryComponents = [
