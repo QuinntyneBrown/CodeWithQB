@@ -4,7 +4,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Mentors
+namespace CodeWithQB.Api.Features.Mentors
 {
     public class GetMentorByIdQuery
     {

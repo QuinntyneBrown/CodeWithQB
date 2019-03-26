@@ -4,7 +4,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Locations
+namespace CodeWithQB.Api.Features.Locations
 {
     public class GetLocationByIdQuery
     {

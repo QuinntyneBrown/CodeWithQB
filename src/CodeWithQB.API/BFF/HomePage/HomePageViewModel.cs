@@ -1,9 +1,9 @@
-﻿using CodeWithQB.API.Features.Courses;
-using CodeWithQB.API.Features.Tags;
-using CodeWithQB.API.Features.Videos;
+﻿using CodeWithQB.Api.Features.Courses;
+using CodeWithQB.Api.Features.Tags;
+using CodeWithQB.Api.Features.Videos;
 using System.Collections.Generic;
 
-namespace CodeWithQB.API.BFF.HomePage
+namespace CodeWithQB.Api.BFF.HomePage
 {
     public class HomePageViewModel
     {

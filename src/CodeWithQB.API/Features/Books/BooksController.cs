@@ -4,9 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Books
+namespace CodeWithQB.Api.Features.Books
 {
-    [Authorize]
     [ApiController]
     [Route("api/books")]
     public class BooksController
@@ -33,10 +32,10 @@ namespace CodeWithQB.API.Features.Books
         public async Task<ActionResult<UpsertBookCommand.Response>> Upsert(UpsertBookCommand.Request request)
             => await _meditator.Send(request);
 
-        [HttpDelete]
+        [HttpDelete("{bookId}")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(Unit), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<Unit>> Remove([FromQuery]RemoveBookCommand.Request request)
+        public async Task<ActionResult<Unit>> Remove([FromRoute]RemoveBookCommand.Request request)
             => await _meditator.Send(request);
     }
 }

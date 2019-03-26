@@ -6,7 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Books
+namespace CodeWithQB.Api.Features.Books
 {
     public class UpsertBookCommand
     {

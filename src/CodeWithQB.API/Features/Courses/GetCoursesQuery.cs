@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Courses
+namespace CodeWithQB.Api.Features.Courses
 {
     public class GetCoursesQuery
     {

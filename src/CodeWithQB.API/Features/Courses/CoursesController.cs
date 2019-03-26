@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Courses
+namespace CodeWithQB.Api.Features.Courses
 {
     [Authorize]
     [ApiController]

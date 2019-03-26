@@ -1,7 +1,7 @@
-﻿using CodeWithQB.API.Features.Addresses;
+﻿using CodeWithQB.Api.Features.Addresses;
 using CodeWithQB.Core.Models;
 
-namespace CodeWithQB.API.Features.Locations
+namespace CodeWithQB.Api.Features.Locations
 {
     public static class LocationExtensions
     {

@@ -1,7 +1,7 @@
 using CodeWithQB.Core.Models;
 using System;
 
-namespace CodeWithQB.API.Features.Books
+namespace CodeWithQB.Api.Features.Books
 {
     public class BookDto
     {        

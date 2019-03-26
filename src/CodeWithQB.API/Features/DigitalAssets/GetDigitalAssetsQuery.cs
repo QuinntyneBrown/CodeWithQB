@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.DigitalAssets
+namespace CodeWithQB.Api.Features.DigitalAssets
 {
     public class GetDigitalAssetsQuery
     {

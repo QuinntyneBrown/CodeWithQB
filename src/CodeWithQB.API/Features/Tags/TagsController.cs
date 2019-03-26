@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Tags
+namespace CodeWithQB.Api.Features.Tags
 {
     [ApiController]
     [Route("api/tags")]

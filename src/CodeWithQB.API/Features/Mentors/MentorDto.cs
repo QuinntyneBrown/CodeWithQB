@@ -1,10 +1,10 @@
-using CodeWithQB.API.Features.Tags;
+using CodeWithQB.Api.Features.Tags;
 using CodeWithQB.Core.Models;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace CodeWithQB.API.Features.Mentors
+namespace CodeWithQB.Api.Features.Mentors
 {
     public class MentorDto
     {        

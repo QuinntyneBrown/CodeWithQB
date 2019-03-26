@@ -1,7 +1,7 @@
 using CodeWithQB.Core.Models;
 using System;
 
-namespace CodeWithQB.API.Features.Courses
+namespace CodeWithQB.Api.Features.Courses
 {
     public class CourseDto
     {        

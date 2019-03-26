@@ -1,7 +1,7 @@
 using CodeWithQB.Core.Models;
 using System;
 
-namespace CodeWithQB.API.Features.Products
+namespace CodeWithQB.Api.Features.Products
 {
     public class ProductDto
     {        

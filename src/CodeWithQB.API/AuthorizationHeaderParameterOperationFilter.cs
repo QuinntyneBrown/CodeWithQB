@@ -4,7 +4,7 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CodeWithQB.API
+namespace CodeWithQB.Api
 {
     public class AuthorizationHeaderParameterOperationFilter : IOperationFilter
     {

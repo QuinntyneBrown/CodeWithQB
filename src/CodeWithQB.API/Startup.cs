@@ -1,4 +1,4 @@
-﻿using CodeWithQB.API.Behaviours;
+﻿using CodeWithQB.Api.Behaviours;
 using CodeWithQB.Core.Identity;
 using CodeWithQB.Core.Interfaces;
 using CodeWithQB.Infrastructure;
@@ -22,7 +22,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API
+namespace CodeWithQB.Api
 {
     public class Startup
     {

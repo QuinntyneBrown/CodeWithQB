@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Identity
+namespace CodeWithQB.Api.Features.Identity
 {
     [ApiController]
     [Route("api/users")]

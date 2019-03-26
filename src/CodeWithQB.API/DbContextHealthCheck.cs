@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CodeWithQB.Infrastructure;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
-namespace CodeWithQB.API
+namespace CodeWithQB.Api
 {
     public class DbContextHealthCheck : IHealthCheck
     {

@@ -1,6 +1,6 @@
 using CodeWithQB.Core.Models;
 
-namespace CodeWithQB.API.Features.Addresses
+namespace CodeWithQB.Api.Features.Addresses
 {
     public class AddressDto
     {

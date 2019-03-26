@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Talks
+namespace CodeWithQB.Api.Features.Talks
 {
     [ApiController]
     [Route("api/talks")]    

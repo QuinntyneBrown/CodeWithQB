@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.ContactRequests
+namespace CodeWithQB.Api.Features.ContactRequests
 {
     public class GetContactRequestsQuery
     {

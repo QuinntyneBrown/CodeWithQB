@@ -5,7 +5,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Tags
+namespace CodeWithQB.Api.Features.Tags
 {
     public class RemoveTagCommand
     {

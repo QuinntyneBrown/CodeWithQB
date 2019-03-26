@@ -13,7 +13,7 @@ using Serilog;
 using System;
 using System.Linq;
 
-namespace CodeWithQB.API
+namespace CodeWithQB.Api
 {
     public class Program
     {

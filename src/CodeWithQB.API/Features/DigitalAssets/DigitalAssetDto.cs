@@ -1,7 +1,7 @@
 using CodeWithQB.Core.Models;
 using System;
 
-namespace CodeWithQB.API.Features.DigitalAssets
+namespace CodeWithQB.Api.Features.DigitalAssets
 {
     public class DigitalAssetDto
     {        

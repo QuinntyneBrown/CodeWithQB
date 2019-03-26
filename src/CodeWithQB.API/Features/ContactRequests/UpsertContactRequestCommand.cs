@@ -6,7 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.ContactRequests
+namespace CodeWithQB.Api.Features.ContactRequests
 {
     public class UpsertContactRequestCommand
     {

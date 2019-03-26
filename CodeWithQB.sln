@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.271
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28714.193
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWithQB.Core", "src\CodeWithQB.Core\CodeWithQB.Core.csproj", "{F10A86FC-410E-494F-8100-C7EDAC010FE5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWithQB.Infrastructure", "src\CodeWithQB.Infrastructure\CodeWithQB.Infrastructure.csproj", "{31A3D481-90B0-46C5-932F-1ED2BA53EB20}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWithQB.API", "src\CodeWithQB.API\CodeWithQB.API.csproj", "{55EEC40D-0287-4168-899E-5A5BEEBD6761}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeWithQB.Api", "src\CodeWithQB.API\CodeWithQB.Api.csproj", "{55EEC40D-0287-4168-899E-5A5BEEBD6761}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

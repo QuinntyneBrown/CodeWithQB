@@ -1,8 +1,8 @@
 ﻿using CodeWithQB.Core.Models;
 using System.Linq;
-using CodeWithQB.API.Features.Tags;
+using CodeWithQB.Api.Features.Tags;
 
-namespace CodeWithQB.API.Features.Mentors
+namespace CodeWithQB.Api.Features.Mentors
 {
     public static class MentorExtensions
     {

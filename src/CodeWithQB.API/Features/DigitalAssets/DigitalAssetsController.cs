@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CodeWithQB.API.Features.DigitalAssets
+namespace CodeWithQB.Api.Features.DigitalAssets
 {
     [Authorize]
     [ApiController]

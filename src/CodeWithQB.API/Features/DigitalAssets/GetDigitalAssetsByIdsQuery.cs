@@ -7,7 +7,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace CodeWithQB.API.Features.DigitalAssets
+namespace CodeWithQB.Api.Features.DigitalAssets
 {
     public class GetDigitalAssetsByIdsQuery
     {

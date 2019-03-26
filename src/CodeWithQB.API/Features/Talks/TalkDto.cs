@@ -1,7 +1,7 @@
 using CodeWithQB.Core.Models;
 using System;
 
-namespace CodeWithQB.API.Features.Talks
+namespace CodeWithQB.Api.Features.Talks
 {
     public class TalkDto
     {        

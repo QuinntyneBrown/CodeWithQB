@@ -1,8 +1,8 @@
-﻿using CodeWithQB.API.Features.Addresses;
+﻿using CodeWithQB.Api.Features.Addresses;
 using CodeWithQB.Core.Models;
 using System;
 
-namespace CodeWithQB.API.Features.Locations
+namespace CodeWithQB.Api.Features.Locations
 {
     public class LocationDto
     {

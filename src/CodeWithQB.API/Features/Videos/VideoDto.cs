@@ -1,7 +1,7 @@
 using CodeWithQB.Core.Models;
 using System;
 
-namespace CodeWithQB.API.Features.Videos
+namespace CodeWithQB.Api.Features.Videos
 {
     public class VideoDto
     {        

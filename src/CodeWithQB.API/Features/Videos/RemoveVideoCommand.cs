@@ -5,7 +5,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Videos
+namespace CodeWithQB.Api.Features.Videos
 {
     public class RemoveVideoCommand
     {

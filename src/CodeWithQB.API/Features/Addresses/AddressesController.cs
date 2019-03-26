@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace CodeWithQB.API.Features.Addresses
+namespace CodeWithQB.Api.Features.Addresses
 {
     public class AddressesController
     {

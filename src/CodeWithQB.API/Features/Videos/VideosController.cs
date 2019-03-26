@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Videos
+namespace CodeWithQB.Api.Features.Videos
 {
     [ApiController]
     [Route("api/videos")]

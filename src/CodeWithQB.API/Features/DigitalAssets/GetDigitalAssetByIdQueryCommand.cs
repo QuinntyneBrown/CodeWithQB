@@ -4,7 +4,7 @@ using System.Threading;
 using CodeWithQB.Core.Interfaces;
 using System;
 
-namespace CodeWithQB.API.Features.DigitalAssets
+namespace CodeWithQB.Api.Features.DigitalAssets
 {
     public class GetDigitalAssetByIdQuery
     {

@@ -1,7 +1,7 @@
 using CodeWithQB.Core.Models;
 using System;
 
-namespace CodeWithQB.API.Features.Customers
+namespace CodeWithQB.Api.Features.Customers
 {
     public class CustomerDto
     {        

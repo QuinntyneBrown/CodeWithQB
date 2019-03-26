@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Locations
+namespace CodeWithQB.Api.Features.Locations
 {
     public class GetLocationsQuery
     {

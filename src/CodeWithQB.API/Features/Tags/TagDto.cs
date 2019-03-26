@@ -1,7 +1,7 @@
 using CodeWithQB.Core.Models;
 using System;
 
-namespace CodeWithQB.API.Features.Tags
+namespace CodeWithQB.Api.Features.Tags
 {
     public class TagDto
     {        

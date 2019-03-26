@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.BFF.HomePage
+namespace CodeWithQB.Api.BFF.HomePage
 {
     [AllowAnonymous]
     [ApiController]

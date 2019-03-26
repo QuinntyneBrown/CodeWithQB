@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Mentors
+namespace CodeWithQB.Api.Features.Mentors
 {
     [ApiController]
     [Route("api/mentors")]

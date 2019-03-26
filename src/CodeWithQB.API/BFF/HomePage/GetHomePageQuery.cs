@@ -1,5 +1,5 @@
-﻿using CodeWithQB.API.Features.Courses;
-using CodeWithQB.API.Features.Videos;
+﻿using CodeWithQB.Api.Features.Courses;
+using CodeWithQB.Api.Features.Videos;
 using CodeWithQB.Core.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.BFF.HomePage
+namespace CodeWithQB.Api.BFF.HomePage
 {
     public class GetHomePageQuery
     {

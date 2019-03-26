@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Customers
+namespace CodeWithQB.Api.Features.Customers
 {
     public class GetCustomersQuery
     {

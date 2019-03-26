@@ -1,7 +1,7 @@
 using CodeWithQB.Core.Models;
 using System;
 
-namespace CodeWithQB.API.Features.ContactRequests
+namespace CodeWithQB.Api.Features.ContactRequests
 {
     public class ContactRequestDto
     {        

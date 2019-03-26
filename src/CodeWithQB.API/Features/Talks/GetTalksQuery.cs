@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Talks
+namespace CodeWithQB.Api.Features.Talks
 {
     public class GetTalksQuery
     {

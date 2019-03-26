@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Locations
+namespace CodeWithQB.Api.Features.Locations
 {
     [Authorize]
     [ApiController]

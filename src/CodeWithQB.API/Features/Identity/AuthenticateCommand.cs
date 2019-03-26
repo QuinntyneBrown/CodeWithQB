@@ -7,7 +7,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CodeWithQB.API.Features.Identity
+namespace CodeWithQB.Api.Features.Identity
 {
     public class AuthenticateCommand
     {
