@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CodeWithQB.Api.Features.Books
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/books")]
     public class BooksController
