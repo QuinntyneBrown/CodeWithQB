@@ -14,6 +14,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Swashbuckle.AspNetCore.Swagger;
 using System;
@@ -76,7 +77,7 @@ namespace CodeWithQB.Api
             services.AddSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
-                options.SwaggerDoc("v1", new Info
+                options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "CodeWithQB",
                     Version = "v1",
@@ -121,7 +122,9 @@ namespace CodeWithQB.Api
 
             services.AddMvc(x => {
                 x.Filters.Add(new AuthorizeFilter());
-            }).SetCompatibilityVersion(CompatibilityVersion.Latest);            
+            })
+            .AddNewtonsoftJson()
+            .SetCompatibilityVersion(CompatibilityVersion.Latest);            
         }
 
         private static TokenValidationParameters GetTokenValidationParameters(IConfiguration configuration)
@@ -149,7 +152,6 @@ namespace CodeWithQB.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
             }
             else
             {

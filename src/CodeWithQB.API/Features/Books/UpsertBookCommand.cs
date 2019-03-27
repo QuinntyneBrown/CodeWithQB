@@ -33,14 +33,15 @@ namespace CodeWithQB.Api.Features.Books
             public Handler(IAppDbContext context) => _context = context;
 
             public async Task<Response> Handle(Request request, CancellationToken cancellationToken) {
+
                 var book = await _context.Books.FindAsync(request.Book.BookId);
 
-                if (book == null) {
+                if (book == null)
+                {
                     book = new Book();
                     _context.Books.Add(book);
                 }
-                
-                book.BookId = request.Book.BookId;
+                    
                 book.Author = request.Book.Author;
                 book.Title = request.Book.Title;
                 book.Description = request.Book.Description;
