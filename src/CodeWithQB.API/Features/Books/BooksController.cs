@@ -24,7 +24,7 @@ namespace CodeWithQB.Api.Features.Books
         [HttpGet("{bookId}")]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(GetBookByIdQuery.Response), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<GetBookByIdQuery.Response>> GetById(GetBookByIdQuery.Request request)
+        public async Task<ActionResult<GetBookByIdQuery.Response>> GetById([FromRoute]GetBookByIdQuery.Request request)
             => await _meditator.Send(request);
 
         [HttpPost]
