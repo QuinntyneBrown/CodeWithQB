@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { baseUrl } from './core/constants';
 import { ContactRequestsModule } from './contact-requests/contact-requests.module';
 import { HomeModule } from './home/home.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { HomeModule } from './home/home.module';
     BrowserAnimationsModule,
     AppRoutingModule,
     ContactRequestsModule,
-    HomeModule
+    HomeModule,
+    SharedModule
   ],
   providers: [{
     provide: baseUrl,

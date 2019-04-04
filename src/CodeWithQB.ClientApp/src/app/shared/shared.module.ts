@@ -35,6 +35,7 @@ import {
 } from '@angular/material';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { MainNavModule } from './main-nav/main-nav.module';
 
 const declarations = [
 ];
@@ -77,7 +78,9 @@ const declarations = [
 
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
+    MainNavModule
   ],
   exports: [
     MatAutocompleteModule,
@@ -114,7 +117,9 @@ const declarations = [
     MatTooltipModule,
 
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+
+    MainNavModule
    
   ],
   providers:[]

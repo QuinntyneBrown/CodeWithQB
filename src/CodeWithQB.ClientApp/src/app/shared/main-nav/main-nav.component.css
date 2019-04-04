@@ -1,0 +1,18 @@
+nav {
+	padding: 20px 20px 0;
+	background: #fff;
+	background: rgba(255,255,255,.90);
+	margin: 0 auto;
+	text-align: right;
+	z-index: 100;    
+}
+
+nav a {
+    top: 8px;
+    right: 6px;
+    padding: 8px 12px;
+    font-size: 13px;
+    line-height: 1.35;
+    border-radius: 3px;
+    cursor: pointer;    
+}
