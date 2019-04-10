@@ -1,9 +1,11 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
 namespace CodeWithQB.Api.Features.Identity
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/users")]
     public class UsersController
