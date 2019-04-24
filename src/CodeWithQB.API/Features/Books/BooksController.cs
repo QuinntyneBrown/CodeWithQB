@@ -15,6 +15,7 @@ namespace CodeWithQB.Api.Features.Books
 
         public BooksController(IMediator mediator) => _meditator = mediator;
 
+        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(GetBooksQuery.Response), (int)HttpStatusCode.OK)]

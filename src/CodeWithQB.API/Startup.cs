@@ -120,7 +120,7 @@ namespace CodeWithQB.Api
 
             services.AddMediatR(typeof(Startup));
 
-            services.AddMvc(x => {
+            services.AddControllers(x => {
                 x.Filters.Add(new AuthorizeFilter());
             })
             .AddNewtonsoftJson()
@@ -174,7 +174,10 @@ namespace CodeWithQB.Api
             app.UseAzureSignalR(routes => routes.MapHub<AppHub>("/hub"));
 
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseRouting();
+            app.UseEndpoints(endpoints => {
+                endpoints.MapControllers();
+            });
         }
     }
 }
