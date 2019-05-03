@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, ChangeDetectionStrategy } from "@angular/core";
 import { Observable } from "rxjs";
 import { HomePageService } from './home-page.service';
 import { HomePage } from './home-page.model';
@@ -6,7 +6,8 @@ import { HomePage } from './home-page.model';
 @Component({
   templateUrl: "./home-page.component.html",
   styleUrls: ["./home-page.component.css"],
-  selector: "app-home-page"
+  selector: "app-home-page",
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomePageComponent { 
   constructor(private readonly _homePageService: HomePageService) { }
