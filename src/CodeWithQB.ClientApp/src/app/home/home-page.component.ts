@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { Subject, Observable } from "rxjs";
+import { Observable } from "rxjs";
 import { HomePageService } from './home-page.service';
 import { HomePage } from './home-page.model';
 
@@ -9,18 +9,7 @@ import { HomePage } from './home-page.model';
   selector: "app-home-page"
 })
 export class HomePageComponent { 
-  constructor(private readonly _homePageService: HomePageService) {
-  }
+  constructor(private readonly _homePageService: HomePageService) { }
 
-  ngOnInit() {
-    this.homePage$ = this._homePageService.get();
-  }
-
-  public homePage$: Observable<HomePage>;
-
-  public onDestroy: Subject<void> = new Subject<void>();
-
-  ngOnDestroy() {
-    this.onDestroy.next();	
-  }
+  public homePage$: Observable<HomePage> = this._homePageService.get();
 }

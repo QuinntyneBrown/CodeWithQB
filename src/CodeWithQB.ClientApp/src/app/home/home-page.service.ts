@@ -5,7 +5,9 @@ import { map } from "rxjs/operators";
 import { baseUrl } from "../core/constants";
 import { HomePage } from './home-page.model';
 
-@Injectable()
+@Injectable({
+  providedIn:"root"
+})
 export class HomePageService {
   constructor(
     @Inject(baseUrl) private _baseUrl:string,
