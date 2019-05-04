@@ -1,5 +1,5 @@
-<ng-container *ngIf="homePage$ | async as homePage">
-    <img src="{{ homePage.imageUrl }}" />
-    <h1>{{ homePage.fullName }}</h1>
-    <h2>{{ homePage.title }}</h2>
+<ng-container *ngIf="homePage$ | async as vm">
+    <img src="{{ vm.imageUrl }}" />
+    <h1>{{ vm.fullName }}</h1>
+    <h2>{{ vm.title }}</h2>
 </ng-container>
